@@ -1,0 +1,57 @@
+import { createSlice, PayloadAction, createAsyncThunk } from "@reduxjs/toolkit";
+import { AuthState } from "../../types";
+import axios from "axios";
+
+const initialState: AuthState = {
+  authorized: false,
+  isInitialized: false,
+};
+
+// Async thunk to handle server-side logout (clearing httpOnly cookie)
+export const logoutUser = createAsyncThunk(
+  "auth/logoutUser",
+  async (_, { rejectWithValue }) => {
+    try {
+      await axios.post(
+        "http://localhost:3000/api/auth/logout",
+        {},
+        {
+          withCredentials: true,
+        }
+      );
+      return true;
+    } catch (error: any) {
+      return rejectWithValue(error.response?.data?.message || "Logout failed");
+    }
+  }
+);
+
+const authSlice = createSlice({
+  name: "auth",
+  initialState,
+  reducers: {
+    loginSuccess: (state) => {
+      state.authorized = true;
+    },
+    logout: (state) => {
+      state.authorized = false;
+      state.isInitialized = true; // Still initialized, just logged out
+    },
+    setAuthorized: (state, action: PayloadAction<boolean>) => {
+      state.authorized = action.payload;
+    },
+    setInitialized: (state, action: PayloadAction<boolean>) => {
+      state.isInitialized = action.payload;
+    },
+  },
+  extraReducers: (builder) => {
+    builder.addCase(logoutUser.fulfilled, (state) => {
+      state.authorized = false;
+    });
+    // Can handle pending/rejected if needed
+  },
+});
+
+export const { loginSuccess, logout, setAuthorized, setInitialized } =
+  authSlice.actions;
+export default authSlice.reducer;

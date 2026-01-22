@@ -1,13 +1,102 @@
-body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+@import url("https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap");
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Single Reusable Theme Class */
+.main-theme {
+  background-color: #000000;
+  color: #ffffff;
+  font-family: "Manrope", sans-serif;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+@layer base {
+  body {
+    @apply m-0 antialiased;
+  }
+}
+
+@layer components {
+  .signup-container {
+    background-color: #000000;
+    font-family: "Manrope", sans-serif;
+  }
+
+  .signup-form-wrapper {
+    background-color: #0d0d0d;
+  }
+
+  .signup-input {
+    background-color: #2f2f2f;
+    color: #ffffff;
+  }
+
+  .signup-input::placeholder {
+    font-family: "Manrope", sans-serif;
+    color: #aeaeae;
+  }
+
+  .signup-label {
+    font-family: "Manrope", sans-serif;
+    color: #ffffff;
+  }
+
+  .signup-button {
+    background-color: #8cff2e;
+    color: #000000;
+    font-family: "Manrope", sans-serif;
+  }
+
+  /* Header Components */
+  .header-logo-text {
+    font-family: "Manrope", sans-serif;
+    color: #ffffff;
+  }
+
+  .header-nav-link {
+    font-family: "Manrope", sans-serif;
+    color: #ffffff;
+  }
+
+  .btn-waitlist {
+    background-color: #171717;
+    color: #ffffff;
+    font-family: "Manrope", sans-serif;
+  }
+
+  .btn-contact {
+    background-color: #8cff2e;
+    color: #000000;
+    font-family: "Manrope", sans-serif;
+  }
+
+  .mobile-contact {
+    background-color: #8cff2e;
+    color: #000000;
+    font-family: "Manrope", sans-serif;
+  }
+
+  /* Hero Section Components */
+  .hero-badge {
+    background-color: #050505;
+    color: #8cff2e;
+    font-family: "Manrope", sans-serif;
+  }
+
+  .hero-heading {
+    color: #ffffff;
+    font-family: "Manrope", sans-serif;
+  }
+
+  .hero-subheading {
+    color: #ffffff;
+    font-family: "Manrope", sans-serif;
+  }
+
+  .btn-hero-cta {
+    background-color: #8cff2e;
+    color: #2f2f2f;
+    font-family: "Manrope", sans-serif;
+  }
 }

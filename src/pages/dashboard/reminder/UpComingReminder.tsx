@@ -1,0 +1,521 @@
+import React from "react";
+import Layout from "../../../components/Layout";
+import DashboardHeader from "../../../components/DashboardHeader";
+import { useReminderHook } from "./useReminderHook";
+import { ReminderItem } from "../../../../types";
+import {
+  FaCreditCard,
+  FaBolt,
+  FaCar,
+  FaCheckCircle,
+  FaEllipsisV,
+} from "react-icons/fa";
+import {
+  MdOutlineEmail,
+  MdNotificationsNone,
+  MdAccessTime,
+  MdKeyboardArrowDown,
+} from "react-icons/md";
+import { IoMdTrain } from "react-icons/io";
+import { GiReceiveMoney } from "react-icons/gi";
+import { RiBillLine } from "react-icons/ri";
+import { PiStudent } from "react-icons/pi";
+import { BsToggleOn, BsToggleOff } from "react-icons/bs";
+import { FiPlus } from "react-icons/fi";
+
+const UpComingReminder = () => {
+  const {
+    remindersRow1,
+    remindersRow2,
+    remindersRow3,
+    preferences,
+    completionRate,
+    handlePreferenceToggle,
+    addReminder,
+  } = useReminderHook();
+
+  const [isModalOpen, setIsModalOpen] = React.useState(false);
+  const [formData, setFormData] = React.useState({
+    title: "",
+    amount: "",
+    dateStr: "",
+  });
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (formData.title && formData.amount && formData.dateStr) {
+      addReminder({
+        title: formData.title,
+        amount: formData.amount,
+        dateStr: formData.dateStr,
+      });
+      setIsModalOpen(false);
+      setFormData({ title: "", amount: "", dateStr: "" });
+    }
+  };
+
+  // Helper to render graph bars (simulated visual from figma)
+  const renderBars = (color: string) => (
+    <div className="flex items-end gap-[2px] h-[20px]">
+      <div className={`w-[3px] h-[40%] ${color} rounded-sm`}></div>
+      <div className={`w-[3px] h-[60%] ${color} rounded-sm`}></div>
+      <div className={`w-[3px] h-[100%] ${color} rounded-sm`}></div>
+      <div className={`w-[3px] h-[50%] ${color} rounded-sm`}></div>
+      <div className={`w-[3px] h-[80%] ${color} rounded-sm`}></div>
+    </div>
+  );
+
+  const getCardStyleAndIcon = (title: string) => {
+    const t = title.toLowerCase();
+
+    // Default Style
+    let style = {
+      cardBg: "bg-reminderCardDark",
+      radius: "rounded-[4px]",
+      border: "border-transparent",
+      titleColor: "text-reminderTextGray",
+      amountColor: "text-reminderTextMuted",
+      subColor: "text-reminderSubtext",
+      iconBg: "bg-white/10 text-reminderTextGray",
+      barColor: "bg-reminderCardGreen",
+      icon: <RiBillLine className="text-lg" />,
+      checkMark: false,
+    };
+
+    if (t.includes("travel") || t.includes("salary")) {
+      style = {
+        cardBg: "bg-[#FCFDFD]",
+        radius: "rounded-[1px]", // Matches radius:1 request
+        border: "border border-[#EEEEEE]",
+        titleColor: "text-black",
+        amountColor: "text-gray-500",
+        subColor: "text-gray-400",
+        iconBg: "bg-gray-100 text-black",
+        barColor: "bg-black",
+        icon: t.includes("travel") ? (
+          <IoMdTrain className="text-lg" />
+        ) : (
+          <GiReceiveMoney className="text-lg" />
+        ),
+        checkMark: true,
+      };
+    } else if (
+      t.includes("rent") ||
+      t.includes("student") ||
+      t.includes("studnet")
+    ) {
+      style = {
+        cardBg: "bg-[#D6DFD0]",
+        radius: "rounded-[1px]", // Matches radius:1 request
+        border: "border border-[#DEE4D9]",
+        titleColor: "text-black",
+        amountColor: "text-gray-600",
+        subColor: "text-gray-500",
+        iconBg: "bg-white/40 text-black",
+        barColor: "bg-black",
+        icon: t.includes("rent") ? (
+          <RiBillLine className="text-lg" />
+        ) : (
+          <PiStudent className="text-lg" />
+        ),
+        checkMark: false,
+      };
+    } else if (t.includes("electricity") || t.includes("elecrity")) {
+      style = {
+        cardBg: "bg-[#333C2F]",
+        radius: "rounded-[20px]",
+        border: "border-none",
+        titleColor: "text-white",
+        amountColor: "text-gray-300",
+        subColor: "text-gray-400",
+        iconBg: "bg-white/10 text-white",
+        barColor: "bg-[#8CFF2E]",
+        icon: <FaBolt className="text-lg" />,
+        checkMark: false,
+      };
+    } else if (t.includes("car insurance")) {
+      style = {
+        cardBg: "bg-[#050505]",
+        radius: "rounded-[20px]",
+        border: "border-none",
+        titleColor: "text-white",
+        amountColor: "text-gray-300",
+        subColor: "text-gray-400",
+        iconBg: "bg-white/10 text-white",
+        barColor: "bg-[#8CFF2E]",
+        icon: <FaCar className="text-lg" />,
+        checkMark: false,
+      };
+    } else if (t.includes("credit card")) {
+      style = {
+        cardBg: "bg-[#8CFF2E]",
+        radius: "rounded-[20px]",
+        border: "border-none",
+        titleColor: "text-black",
+        amountColor: "text-black/70",
+        subColor: "text-black/60",
+        iconBg: "bg-black/10 text-black",
+        barColor: "bg-black",
+        icon: <FaCreditCard className="text-lg" />,
+        checkMark: true,
+      };
+    }
+
+    return style;
+  };
+
+  const CardRow1 = ({ item }: { item: ReminderItem }) => {
+    const style = getCardStyleAndIcon(item.title);
+
+    return (
+      <div
+        className={`${style.cardBg} ${style.border} ${style.radius} p-4 flex flex-col justify-between h-[140px] relative font-inter transition-all hover:shadow-lg`}
+      >
+        <div className="flex justify-between items-start">
+          <div className={`p-2 rounded-full ${style.iconBg}`}>{style.icon}</div>
+          <span className={`${style.subColor} text-[10px] font-bold`}>
+            {item.dateStr || "Today"}
+          </span>
+        </div>
+        <div>
+          <h3 className={`${style.titleColor} text-[15px] font-bold mt-2`}>
+            {item.title}
+          </h3>
+          <div className="flex justify-between items-end mt-1">
+            <div>
+              <p className={`${style.subColor} text-[10px] font-bold mb-1`}>
+                {item.subtitle}
+              </p>
+              <p className={`${style.amountColor} text-[12px] font-bold`}>
+                {item.amount}
+              </p>
+            </div>
+            {style.checkMark ? (
+              <FaCheckCircle
+                className={`${style.cardBg.includes("8CFF2E") ? "text-black" : style.cardBg.includes("FCFDFD") ? "text-black" : "text-white"} text-xl`}
+              />
+            ) : (
+              renderBars(style.barColor)
+            )}
+          </div>
+        </div>
+      </div>
+    );
+  };
+
+  interface CardGenericProps {
+    item: ReminderItem;
+    bg: string;
+    border: string;
+    textColor: string;
+    amountColor: string;
+    subColor: string;
+  }
+
+  const CardGeneric = ({
+    item,
+    bg,
+    border,
+    textColor,
+    amountColor,
+    subColor,
+  }: CardGenericProps) => {
+    return (
+      <div
+        className={`${bg} border ${border} rounded-[1px] p-4 flex flex-col justify-between h-[140px] font-inter`}
+      >
+        <div className="flex justify-between items-start">
+          <div className="p-2 rounded-full bg-gray-200/50">
+            {
+              /* getIcon is not defined in the original file, it used getCardStyleAndIcon logic or was missing? 
+               Wait, looking at original line 224: getIcon(item.type, ...). 
+               getIcon function seems missing in the file I viewed (Step 12). 
+               Wait, step 12 file content shows `getIcon` at line 224 but `getIcon` definition is NOT in lines 1-473? 
+               Ah, I might have missed it or it was imported? 
+               Imports: React, Layout, DashboardHeader, useReminderHook, Icons. 
+               No `getIcon` import. 
+               Let me double check the file content from Step 12.
+               Lines 72-169 define `getCardStyleAndIcon`.
+               Line 224 calls `getIcon`.
+               Line 210 `CardGeneric` definition.
+               If `getIcon` is not defined, this code was already broken or I missed viewing it.
+               The file content I saw was lines 1-473.
+               Line 224: `{getIcon(item.type, ...)}`
+               I don't see `const getIcon = ...` anywhere.
+               It might be that `getCardStyleAndIcon` was meant to be used or `getIcon` is missing.
+               The user asked me not to use `any`.
+               I will attempt to fix the `any` and if `getIcon` is valid (maybe from local scope I missed? No, I saw "entire file").
+               I will assume `getIcon` is intended to be there or I should replace it with suitable logic.
+               However, my task is "store reminder in database... then ... pass in frontend".
+               The user also said "use same styling format".
+               I will preserve `getIcon` call if it was there, assuming it might be available or I should fix it?
+               Wait, if I replace the content, I must ensure valid code.
+               If `getIcon` is missing, I should probably implement it or use `getCardStyleAndIcon`.
+               `getCardStyleAndIcon` takes `title`. `CardGeneric` uses `item.type` for `getIcon`.
+               Let's look at `CardRow1` logic again. It uses `getCardStyleAndIcon(item.title)`.
+               `CardGeneric` seems to use `getIcon`.
+               I'll define a simple `getIcon` or use the one from `CardRow1` logic if applicable.
+               Actually, checking `types.d.ts`, `ReminderItem` has `type`.
+               I'll add a helper `getIcon` inside `UpComingReminder` or just use the icon from `getCardStyleAndIcon`?
+               But `getCardStyleAndIcon` returns a complex object, `getIcon` seems to return just the JSX.
+               I'll assume `getIcon` might be a helper I need to add or it was a hallucination in the "original" view if I didn't see it?
+               No, `view_file` showed exact content. `getIcon` was used but not defined.
+               This implies the user's current code might have errors or I missed an import? 
+               But imports are at the top.
+               I will add a `getIcon` helper function to make it work and strict type it.
+            */
+              getCardStyleAndIcon(item.title).icon
+            }
+          </div>
+          <span className={`${subColor} text-[10px] font-bold`}>
+            {item.subtitle || "Reminder"}
+          </span>
+        </div>
+        <div>
+          <h3 className={`${textColor} text-[15px] font-bold mt-2`}>
+            {item.title}
+          </h3>
+          <div className="flex justify-between items-end mt-1">
+            <div>
+              <p className={`${subColor} text-[10px] font-bold mb-1`}>
+                {item.subtitle}
+              </p>
+              <p className={`${amountColor} text-[12px] font-bold`}>
+                {item.amount}
+              </p>
+            </div>
+            {renderBars(
+              bg.includes("reminderCardGray")
+                ? "bg-reminderCardGreen"
+                : "bg-reminderCardGreen",
+            )}
+          </div>
+        </div>
+      </div>
+    );
+  };
+
+  return (
+    <Layout>
+      <div className="bg-white min-h-screen">
+        <div className="p-6">
+          <div className="flex justify-between items-center mb-6">
+            <DashboardHeader />
+          </div>
+
+          <div className="flex flex-col xlg:flex-row gap-8">
+            {/* Left Column: Reminders */}
+            <div className="flex-1">
+              <div className="flex items-center justify-between">
+                <h2 className="text-reminderTitle text-[25px] font-inter font-bold mb-6">
+                  Upcoming Reminders
+                </h2>
+                <button
+                  onClick={() => setIsModalOpen(true)}
+                  className="flex items-center gap-2 rounded-[10px] bg-buttonBg px-4 py-3 font-inter text-[12px] font-bold text-textWhite hover:bg-black/90 transition-all shadow-md"
+                >
+                  <FiPlus className="text-lg" />
+                  New Reminder
+                </button>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+                {remindersRow1.map((item, index) => (
+                  <CardRow1 key={item.id} item={item} />
+                ))}
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+                {remindersRow2.map((item) => (
+                  <CardGeneric
+                    key={item.id}
+                    item={item}
+                    bg="bg-reminderCardGray"
+                    border="border-reminderBorderRow2"
+                    textColor="text-reminderTextRow2"
+                    amountColor="text-reminderAmountRow2"
+                    subColor="text-reminderSubRow2"
+                  />
+                ))}
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                {remindersRow3.map((item) => (
+                  <CardGeneric
+                    key={item.id}
+                    item={item}
+                    bg="bg-reminderCardWhite"
+                    border="border-reminderBorderRow3"
+                    textColor="text-reminderTextRow3"
+                    amountColor="text-reminderAmountRow2"
+                    subColor="text-reminderSubRow2"
+                  />
+                ))}
+              </div>
+            </div>
+
+            {/* Right Column: Sidebar */}
+            <div className="w-full xlg:w-[320px] flex flex-col gap-6 font-inter">
+              {/* Reminder Preferences */}
+              <div className="bg-reminderPreferencesBg border border-reminderPreferencesBorder rounded-xl p-6 relative">
+                <div className="flex justify-between items-center mb-6">
+                  <h3 className="text-reminderPrefTitle text-[17px] font-bold">
+                    Reminder Preferences
+                  </h3>
+                  <FaEllipsisV className="text-gray-400 cursor-pointer" />
+                </div>
+
+                <div className="flex flex-col gap-6">
+                  {preferences.map((pref, index) => (
+                    <div
+                      key={index}
+                      className="flex justify-between items-center"
+                    >
+                      <span className="text-reminderPrefLabel text-[14px] font-bold">
+                        {pref.label}
+                      </span>
+                      <button
+                        onClick={() => handlePreferenceToggle(pref.id)}
+                        className="text-3xl transition-colors duration-200"
+                      >
+                        {pref.enabled ? (
+                          <BsToggleOn className="text-reminderCardDark/80" />
+                        ) : (
+                          <BsToggleOff className="text-gray-300" />
+                        )}
+                      </button>
+                    </div>
+                  ))}
+
+                  <div className="flex justify-between items-center pt-2">
+                    <span className="text-reminderPrefLabel text-[14px] font-bold">
+                      Default Reminder Time
+                    </span>
+                    <BsToggleOn className="text-reminderCardDark/80 text-3xl" />
+                  </div>
+                  {/* Dropdown for default time */}
+                  <div className="flex justify-between items-center mt-2 p-2 rounded hover:bg-gray-50 cursor-pointer">
+                    <span className="text-reminderPrefLabel text-[14px] font-bold">
+                      Default Reminder Time
+                    </span>
+                    <MdKeyboardArrowDown className="text-gray-400 text-xl" />
+                  </div>
+                </div>
+              </div>
+
+              {/* Completion Rate */}
+              <div className="bg-reminderCompletionBg border border-reminderCompletionBorder rounded-[10px] p-6 h-[300px] flex flex-col items-center justify-center">
+                <h3 className="text-reminderCompletionText text-[17px] font-bold mb-6 self-start w-full text-center">
+                  Completion Rate
+                </h3>
+                <div className="relative w-40 h-40">
+                  <svg className="w-full h-full" viewBox="0 0 36 36">
+                    <path
+                      d="M18 2.0845
+                        a 15.9155 15.9155 0 0 1 0 31.831
+                        a 15.9155 15.9155 0 0 1 0 -31.831"
+                      fill="none"
+                      stroke="#333C2F"
+                      strokeWidth="4"
+                      strokeDasharray="100, 100"
+                    />
+                    <path
+                      d="M18 2.0845
+                        a 15.9155 15.9155 0 0 1 0 31.831
+                        a 15.9155 15.9155 0 0 1 0 -31.831"
+                      fill="none"
+                      stroke="#8CFF2E"
+                      strokeWidth="4"
+                      strokeDasharray={`${completionRate}, 100`}
+                      className="animate-spin-slow"
+                    />
+                  </svg>
+                  <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-reminderCompletionText text-2xl font-bold">
+                    {completionRate}%
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Modal */}
+        {isModalOpen && (
+          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+            <div className="bg-white rounded-xl p-8 w-[400px] shadow-2xl relative font-inter">
+              <h3 className="text-[20px] font-bold mb-6 text-gray-800">
+                New Reminder
+              </h3>
+              <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+                <div>
+                  <label className="block text-[12px] font-bold text-gray-600 mb-2">
+                    Title
+                  </label>
+                  <input
+                    type="text"
+                    name="title"
+                    value={formData.title}
+                    onChange={handleInputChange}
+                    placeholder="e.g. Credit Card, Electricity Bill"
+                    className="w-full border border-gray-300 rounded-lg p-3 text-[14px] focus:outline-none focus:border-black"
+                    required
+                  />
+                </div>
+                <div>
+                  <label className="block text-[12px] font-bold text-gray-600 mb-2">
+                    Price
+                  </label>
+                  <input
+                    type="text"
+                    name="amount"
+                    value={formData.amount}
+                    onChange={handleInputChange}
+                    placeholder="e.g. $200"
+                    className="w-full border border-gray-300 rounded-lg p-3 text-[14px] focus:outline-none focus:border-black"
+                    required
+                  />
+                </div>
+                <div>
+                  <label className="block text-[12px] font-bold text-gray-600 mb-2">
+                    Date
+                  </label>
+                  <input
+                    type="text"
+                    name="dateStr"
+                    value={formData.dateStr}
+                    onChange={handleInputChange}
+                    placeholder="e.g. Tomorrow, Jan 20"
+                    className="w-full border border-gray-300 rounded-lg p-3 text-[14px] focus:outline-none focus:border-black"
+                    required
+                  />
+                </div>
+                <div className="flex gap-4 mt-6">
+                  <button
+                    type="button"
+                    onClick={() => setIsModalOpen(false)}
+                    className="flex-1 py-3 text-[14px] font-bold text-gray-600 hover:bg-gray-100 rounded-lg transition-colors"
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    type="submit"
+                    className="flex-1 py-3 text-[14px] font-bold text-white bg-black rounded-lg hover:bg-gray-800 transition-colors"
+                  >
+                    Create
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        )}
+      </div>
+    </Layout>
+  );
+};
+
+export default UpComingReminder;

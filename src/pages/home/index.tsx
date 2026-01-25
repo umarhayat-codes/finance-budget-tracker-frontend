@@ -26,23 +26,23 @@ const HomePage: React.FC = () => {
     navigate("/auth/signin"); // Adjust route as needed
   };
 
-  if (!authorized) {
-    // Ideally this should be protected by a route guard, but here's a fallback or public view
-    return (
-      <div className="flex flex-col items-center justify-center min-h-screen bg-black text-white">
-        <h1 className="text-3xl font-bold mb-4">
-          Welcome to Finance Budget Tracker
-        </h1>
-        <p className="mb-4">Please log in to see your profile.</p>
-        <button
-          onClick={() => navigate("/auth/signin")}
-          className="bg-[#8CFF2E] text-black px-4 py-2 rounded"
-        >
-          Login
-        </button>
-      </div>
-    );
-  }
+  // if (!authorized) {
+  //   // Ideally this should be protected by a route guard, but here's a fallback or public view
+  //   return (
+  //     <div className="flex flex-col items-center justify-center min-h-screen bg-black text-white">
+  //       <h1 className="text-3xl font-bold mb-4">
+  //         Welcome to Finance Budget Tracker
+  //       </h1>
+  //       <p className="mb-4">Please log in to see your profile.</p>
+  //       <button
+  //         onClick={() => navigate("/auth/signin")}
+  //         className="bg-[#8CFF2E] text-black px-4 py-2 rounded"
+  //       >
+  //         Login
+  //       </button>
+  //     </div>
+  //   );
+  // }
 
   return (
     // <div className="flex flex-col items-center justify-center min-h-screen bg-black text-white p-4">

@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from "react";
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 import {
   GoalItem,
   GoalStats,
@@ -7,11 +7,13 @@ import {
   CreateGoalFormData,
   UseGoalHookResult,
   GoalStatus,
+  ApiErrorResponse,
 } from "../../../../types";
 import { GoGoal } from "react-icons/go";
 import { FaCar, FaHome, FaCoins } from "react-icons/fa";
 import { IoCarSportOutline } from "react-icons/io5";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 const BASE_URL = "http://localhost:3000/api/goals";
 
@@ -52,7 +54,7 @@ export const useGoalHook = (): UseGoalHookResult => {
   const calculateStats = useCallback((goalList: GoalItem[]) => {
     const total = goalList.length;
     const completed = goalList.filter(
-      (g) => g.goalStatus === "Completed"
+      (g) => g.goalStatus === "Completed",
     ).length;
     const pending = goalList.filter((g) => g.goalStatus === "Pending").length;
 
@@ -62,7 +64,7 @@ export const useGoalHook = (): UseGoalHookResult => {
     // but let's stick to the base numbers for now.
     const totalSavings = goalList.reduce(
       (acc, curr) => acc + curr.targetAmount,
-      0
+      0,
     );
 
     setStats({
@@ -77,14 +79,16 @@ export const useGoalHook = (): UseGoalHookResult => {
     setLoading(true);
     try {
       const response = await axios.get(BASE_URL, { withCredentials: true });
-      const fetchedGoals = response.data.map((goal: any) => ({
+      const fetchedGoals = response.data.map((goal: GoalItem) => ({
         ...goal,
         icon: getIconForGoal(goal.goalName),
       }));
       setGoals(fetchedGoals);
       calculateStats(fetchedGoals);
-    } catch (err: any) {
-      setError(err.response?.data?.message || "Failed to fetch goals");
+    } catch (err) {
+      const axiosError = err as AxiosError<ApiErrorResponse>;
+      toast.error("Failed to fetch goals");
+      setError(axiosError.response?.data?.message || "Failed to fetch goals");
     } finally {
       setLoading(false);
     }
@@ -103,9 +107,12 @@ export const useGoalHook = (): UseGoalHookResult => {
     setError(null);
     try {
       await axios.post(BASE_URL, goalForm, { withCredentials: true });
+      toast.success("Goal created successfully");
       navigate("/dashboard/goal");
-    } catch (err: any) {
-      setError(err.response?.data?.message || "Failed to create goal");
+    } catch (err) {
+      const axiosError = err as AxiosError<ApiErrorResponse>;
+      toast.error("Failed to create goal");
+      setError(axiosError.response?.data?.message || "Failed to create goal");
     } finally {
       setLoading(false);
     }
@@ -124,18 +131,19 @@ export const useGoalHook = (): UseGoalHookResult => {
       await axios.patch(
         `${BASE_URL}/${id}/status`,
         { goalStatus: newStatus },
-        { withCredentials: true }
+        { withCredentials: true },
       );
       // Update local state to reflect change immediately
       setGoals((prev) => {
         const updated = prev.map((g) =>
-          g.id === id ? { ...g, goalStatus: newStatus } : g
+          g.id === id ? { ...g, goalStatus: newStatus } : g,
         );
         calculateStats(updated);
         return updated;
       });
-    } catch (err: any) {
-      setError(err.response?.data?.message || "Failed to update status");
+    } catch (err) {
+      const axiosError = err as AxiosError<ApiErrorResponse>;
+      setError(axiosError.response?.data?.message || "Failed to update status");
     }
   };
 

@@ -1,7 +1,9 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import dashboardImg from "../../assets/dashboard.png";
 
 const HeroSection: React.FC = () => {
+  const navigate = useNavigate();
   return (
     <section className="w-full min-h-screen bg-black flex flex-col items-center text-center pt-[60px] px-6">
       {/* Badge container */}
@@ -26,7 +28,10 @@ const HeroSection: React.FC = () => {
 
       {/* CTA Button */}
       <div className="mt-[20px]">
-        <button className="btn-hero-cta px-[32px] py-[14px] rounded-[23px] font-semibold text-[15px] transition-all hover:bg-[#7be625] shadow-[0_0_30px_rgba(140,255,46,0.2)]">
+        <button
+          onClick={() => navigate("/auth/signin")}
+          className="btn-hero-cta px-[32px] py-[14px] rounded-[23px] font-semibold text-[15px] transition-all hover:bg-[#7be625] shadow-[0_0_30px_rgba(140,255,46,0.2)]"
+        >
           Get Started for Free
         </button>
       </div>

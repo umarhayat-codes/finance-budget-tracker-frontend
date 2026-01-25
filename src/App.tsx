@@ -11,6 +11,8 @@ import Index from "./pages/Routes";
 import { Provider } from "react-redux";
 import store from "./redux/store";
 import { useLoadUser, useAppSelector } from "./redux/useReduxHook";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const AppContent: React.FC = () => {
   useLoadUser();
@@ -41,6 +43,7 @@ const App: React.FC = () => (
   <>
     <Provider store={store}>
       <AppContent />
+      <ToastContainer position="top-right" autoClose={3000} />
     </Provider>
   </>
 );

@@ -6,6 +6,7 @@ import { useEffect, useState, useRef } from "react";
 import { FiCalendar, FiDownload, FiPlus, FiX } from "react-icons/fi";
 import Button from "src/components/Button";
 import { useTransactionHook } from "./useTransactionHook";
+import { toast } from "react-toastify";
 
 const AddTransaction: React.FC<AddTransactionProps> = () => {
   const CalendarIcon = FiCalendar as IconType;
@@ -52,7 +53,7 @@ const AddTransaction: React.FC<AddTransactionProps> = () => {
   }, [isModalOpen]);
 
   const handleInputChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>,
   ) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
@@ -84,6 +85,7 @@ const AddTransaction: React.FC<AddTransactionProps> = () => {
     }
 
     dispatch(saveTransaction(formData));
+    toast.success("Transaction added successfully");
     setIsModalOpen(false);
     // Reset form
     setFormData({

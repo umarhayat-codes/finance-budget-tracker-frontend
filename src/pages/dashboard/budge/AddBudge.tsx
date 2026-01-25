@@ -3,7 +3,7 @@ import { IconType } from "react-icons";
 import { FiCalendar, FiDownload, FiPlus, FiX } from "react-icons/fi";
 import Button from "src/components/Button";
 import { useBudgeHook } from "./useBudgeHook";
-import { AddBudgeProps } from "../../../../types";
+import { AddBudgeProps, Month } from "../../../../types";
 
 const AddBudge: React.FC<AddBudgeProps> = () => {
   const CalendarIcon = FiCalendar as IconType;
@@ -41,7 +41,7 @@ const AddBudge: React.FC<AddBudgeProps> = () => {
     };
   }, []);
 
-  const months: string[] = [
+  const months: Month[] = [
     "All",
     "January",
     "February",
@@ -108,7 +108,7 @@ const AddBudge: React.FC<AddBudgeProps> = () => {
                   <div
                     key={month}
                     onClick={() => {
-                      handleMonthSelect(month as any);
+                      handleMonthSelect(month);
                       setIsMonthDropdownOpen(false);
                     }}
                     className={`cursor-pointer px-4 py-2 text-[12px] font-manrope hover:bg-gray-50 ${

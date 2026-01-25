@@ -4,7 +4,7 @@ import {
   TransactionState,
   TransactionFormData,
   Month,
-} from "../../types";
+} from "../../../types";
 import {
   addTransactionApi,
   fetchTransactionsApi,
@@ -20,12 +20,15 @@ export const saveTransaction = createAsyncThunk(
   async (data: TransactionFormData, { rejectWithValue }) => {
     try {
       return await addTransactionApi(data);
-    } catch (error: any) {
-      return rejectWithValue(
-        error.response?.data?.message || "Failed to save transaction"
-      );
+    } catch (error: unknown) {
+      const axiosError = error as {
+        response?: { data?: { message?: string } };
+      };
+      const errorMessage =
+        axiosError.response?.data?.message || "Failed to save transaction";
+      return rejectWithValue(errorMessage);
     }
-  }
+  },
 );
 
 export const loadTransactions = createAsyncThunk(
@@ -33,12 +36,15 @@ export const loadTransactions = createAsyncThunk(
   async (_, { rejectWithValue }) => {
     try {
       return await fetchTransactionsApi();
-    } catch (error: any) {
-      return rejectWithValue(
-        error.response?.data?.message || "Failed to load transactions"
-      );
+    } catch (error: unknown) {
+      const axiosError = error as {
+        response?: { data?: { message?: string } };
+      };
+      const errorMessage =
+        axiosError.response?.data?.message || "Failed to load transactions";
+      return rejectWithValue(errorMessage);
     }
-  }
+  },
 );
 
 const transactionSlice = createSlice({
@@ -47,7 +53,7 @@ const transactionSlice = createSlice({
   reducers: {
     deleteTransaction: (state, action: PayloadAction<string>) => {
       state.transactions = state.transactions.filter(
-        (t) => t.id !== action.payload
+        (t) => t.id !== action.payload,
       );
     },
     setSelectedMonth: (state, action: PayloadAction<Month>) => {
@@ -56,18 +62,12 @@ const transactionSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-      .addCase(
-        saveTransaction.fulfilled,
-        (state, action: PayloadAction<TransactionItem>) => {
-          state.transactions.unshift(action.payload);
-        }
-      )
-      .addCase(
-        loadTransactions.fulfilled,
-        (state, action: PayloadAction<TransactionItem[]>) => {
-          state.transactions = action.payload;
-        }
-      );
+      .addCase(saveTransaction.fulfilled, (state, { payload }) => {
+        state.transactions.unshift(payload);
+      })
+      .addCase(loadTransactions.fulfilled, (state, { payload }) => {
+        state.transactions = payload;
+      });
   },
 });
 

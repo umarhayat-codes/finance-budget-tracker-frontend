@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 import {
   MonthlyFinancialData,
@@ -6,9 +6,15 @@ import {
   UseFinanceHookResult,
   SummaryCardData,
   BudgetGoalData,
+  ExpenseBreakdownApiResponse,
+  RecentTransactionItem,
+  FinancialSummary,
+  RecentTransactionApiResponse,
+  MonthOption,
   ExpenseDistributionItem,
-  TransactionNew,
+  CustomLabelProps,
 } from "../../../../types";
+import { toast } from "react-toastify";
 
 // Base API URL
 const API_URL = "http://localhost:3000/api";
@@ -22,23 +28,46 @@ export const useFinanceHook = (): UseFinanceHookResult => {
   const [data, setData] = useState<MonthlyFinancialData[]>([]);
   const [startMonth, setStartMonth] = useState<string>("");
   const [endMonth, setEndMonth] = useState<string>("");
+  const [financialSummary, setFinancialSummary] = useState<FinancialSummary>({
+    totalIncome: 0,
+    totalExpense: 0,
+    totalSaving: 0,
+    totalBudget: 0,
+  });
+
+  const formatAmount = (amount: number): string => {
+    if (amount >= 1000000) {
+      return (amount / 1000000).toFixed(1) + "M";
+    }
+    if (amount >= 1000) {
+      return (amount / 1000).toFixed(1) + "K";
+    }
+    return amount.toString();
+  };
 
   useEffect(() => {
     const fetchFinanceData = async () => {
       try {
-        const response = await api.get<MonthlyFinancialApiResponse>(
-          "/transactions/summary",
-        );
-        const summary = response.data;
+        const [trendResponse, summaryResponse, distributionResponse] =
+          await Promise.all([
+            api.get<MonthlyFinancialApiResponse>("/transactions/summary"),
+            api.get<FinancialSummary>("/transactions/financial-summary"),
+            api.get<ExpenseBreakdownApiResponse>("/finance/distribution"),
+          ]);
 
-        console.log("API Response:", summary); // Debug log
+        const summaryData = trendResponse.data;
+        const financialSummaryData = summaryResponse.data;
+        const distributionData = distributionResponse.data;
+
+        setFinancialSummary(financialSummaryData);
+        setBreakdownData(distributionData);
 
         if (
-          summary.trend &&
-          summary.trend.labels &&
-          summary.trend.labels.length > 0
+          summaryData.trend &&
+          summaryData.trend.labels &&
+          summaryData.trend.labels.length > 0
         ) {
-          const trendData = summary.trend;
+          const trendData = summaryData.trend;
           const formattedData: MonthlyFinancialData[] = trendData.labels.map(
             (label: string, index: number) => ({
               month: label,
@@ -48,16 +77,24 @@ export const useFinanceHook = (): UseFinanceHookResult => {
             }),
           );
           setData(formattedData);
-          console.log("Formatted Data:", formattedData); // Debug log
         } else {
           setData([]);
         }
 
-        if (summary.startDate) setStartMonth(summary.startDate);
-        if (summary.endDate) setEndMonth(summary.endDate);
-      } catch (error) {
+        if (summaryData.startDate) setStartMonth(summaryData.startDate);
+        if (summaryData.endDate) setEndMonth(summaryData.endDate);
+      } catch (error: unknown) {
+        if (axios.isAxiosError(error)) {
+          toast.error(
+            "Error fetching finance data: " +
+              (error.response?.data?.message || error.message),
+          );
+        } else {
+          toast.error(
+            "An unexpected error occurred while fetching finance data",
+          );
+        }
         console.error("Error fetching finance data:", error);
-        // Set fallback values on error
         setData([]);
         const now = new Date();
         const currentMonth = now.toLocaleString("en-US", {
@@ -76,7 +113,7 @@ export const useFinanceHook = (): UseFinanceHookResult => {
     {
       id: "1",
       title: "Total Income",
-      amount: "15M",
+      amount: formatAmount(financialSummary.totalIncome),
       type: "income",
       description: "Pulls From All Income Categories",
       bgColor: "bg-summaryTotalIncomeBg",
@@ -88,7 +125,7 @@ export const useFinanceHook = (): UseFinanceHookResult => {
     {
       id: "2",
       title: "Total Spending",
-      amount: "9M",
+      amount: formatAmount(financialSummary.totalExpense),
       type: "spending",
       description: "Categorized by Bills, Food, Invoice, etc.",
       bgColor: "bg-summaryTotalSpendingBg",
@@ -100,7 +137,7 @@ export const useFinanceHook = (): UseFinanceHookResult => {
     {
       id: "3",
       title: "Spent Budget",
-      amount: "1.1M",
+      amount: formatAmount(financialSummary.totalBudget),
       type: "budget",
       description: "Emergency Payment For Renovation, etc.",
       bgColor: "bg-summarySpentBudgetBg",
@@ -111,8 +148,8 @@ export const useFinanceHook = (): UseFinanceHookResult => {
     },
     {
       id: "4",
-      title: "Total Saving", // Changed from "Total Savings" to match image exactly if needed, but image says "Total Saving" with no 's' on the card, wait image says "Total Savings" in one place and "Total Saving" in title? Card says "Total Saving".
-      amount: "5M",
+      title: "Total Saving",
+      amount: formatAmount(financialSummary.totalSaving),
       type: "saving",
       description: "Monthly Savings from Total Income",
       bgColor: "bg-summaryTotalSavingBg",
@@ -125,64 +162,87 @@ export const useFinanceHook = (): UseFinanceHookResult => {
 
   const [searchTerm, setSearchTerm] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
+  const [selectedMonth, setSelectedMonth] = useState<string>("all");
+  const [transactions, setTransactions] = useState<RecentTransactionItem[]>([]);
+  const [totalPages, setTotalPages] = useState(1);
+  const [isLoading, setIsLoading] = useState(false);
 
-  const transactions: TransactionNew[] = [
-    {
-      id: "1",
-      category: "Seafood Dinner",
-      subCategory: "Grocery Market",
-      amount: "-IDR 150K",
-      date: "Dec 20th",
-      paymentMethod: "QR Code",
-      status: "Success",
-      type: "expense",
-      iconType: "food",
-    },
-    {
-      id: "2",
-      category: "Monthly Salary",
-      subCategory: "TrSave Co.",
-      amount: "+IDR 20M",
-      date: "Dec 19th",
-      paymentMethod: "Transfer",
-      status: "Received",
-      type: "income",
-      iconType: "wallet",
-    },
-    {
-      id: "3",
-      category: "Utilities",
-      subCategory: "Internet Subs",
-      amount: "-IDR 310K",
-      date: "Dec 18th",
-      paymentMethod: "Debit Card",
-      status: "Pending",
-      type: "expense",
-      iconType: "globe",
-    },
-    {
-      id: "4",
-      category: "Utilities",
-      subCategory: "Electricity",
-      amount: "-IDR 100K",
-      date: "Dec 17th",
-      paymentMethod: "V.Account",
-      status: "Success",
-      type: "expense",
-      iconType: "power",
-    },
-    {
-      id: "5",
-      category: "Side Project",
-      subCategory: "TS Company",
-      amount: "+IDR 1.2M",
-      date: "Dec 16th",
-      paymentMethod: "E-Wallet",
-      status: "Received",
-      type: "income",
-      iconType: "home",
-    },
-  ];
+  // Generate available months for dropdown
+  const generateAvailableMonths = (): MonthOption[] => {
+    const months: MonthOption[] = [{ label: "All Months", value: "all" }];
+
+    // Generate 12 months (January to December)
+    const monthNames = [
+      "January",
+      "February",
+      "March",
+      "April",
+      "May",
+      "June",
+      "July",
+      "August",
+      "September",
+      "October",
+      "November",
+      "December",
+    ];
+
+    monthNames.forEach((name, index) => {
+      const monthNumber = String(index + 1).padStart(2, "0"); // "01", "02", etc.
+      months.push({ label: name, value: monthNumber });
+    });
+
+    return months;
+  };
+
+  const [availableMonths] = useState<MonthOption[]>(generateAvailableMonths());
+
+  // Fetch transactions from API
+  const fetchTransactions = async () => {
+    setIsLoading(true);
+    try {
+      const params: { page: number; limit: number; month?: string } = {
+        page: currentPage,
+        limit: 5,
+      };
+
+      if (selectedMonth !== "all") {
+        params.month = selectedMonth;
+      }
+
+      const response = await api.get<RecentTransactionApiResponse>(
+        "/transactions/recent",
+        { params },
+      );
+
+      setTransactions(response.data.transactions);
+      setTotalPages(response.data.pagination.totalPages);
+    } catch (error: unknown) {
+      if (axios.isAxiosError(error)) {
+        toast.error(
+          "Error fetching transactions: " +
+            (error.response?.data?.message || error.message),
+        );
+      } else {
+        toast.error("An unexpected error occurred while fetching transactions");
+      }
+      console.error("Error fetching transactions:", error);
+      setTransactions([]);
+      setTotalPages(1);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  // Fetch transactions when filters change
+  useEffect(() => {
+    fetchTransactions();
+  }, [currentPage, selectedMonth]);
+
+  const handleMonthChange = (month: string) => {
+    setSelectedMonth(month);
+    setCurrentPage(1); // Reset to first page when filter changes
+  };
 
   const [budgetGoals] = useState<BudgetGoalData[]>([
     {
@@ -205,42 +265,8 @@ export const useFinanceHook = (): UseFinanceHookResult => {
     },
   ]);
 
-  const expenses = [
-    {
-      id: "1",
-      category: "Eating Out",
-      percentage: 28,
-      amount: "1.400.000",
-      color: "#F1FFE5",
-      textColor: "#000000",
-    },
-    {
-      id: "2",
-      category: "Groceries",
-      percentage: 30,
-      amount: "1.500.000",
-      color: "#050505",
-      textColor: "#FFFFFF",
-    },
-    {
-      id: "3",
-      category: "Utilities",
-      percentage: 16,
-      amount: "800.000",
-      color: "#5CCC00",
-      textColor: "#000000",
-    },
-    {
-      id: "4",
-      category: "Others",
-      percentage: 26,
-      amount: "1.300.000",
-      color: "#2E6600",
-      textColor: "#FFFFFF",
-    },
-  ];
-
-  const [expenseDistribution] = useState<ExpenseDistributionItem[]>(expenses);
+  const [breakdownData, setBreakdownData] =
+    useState<ExpenseBreakdownApiResponse | null>(null);
 
   const onDownload = () => {
     console.log("Download clicked");
@@ -266,12 +292,73 @@ export const useFinanceHook = (): UseFinanceHookResult => {
     console.log("Delete Goal clicked", id);
   };
 
+  const RADIAN = Math.PI / 180;
+
+  const renderCustomizedLabel = (props: CustomLabelProps) => {
+    const {
+      cx = 0,
+      cy = 0,
+      midAngle = 0,
+      innerRadius = 0,
+      outerRadius = 0,
+      payload,
+    } = props;
+
+    const data = payload as ExpenseDistributionItem | undefined;
+    if (!data || !data.textColor) return null;
+
+    const radius =
+      (innerRadius as number) +
+      ((outerRadius as number) - (innerRadius as number)) * 0.65;
+    const x =
+      (cx as number) + radius * Math.cos(-(midAngle as number) * RADIAN);
+    const y =
+      (cy as number) + radius * Math.sin(-(midAngle as number) * RADIAN);
+
+    return React.createElement(
+      "g",
+      null,
+      React.createElement(
+        "text",
+        {
+          x: x,
+          y: y - 8,
+          fill: data.textColor,
+          textAnchor: "middle",
+          dominantBaseline: "central",
+          style: {
+            fontSize: "30px",
+            fontFamily: "Poppins",
+            fontWeight: 300,
+          },
+        },
+        `${data.percentage}%`,
+      ),
+      React.createElement(
+        "text",
+        {
+          x: x,
+          y: y + 18,
+          fill: data.textColor,
+          textAnchor: "middle",
+          dominantBaseline: "central",
+          style: {
+            fontSize: "12px",
+            fontFamily: "'Courier New', Courier, monospace",
+            fontWeight: 600,
+          },
+        },
+        data.amount,
+      ),
+    );
+  };
+
   return {
     data,
     summaryCards,
     transactions,
     budgetGoals,
-    expenseDistribution,
+    breakdownData,
     startMonth,
     endMonth,
     onDownload,
@@ -284,5 +371,12 @@ export const useFinanceHook = (): UseFinanceHookResult => {
     onManageBudgets,
     onEditGoal,
     onDeleteGoal,
+    selectedMonth,
+    handleMonthChange,
+    totalPages,
+    isLoading,
+    availableMonths,
+    expenseDistribution: breakdownData?.mainCategories || [],
+    renderCustomizedLabel,
   };
 };

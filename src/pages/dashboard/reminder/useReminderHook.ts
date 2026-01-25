@@ -5,6 +5,7 @@ import {
   ReminderPreference,
   UseReminderHookResult,
 } from "../../../../types";
+import { toast } from "react-toastify";
 
 export const useReminderHook = (): UseReminderHookResult => {
   const [preferences, setPreferences] = useState<ReminderPreference[]>([
@@ -122,8 +123,10 @@ export const useReminderHook = (): UseReminderHookResult => {
         type,
       });
       // Refresh list
+      toast.success("Reminder created successfully");
       fetchReminders();
     } catch (error) {
+      toast.error("Failed to create reminder");
       console.error("Failed to create reminder", error);
     }
   };

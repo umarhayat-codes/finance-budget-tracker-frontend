@@ -6,6 +6,7 @@ import {
   SummaryApiResponse,
   TransactionApiResponse,
 } from "../../../../types";
+import { toast } from "react-toastify";
 
 const REPORT_API_URL = "http://localhost:3000/api/transactions/summary";
 const TRANSACTIONS_API_URL = "http://localhost:3000/api/transactions";
@@ -21,6 +22,7 @@ export const useReportHook = (): UseReportHookResult => {
       labels: ["Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
       incomeData: [0, 0, 0, 0, 0, 0],
       expenseData: [0, 0, 0, 0, 0, 0],
+      savingsData: [0, 0, 0, 0, 0, 0],
     },
     recentTransactions: [],
   });
@@ -89,6 +91,7 @@ export const useReportHook = (): UseReportHookResult => {
         }));
         setError(null);
       } catch (err) {
+        toast.error("Failed to fetch report data");
         console.error("Error fetching report data:", err);
         setError("Failed to fetch report data");
       } finally {

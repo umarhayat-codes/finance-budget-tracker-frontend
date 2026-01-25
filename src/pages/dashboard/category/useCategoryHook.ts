@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
-import axios from "axios";
+import { toast } from "react-toastify";
+import axios, { AxiosError } from "axios";
 import {
   FiPlus,
   FiTruck,
@@ -17,6 +18,9 @@ import {
   CategoryApiResponse,
   SavingCardData,
   SavingFormData,
+  SavingApiResponse,
+  IconType,
+  ApiErrorResponse,
 } from "../../../../types";
 
 // Base API URL - adjust if necessary
@@ -29,17 +33,17 @@ const api = axios.create({
 });
 
 export const useCategoryHook = () => {
-  // Cast icons to any to resolve TS2786
-  const PlusIcon = FiPlus as any;
-  const UtensilsIcon = LuUtensils as any;
-  const TruckIcon = FiTruck as any;
-  const HomeIcon = FiHome as any;
-  const GameIcon = BiMask as any;
-  const TravelIcon = FiMap as any;
-  const SalaryIcon = FiDollarSign as any;
-  const InvestIcon = FiTrendingUp as any;
-  const DefaultIcon = FiActivity as any;
-  const SavingIcon = FiTrendingUp as any;
+  // Cast icons to IconType to resolve TS2786
+  const PlusIcon = FiPlus as IconType;
+  const UtensilsIcon = LuUtensils as IconType;
+  const TruckIcon = FiTruck as IconType;
+  const HomeIcon = FiHome as IconType;
+  const GameIcon = BiMask as IconType;
+  const TravelIcon = FiMap as IconType;
+  const SalaryIcon = FiDollarSign as IconType;
+  const InvestIcon = FiTrendingUp as IconType;
+  const DefaultIcon = FiActivity as IconType;
+  const SavingIcon = FiTrendingUp as IconType;
 
   const dummyChartData = [
     { value: 10 },
@@ -99,7 +103,9 @@ export const useCategoryHook = () => {
       const mappedData = response.data.map(mapApiToCardData);
       setCategories(mappedData);
       setError(null);
-    } catch (err: any) {
+    } catch (err) {
+      const error = err as AxiosError<ApiErrorResponse>;
+      toast.error("Failed to fetch categories");
       console.error("Error fetching categories:", err);
       setError("Failed to fetch categories");
     } finally {
@@ -115,9 +121,7 @@ export const useCategoryHook = () => {
     title: apiData.title,
     subtitle: "Saving Activity",
     priceDetails: "Saving Date: " + apiData.date,
-    priceValue: apiData.amount.startsWith("$")
-      ? apiData.amount
-      : `$${apiData.amount}`,
+    priceValue: `$${apiData.amount}`,
     chartData: dummyChartData,
     date: apiData.date,
     createdAt: apiData.createdAt,
@@ -137,7 +141,9 @@ export const useCategoryHook = () => {
       setCategories(mappedCategories);
       setSavings(mappedSavings);
       setError(null);
-    } catch (err: any) {
+    } catch (err) {
+      const error = err as AxiosError<ApiErrorResponse>;
+      toast.error("Failed to fetch data");
       console.error("Error fetching data:", err);
       setError("Failed to fetch data");
     } finally {
@@ -176,16 +182,17 @@ export const useCategoryHook = () => {
     try {
       const response = await api.post("/savings", {
         title: savingFormData.title,
-        amount: savingFormData.amount,
+        amount: parseFloat(savingFormData.amount.replace(/[^0-9.]/g, "")),
         date: savingFormData.date,
       });
 
       const newSaving = mapApiToSavingCardData(response.data);
       setSavings((prev) => [newSaving, ...prev]);
+      toast.success("Saving created successfully ✅");
       handleCloseSavingModal();
-    } catch (err: any) {
+    } catch (err) {
       console.error("Error creating saving:", err);
-      alert("Failed to create saving");
+      toast.error("Failed to create saving");
     }
   };
 
@@ -199,10 +206,12 @@ export const useCategoryHook = () => {
 
       const newCategory = mapApiToCardData(response.data);
       setCategories((prev) => [newCategory, ...prev]);
+      toast.success("Category created successfully");
       handleCloseModal();
-    } catch (err: any) {
+    } catch (err) {
+      const error = err as AxiosError<ApiErrorResponse>;
+      toast.error("Failed to create category");
       console.error("Error creating category:", err);
-      alert("Failed to create category");
     }
   };
 

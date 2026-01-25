@@ -11,11 +11,15 @@ import {
   TooltipProps,
 } from "recharts";
 import { useBudgeHook } from "./useBudgeHook";
-import { GraphDataPoint } from "../../../../types";
+import {
+  GraphDataPoint,
+  BudgetTooltipProps,
+  BarChartItem,
+} from "../../../../types";
 import { HiOutlineDotsVertical } from "react-icons/hi";
 
 // Custom Tooltip Component
-const CustomTooltip = ({ active, payload }: TooltipProps<number, string>) => {
+const CustomTooltip = ({ active, payload }: BudgetTooltipProps) => {
   if (active && payload && payload.length) {
     const data = payload[0].payload as GraphDataPoint;
     return (
@@ -146,7 +150,13 @@ const GraphBudget = () => {
               dataKey="budget"
               radius={[4, 4, 4, 4]}
               barSize={25}
-              onMouseEnter={(data) => setActiveMonth(data.month)}
+              onMouseEnter={(data: unknown) =>
+                setActiveMonth(
+                  (data as BarChartItem).month ||
+                    (data as BarChartItem).payload?.month ||
+                    "",
+                )
+              }
               onMouseLeave={() => setActiveMonth(currentMonth)}
             >
               {graphData.map((entry, index) => (
@@ -166,7 +176,13 @@ const GraphBudget = () => {
               dataKey="spent"
               radius={[4, 4, 4, 4]}
               barSize={25}
-              onMouseEnter={(data) => setActiveMonth(data.month)}
+              onMouseEnter={(data: unknown) =>
+                setActiveMonth(
+                  (data as BarChartItem).month ||
+                    (data as BarChartItem).payload?.month ||
+                    "",
+                )
+              }
               onMouseLeave={() => setActiveMonth(currentMonth)}
             >
               {graphData.map((entry, index) => (

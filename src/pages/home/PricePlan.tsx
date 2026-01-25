@@ -15,8 +15,10 @@ import {
   SiWise,
 } from "react-icons/si";
 
+import { IconProps } from "types";
+
 // Helper to resolve React 19 / react-icons type mismatch
-const Icon = ({ icon: IconComponent, size }: { icon: any; size?: number }) => (
+const Icon = ({ icon: IconComponent, size }: IconProps) => (
   <IconComponent size={size} />
 );
 

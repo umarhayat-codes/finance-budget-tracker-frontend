@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { toast } from "react-toastify";
 import { SignUpFormData } from "../../types";
 
 import { useAuthHook } from "./useAuthHook";
@@ -33,7 +34,7 @@ const SignUp: React.FC = () => {
     e.preventDefault();
     try {
       await signup(formData);
-      alert("Signup successful!");
+      toast.success("Signup successful!");
       navigate("/auth/signin");
       // You can redirect here if needed
     } catch (err) {

@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { toast } from "react-toastify";
 import { SignInFormData } from "../../types";
 import { useAuthHook } from "./useAuthHook";
 import { useNavigate } from "react-router-dom";
@@ -41,11 +42,11 @@ const SignIn: React.FC = () => {
       if (message === "Login successful") {
         dispatch(loginSuccess());
         dispatch(fetchUserProfile());
-        alert(message);
+        toast.success(message);
         navigate("/");
         // Redirect or update app state
       } else {
-        alert(message || "Login failed");
+        toast.error("Wrong email or password");
       }
     } catch (err) {
       console.error("Login failed", err);

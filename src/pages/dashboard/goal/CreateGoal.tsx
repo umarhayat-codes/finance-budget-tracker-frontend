@@ -3,6 +3,7 @@ import Layout from "../../../components/Layout";
 import DashboardHeader from "../../../components/DashboardHeader";
 import { useGoalHook } from "./useGoalHook";
 import tipsImage from "../../../assets/tips_goal_setting.png";
+import { CreateGoalFormData } from "../../../../types";
 
 const CreateGoal = () => {
   const { goalForm, handleGoalChange, handleCreateGoal, handleCancelGoal } =
@@ -138,7 +139,10 @@ const CreateGoal = () => {
                     value="Current Savings"
                     checked={goalForm.fundingSource === "Current Savings"}
                     onChange={(e) =>
-                      handleGoalChange("fundingSource", e.target.value as any)
+                      handleGoalChange(
+                        "fundingSource",
+                        e.target.value as CreateGoalFormData["fundingSource"],
+                      )
                     }
                     className="accent-black"
                   />
@@ -153,7 +157,10 @@ const CreateGoal = () => {
                     value="New Account"
                     checked={goalForm.fundingSource === "New Account"}
                     onChange={(e) =>
-                      handleGoalChange("fundingSource", e.target.value as any)
+                      handleGoalChange(
+                        "fundingSource",
+                        e.target.value as CreateGoalFormData["fundingSource"],
+                      )
                     }
                     className="accent-black"
                   />

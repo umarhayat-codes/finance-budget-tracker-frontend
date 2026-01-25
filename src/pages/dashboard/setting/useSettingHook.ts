@@ -1,5 +1,6 @@
 import { useState } from "react";
 import axios from "axios";
+import { toast } from "react-toastify";
 import { useAuth } from "../../../redux/useReduxHook";
 import { UseSettingHookResult } from "../../../../types";
 
@@ -21,17 +22,17 @@ const useSettingHook = (): UseSettingHookResult => {
 
   const handlePasswordChange = async () => {
     if (!newPassword || !confirmPassword) {
-      alert("Please fill in all fields");
+      toast.warn("Please fill in all fields");
       return;
     }
 
     if (newPassword !== confirmPassword) {
-      alert("Passwords do not match");
+      toast.error("Passwords do not match");
       return;
     }
 
     if (!user?.email) {
-      alert("User email not found. Please log in again.");
+      toast.warn("User email not found. Please log in again.");
       return;
     }
 
@@ -45,11 +46,11 @@ const useSettingHook = (): UseSettingHookResult => {
         },
       );
 
-      alert(response.data.message);
+      toast.success(response.data.message);
       setNewPassword("");
       setConfirmPassword("");
-    } catch (error: any) {
-      alert(error.response?.data?.message || "Something went wrong");
+    } catch (error) {
+      toast.error("Something went wrong");
     }
   };
 

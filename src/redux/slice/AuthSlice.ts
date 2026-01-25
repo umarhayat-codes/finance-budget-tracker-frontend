@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction, createAsyncThunk } from "@reduxjs/toolkit";
-import { AuthState } from "../../types";
+import { AuthState } from "../../../types";
 import axios from "axios";
 
 const initialState: AuthState = {
@@ -17,13 +17,18 @@ export const logoutUser = createAsyncThunk(
         {},
         {
           withCredentials: true,
-        }
+        },
       );
       return true;
-    } catch (error: any) {
-      return rejectWithValue(error.response?.data?.message || "Logout failed");
+    } catch (error: unknown) {
+      const axiosError = error as {
+        response?: { data?: { message?: string } };
+      };
+      return rejectWithValue(
+        axiosError.response?.data?.message || "Logout failed",
+      );
     }
-  }
+  },
 );
 
 const authSlice = createSlice({

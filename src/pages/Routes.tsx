@@ -12,14 +12,33 @@ export default function Index() {
   return (
     <>
       <Routes>
-        <Route path="/*" element={<HomePage />} />
+        <Route
+          path="/"
+          element={
+            authorized ? (
+              <Navigate to="/dashboard/finance" replace />
+            ) : (
+              <HomePage />
+            )
+          }
+        />
         <Route
           path="auth/*"
-          element={!authorized ? <Auth /> : <Navigate to="/" replace />}
+          element={
+            !authorized ? (
+              <Auth />
+            ) : (
+              <Navigate to="/dashboard/finance" replace />
+            )
+          }
         />
-        <Route path="dashboard/*" element={<Dashboard />} />
+        <Route
+          path="dashboard/*"
+          element={authorized ? <Dashboard /> : <Navigate to="/" replace />}
+        />
         <Route path="contact/*" element={<Contact />} />
         <Route path="wishlist/*" element={<WishList />} />
+        <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </>
   );

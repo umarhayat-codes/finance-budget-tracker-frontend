@@ -26,7 +26,14 @@ const RecentTransaction: React.FC = () => {
     setSearchTerm,
     currentPage,
     setCurrentPage,
+    selectedMonth,
+    handleMonthChange,
+    totalPages,
+    isLoading,
+    availableMonths,
   } = useFinanceHook();
+
+  const [showMonthDropdown, setShowMonthDropdown] = React.useState(false);
 
   const getIcon = (type: string) => {
     switch (type) {
@@ -74,28 +81,60 @@ const RecentTransaction: React.FC = () => {
 
       {/* Filters & Search */}
       <div className="flex flex-wrap items-center gap-3 mb-8">
-        <button className="flex items-center justify-between w-[160px] px-5 py-3 bg-gradient-to-r from-recentGreen to-recentDark text-white rounded-[450px]">
+        <button
+          onClick={() => {
+            handleMonthChange("all");
+          }}
+          className="flex items-center justify-between w-[160px] px-5 py-3 bg-gradient-to-r from-recentGreen to-recentDark text-white rounded-[450px] hover:opacity-90 transition-opacity"
+        >
           <div className="flex flex-col items-start leading-none">
             <span className="text-[9px] font-extralight opacity-80 uppercase">
               Transactions
             </span>
             <span className="text-[11px] font-semibold mt-0.5">
-              All Categories
+              All Transactions
             </span>
           </div>
           <span className="text-xs">▼</span>
         </button>
 
-        <div className="flex items-center gap-2 px-4 py-2 bg-recentSortBg/10 border-[0.95px] border-recentSortBorder rounded-[450px]">
-          <div className="flex flex-col items-start leading-none">
-            <span className="text-[9px] font-extralight text-recentTextTitle uppercase">
-              Sort by
-            </span>
-            <span className="text-[11px] font-semibold text-recentSortBorder mt-0.5">
-              Date Time
-            </span>
-          </div>
-          <span className="text-xs text-recentSortBorder ml-1">▼</span>
+        <div className="relative">
+          <button
+            onClick={() => setShowMonthDropdown(!showMonthDropdown)}
+            className="flex items-center gap-2 px-4 py-2 bg-recentSortBg/10 border-[0.95px] border-recentSortBorder rounded-[450px] hover:bg-recentSortBg/20 transition-colors"
+          >
+            <div className="flex flex-col items-start leading-none">
+              <span className="text-[9px] font-extralight text-recentTextTitle uppercase">
+                Filter by
+              </span>
+              <span className="text-[11px] font-semibold text-recentSortBorder mt-0.5">
+                {availableMonths.find((m) => m.value === selectedMonth)
+                  ?.label || "All Months"}
+              </span>
+            </div>
+            <span className="text-xs text-recentSortBorder ml-1">▼</span>
+          </button>
+
+          {showMonthDropdown && (
+            <div className="absolute top-full left-0 mt-2 w-[200px] bg-white border-[0.95px] border-recentBorder rounded-[13px] shadow-lg z-10 max-h-[300px] overflow-y-auto">
+              {availableMonths.map((month) => (
+                <button
+                  key={month.value}
+                  onClick={() => {
+                    handleMonthChange(month.value);
+                    setShowMonthDropdown(false);
+                  }}
+                  className={`w-full text-left px-4 py-2 text-[11px] font-medium hover:bg-gray-50 transition-colors ${
+                    selectedMonth === month.value
+                      ? "bg-recentGreen/10 text-recentGreen"
+                      : "text-recentTextTitle"
+                  }`}
+                >
+                  {month.label}
+                </button>
+              ))}
+            </div>
+          )}
         </div>
 
         <div className="flex items-center gap-2 px-4 py-2 bg-recentSortBg/10 border-[0.95px] border-recentSortBorder rounded-[450px]">
@@ -145,105 +184,153 @@ const RecentTransaction: React.FC = () => {
             </tr>
           </thead>
           <tbody className="divide-y divide-recentBorder">
-            {transactions.map((transaction, index) => (
-              <tr
-                key={transaction.id}
-                className="group hover:bg-gray-50/50 transition-colors"
-              >
-                <td className="py-4 align-middle">
-                  <div className="w-10 h-10 rounded-full bg-[#f4f7f2] flex items-center justify-center">
-                    {getIcon(transaction.iconType)}
-                  </div>
-                </td>
-                <td className="py-4">
-                  <div className="flex flex-col">
-                    <span className="text-[11px] font-normal text-recentTextSub leading-none">
-                      {transaction.category}
-                    </span>
-                    <span className="text-[13px] font-semibold text-recentTableTitle mt-1">
-                      {transaction.subCategory}
+            {isLoading ? (
+              <tr>
+                <td colSpan={5} className="py-8 text-center">
+                  <div className="flex items-center justify-center gap-2">
+                    <div className="w-5 h-5 border-2 border-recentGreen border-t-transparent rounded-full animate-spin" />
+                    <span className="text-[11px] text-recentTextSub">
+                      Loading transactions...
                     </span>
                   </div>
-                </td>
-                <td className="py-4">
-                  <div className="flex flex-col">
-                    <span className="text-[11px] font-normal text-recentTextSub leading-none">
-                      {transaction.type === "income" ? "Income" : "Expense"}
-                    </span>
-                    <span
-                      className={`text-[13px] font-semibold mt-1 ${transaction.amount.includes("-IDR 100K") ? "text-recentTableNegative" : "text-recentTableTitle"}`}
-                    >
-                      {transaction.amount}
-                    </span>
-                  </div>
-                </td>
-                <td className="py-4">
-                  <div className="flex flex-col">
-                    <span className="text-[11px] font-normal text-recentTextSub leading-none">
-                      {transaction.date}
-                    </span>
-                    <span className="text-[13px] font-semibold text-recentTableTitle mt-1">
-                      {transaction.paymentMethod}
-                    </span>
-                  </div>
-                </td>
-                <td className="py-4">
-                  <button
-                    className={`flex items-center gap-1.5 px-4 py-1.5 rounded-full ${
-                      transaction.status === "Pending"
-                        ? "bg-gradient-to-r from-recentPendingBg to-recentPendingEnd border-[0.95px] border-recentBorder"
-                        : "bg-gradient-to-r from-recentGreen to-recentDark text-white shadow-sm"
-                    }`}
-                  >
-                    <div className="w-4 h-4 rounded-full flex items-center justify-center bg-white/20">
-                      {transaction.status === "Pending" ? (
-                        <div className="w-1.5 h-1.5 bg-recentTextTitle rounded-full" />
-                      ) : (
-                        <span className="text-[8px]">✓</span>
-                      )}
-                    </div>
-                    <span
-                      className={`text-[9px] italic font-medium ${
-                        transaction.status === "Pending"
-                          ? "text-recentTextTitle"
-                          : "text-white"
-                      }`}
-                    >
-                      {transaction.status}
-                    </span>
-                  </button>
                 </td>
               </tr>
-            ))}
+            ) : transactions.length === 0 ? (
+              <tr>
+                <td colSpan={5} className="py-8 text-center">
+                  <span className="text-[11px] text-recentTextSub">
+                    No transactions found
+                  </span>
+                </td>
+              </tr>
+            ) : (
+              transactions.map((transaction) => (
+                <tr
+                  key={transaction.id}
+                  className="group hover:bg-gray-50/50 transition-colors"
+                >
+                  <td className="py-4 align-middle">
+                    <div className="w-10 h-10 rounded-full bg-[#f4f7f2] flex items-center justify-center">
+                      {getIcon(transaction.iconType)}
+                    </div>
+                  </td>
+                  <td className="py-4">
+                    <div className="flex flex-col">
+                      <span className="text-[11px] font-normal text-recentTextSub leading-none">
+                        {transaction.category}
+                      </span>
+                      <span className="text-[13px] font-semibold text-recentTableTitle mt-1">
+                        {transaction.subCategory}
+                      </span>
+                    </div>
+                  </td>
+                  <td className="py-4">
+                    <div className="flex flex-col">
+                      <span className="text-[11px] font-normal text-recentTextSub leading-none">
+                        {transaction.type === "income" ? "Income" : "Expense"}
+                      </span>
+                      <span
+                        className={`text-[13px] font-semibold mt-1 ${
+                          transaction.type === "expense"
+                            ? "text-recentTableNegative"
+                            : "text-recentTableTitle"
+                        }`}
+                      >
+                        {transaction.amount}
+                      </span>
+                    </div>
+                  </td>
+                  <td className="py-4">
+                    <div className="flex flex-col">
+                      <span className="text-[11px] font-normal text-recentTextSub leading-none">
+                        {transaction.date}
+                      </span>
+                      <span className="text-[13px] font-semibold text-recentTableTitle mt-1">
+                        {transaction.paymentMethod}
+                      </span>
+                    </div>
+                  </td>
+                  <td className="py-4">
+                    <button
+                      className={`flex items-center gap-1.5 px-4 py-1.5 rounded-full ${
+                        transaction.status === "Pending"
+                          ? "bg-gradient-to-r from-recentPendingBg to-recentPendingEnd border-[0.95px] border-recentBorder"
+                          : "bg-gradient-to-r from-recentGreen to-recentDark text-white shadow-sm"
+                      }`}
+                    >
+                      <div className="w-4 h-4 rounded-full flex items-center justify-center bg-white/20">
+                        {transaction.status === "Pending" ? (
+                          <div className="w-1.5 h-1.5 bg-recentTextTitle rounded-full" />
+                        ) : (
+                          <span className="text-[8px]">✓</span>
+                        )}
+                      </div>
+                      <span
+                        className={`text-[9px] italic font-medium ${
+                          transaction.status === "Pending"
+                            ? "text-recentTextTitle"
+                            : "text-white"
+                        }`}
+                      >
+                        {transaction.status}
+                      </span>
+                    </button>
+                  </td>
+                </tr>
+              ))
+            )}
           </tbody>
         </table>
       </div>
 
       {/* Pagination */}
       <div className="flex items-center justify-center mt-8 gap-2">
-        <button className="p-2 text-recentTextTitle hover:text-recentGreen transition-colors">
+        <button
+          onClick={() => setCurrentPage(1)}
+          disabled={currentPage === 1}
+          className="p-2 text-recentTextTitle hover:text-recentGreen transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
+        >
           <HiChevronDoubleLeft className="text-xl" />
         </button>
-        <button className="p-2 text-recentTextTitle hover:text-recentGreen transition-colors">
+        <button
+          onClick={() => setCurrentPage(Math.max(1, currentPage - 1))}
+          disabled={currentPage === 1}
+          className="p-2 text-recentTextTitle hover:text-recentGreen transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
+        >
           <FiChevronLeft className="text-xl" />
         </button>
 
-        <button className="min-w-[70px] h-8 bg-gradient-to-r from-recentGreen to-recentDark text-white rounded-full text-[9px] font-semibold">
-          Page 01
-        </button>
+        {Array.from({ length: Math.min(3, totalPages) }, (_, i) => {
+          const pageNum = i + 1;
+          return (
+            <button
+              key={pageNum}
+              onClick={() => setCurrentPage(pageNum)}
+              className={`min-w-[70px] h-8 rounded-full text-[9px] font-semibold transition-all ${
+                currentPage === pageNum
+                  ? "bg-gradient-to-r from-recentGreen to-recentDark text-white"
+                  : "border-[0.95px] border-recentMutationBorder text-recentTextTitle hover:bg-recentMutationBorder hover:text-white"
+              }`}
+            >
+              {currentPage === pageNum
+                ? `Page ${String(pageNum).padStart(2, "0")}`
+                : String(pageNum).padStart(2, "0")}
+            </button>
+          );
+        })}
 
-        <button className="w-8 h-8 border-[0.95px] border-recentMutationBorder rounded-full text-[9px] font-semibold text-recentTextTitle hover:bg-recentMutationBorder hover:text-white transition-all">
-          02
-        </button>
-
-        <button className="w-8 h-8 border-[0.95px] border-recentMutationBorder rounded-full text-[9px] font-semibold text-recentTextTitle hover:bg-recentMutationBorder hover:text-white transition-all">
-          03
-        </button>
-
-        <button className="p-2 text-recentTextTitle hover:text-recentGreen transition-colors">
+        <button
+          onClick={() => setCurrentPage(Math.min(totalPages, currentPage + 1))}
+          disabled={currentPage === totalPages}
+          className="p-2 text-recentTextTitle hover:text-recentGreen transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
+        >
           <FiChevronRight className="text-xl" />
         </button>
-        <button className="p-2 text-recentTextTitle hover:text-recentGreen transition-colors">
+        <button
+          onClick={() => setCurrentPage(totalPages)}
+          disabled={currentPage === totalPages}
+          className="p-2 text-recentTextTitle hover:text-recentGreen transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
+        >
           <HiChevronDoubleRight className="text-xl" />
         </button>
       </div>

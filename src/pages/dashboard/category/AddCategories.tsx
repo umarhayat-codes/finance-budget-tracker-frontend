@@ -34,6 +34,7 @@ const AddCategories: React.FC = () => {
   }
 
   if (error) {
+    console.log("----error----", error);
     return (
       <div className="flex h-64 flex-col items-center justify-center gap-4">
         <p className="text-red-500 font-inter">{error}</p>

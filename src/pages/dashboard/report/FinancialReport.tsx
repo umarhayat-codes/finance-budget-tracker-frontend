@@ -18,6 +18,7 @@ import {
   Area,
 } from "recharts";
 import { FiFilter, FiDownload, FiShare2 } from "react-icons/fi";
+import { TrendChartData, TooltipValueFormatter } from "types";
 
 const FinancialReport: React.FC = () => {
   const { reportData, loading, error } = useReportHook();
@@ -173,11 +174,13 @@ const FinancialReport: React.FC = () => {
               <div className="h-[250px] w-full">
                 <ResponsiveContainer width="100%" height="100%">
                   <AreaChart
-                    data={reportData.trend.labels.map((label, index) => ({
-                      name: label,
-                      income: reportData.trend.incomeData[index],
-                      expense: reportData.trend.expenseData[index],
-                    }))}
+                    data={reportData.trend.labels.map(
+                      (label: string, index: number): TrendChartData => ({
+                        name: label,
+                        income: reportData.trend.incomeData[index],
+                        expense: reportData.trend.expenseData[index],
+                      }),
+                    )}
                   >
                     <defs>
                       <linearGradient
@@ -213,7 +216,14 @@ const FinancialReport: React.FC = () => {
                       tick={{ fill: "#B5B4B5", fontSize: 13, fontWeight: 700 }}
                       tickFormatter={(value) => `$${value}`}
                     />
-                    <Tooltip formatter={(value: number) => [`$${value}`, ""]} />
+                    <Tooltip
+                      formatter={
+                        ((value: number | undefined) => [
+                          `$${value ?? 0}`,
+                          "",
+                        ]) as TooltipValueFormatter
+                      }
+                    />
                     <Area
                       type="monotone"
                       dataKey="income"

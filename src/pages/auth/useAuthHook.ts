@@ -14,12 +14,12 @@ export const useAuthHook = () => {
     try {
       const response = await axios.post(
         "http://localhost:3000/api/auth/signup",
-        formData
+        formData,
       );
       setSuccess(true);
       return response.data;
-    } catch (err: any) {
-      setError(err.response?.data?.message || "Something went wrong");
+    } catch (err) {
+      setError("Something went wrong");
       throw err;
     } finally {
       setLoading(false);
@@ -34,15 +34,14 @@ export const useAuthHook = () => {
       const response = await axios.post(
         "http://localhost:3000/api/auth/login",
         formData,
-        { withCredentials: true }
+        { withCredentials: true },
       );
       console.log("login response", response);
       setSuccess(true);
       return response.data.message;
-    } catch (err: any) {
-      setError(err.response?.data?.message || "Something went wrong");
-      console.log("login error", err.response?.data?.message);
-      return err.response?.data?.message;
+    } catch (err) {
+      setError("Something went wrong");
+      console.log("login error", err);
       // throw err;
     } finally {
       setLoading(false);

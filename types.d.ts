@@ -1,4 +1,6 @@
 import { IconType } from "react-icons";
+import { PieLabelRenderProps } from "recharts";
+export type { IconType, PieLabelRenderProps };
 
 export interface CategoryFormData {
   categoryName: string;
@@ -25,6 +27,7 @@ export interface User {
 
 export interface AuthState {
   authorized: boolean;
+  isInitialized?: boolean;
 }
 
 export interface ProfileState {
@@ -41,6 +44,10 @@ export interface SignInFormData {
 export interface AuthResponse {
   success: boolean;
   message?: string;
+}
+
+export interface ApiErrorResponse {
+  message: string;
 }
 
 export interface AuthHook {
@@ -87,8 +94,6 @@ export interface ExpenseItem {
   [key: string]: string | number | boolean | undefined;
 }
 
-// ... existing content ...
-
 export interface TransactionFormData {
   category: string;
   date: string;
@@ -109,6 +114,8 @@ export interface BudgeFormData {
 
 export interface TransactionItem extends TransactionFormData {
   id: string;
+  tag?: string;
+  isPositive?: boolean;
 }
 
 export interface TransactionState {
@@ -124,6 +131,18 @@ export interface ProfileFormData {
   paymentMethod: string;
   cardNumber: string;
   billingAddress: string;
+}
+
+export interface ProfileApiResponse {
+  id: string;
+  userId: string;
+  phoneNumber: string;
+  dateOfBirth: string;
+  paymentMethod: string;
+  cardNumber: string;
+  billingAddress: string;
+  createdAt: string;
+  updatedAt: string;
 }
 
 export interface CategoryCardData {
@@ -161,7 +180,7 @@ export interface CategoryApiResponse {
 export interface SavingApiResponse {
   id: string;
   title: string;
-  amount: string;
+  amount: number;
   date: string;
   userId: string;
   createdAt: string;
@@ -175,6 +194,7 @@ export interface CategoryBreakdownItem {
   percentage?: string;
   color: string;
   value: number;
+  [key: string]: string | number | undefined;
 }
 
 export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
@@ -277,6 +297,24 @@ export interface BudgetCheckParams {
   amount: number;
 }
 
+export interface MonthlyComparisonItem {
+  difference: string;
+  percentage: string;
+  isPositive: boolean;
+}
+
+export interface MonthlyComparisonResponse {
+  income: MonthlyComparisonItem;
+  expense: MonthlyComparisonItem;
+  total: MonthlyComparisonItem;
+}
+
+export interface TransactionComparison {
+  percentage: string;
+  difference: string;
+  isPositive: boolean;
+}
+
 export interface UseTransactionsResult {
   categories: CategoryApiResponse[];
   loading: boolean;
@@ -291,6 +329,11 @@ export interface UseTransactionsResult {
   totalExpense: number;
   incomeCategories: IncomeCategory[];
   validateExpense: (params: BudgetCheckParams) => ExpenseValidationResult;
+  totalComparison: TransactionComparison;
+  expenseComparison: TransactionComparison;
+  incomeComparison: TransactionComparison;
+  transactions: TransactionItem[];
+  totalBalance: number;
 }
 
 export type GoalStatus = "On Track" | "Pending" | "Delayed" | "Completed";
@@ -544,14 +587,20 @@ export interface ExpenseDistributionItem {
   amount: string;
   color: string;
   textColor: string;
+  [key: string]: string | number | undefined;
+}
+
+export interface ExpenseBreakdownApiResponse {
+  mainCategories: ExpenseDistributionItem[];
+  otherCategories: ExpenseDistributionItem[];
 }
 
 export interface UseFinanceHookResult {
   data: MonthlyFinancialData[];
   summaryCards: SummaryCardData[];
-  transactions: TransactionNew[];
+  transactions: RecentTransactionItem[];
   budgetGoals: BudgetGoalData[];
-  expenseDistribution: ExpenseDistributionItem[];
+  breakdownData: ExpenseBreakdownApiResponse | null;
   startMonth: string;
   endMonth: string;
   onDownload: () => void;
@@ -564,4 +613,82 @@ export interface UseFinanceHookResult {
   onManageBudgets: () => void;
   onEditGoal: (id: string) => void;
   onDeleteGoal: (id: string) => void;
+  selectedMonth: string;
+  handleMonthChange: (month: string) => void;
+  totalPages: number;
+  isLoading: boolean;
+  availableMonths: MonthOption[];
+  expenseDistribution: ExpenseDistributionItem[];
+  renderCustomizedLabel: (props: CustomLabelProps) => React.ReactNode;
+}
+
+export interface FinancialSummary {
+  totalIncome: number;
+  totalExpense: number;
+  totalSaving: number;
+  totalBudget: number;
+}
+
+export interface RecentTransactionItem {
+  id: string;
+  category: string;
+  subCategory: string;
+  amount: string;
+  date: string;
+  paymentMethod: string;
+  status: "Success" | "Received" | "Pending";
+  type: "income" | "expense";
+  iconType: "food" | "wallet" | "globe" | "power" | "home";
+}
+
+export interface PaginationInfo {
+  currentPage: number;
+  totalPages: number;
+  totalCount: number;
+  limit: number;
+}
+
+export interface RecentTransactionApiResponse {
+  transactions: RecentTransactionItem[];
+  pagination: PaginationInfo;
+}
+
+export interface MonthOption {
+  label: string;
+  value: string;
+}
+
+export interface BudgetTooltipProps {
+  active?: boolean;
+  payload?: { payload: GraphDataPoint }[];
+}
+
+export interface BarChartItem {
+  month?: string;
+  payload?: GraphDataPoint;
+}
+
+export interface CustomLabelProps extends PieLabelRenderProps {
+  payload?: ExpenseDistributionItem;
+}
+
+export interface TrendChartData {
+  name: string;
+  income: number;
+  expense: number;
+}
+
+export type TooltipValueFormatter = (
+  value: number | undefined,
+) => [string, string];
+
+export interface IconProps {
+  icon: IconType;
+  size?: number;
+}
+
+export interface FAQItem {
+  id: string;
+  question: string;
+  answer: string;
 }

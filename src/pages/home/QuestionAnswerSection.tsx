@@ -1,16 +1,12 @@
 import React, { useState } from "react";
 import { FiPlus, FiMinus } from "react-icons/fi";
 
+import { IconProps, FAQItem } from "types";
+
 // Helper to resolve React 19 / react-icons type mismatch
-const Icon = ({ icon: IconComponent, size }: { icon: any; size?: number }) => (
+const Icon = ({ icon: IconComponent, size }: IconProps) => (
   <IconComponent size={size} />
 );
-
-interface FAQItem {
-  id: string;
-  question: string;
-  answer: string;
-}
 
 const faqs: FAQItem[] = [
   {

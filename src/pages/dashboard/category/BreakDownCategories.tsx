@@ -1,10 +1,10 @@
 import React from "react";
 import { FiMoreVertical } from "react-icons/fi";
 import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip } from "recharts";
-import { CategoryBreakdownItem } from "../../../../types";
+import { CategoryBreakdownItem, IconType } from "../../../../types";
 
 const BreakDownCategories: React.FC = () => {
-  const MoreIcon = FiMoreVertical as any;
+  const MoreIcon = FiMoreVertical as IconType;
 
   const data: CategoryBreakdownItem[] = [
     {

@@ -30,12 +30,15 @@ export const fetchBudgets = createAsyncThunk(
     try {
       const response = await api.get<BudgetApiResponse[]>(`/budgets/${userId}`);
       return response.data;
-    } catch (error: any) {
+    } catch (error: unknown) {
+      const axiosError = error as {
+        response?: { data?: { message?: string } };
+      };
       return rejectWithValue(
-        error.response?.data?.message || "Failed to fetch budgets"
+        axiosError.response?.data?.message || "Failed to fetch budgets",
       );
     }
-  }
+  },
 );
 
 export const addBudget = createAsyncThunk(
@@ -53,12 +56,15 @@ export const addBudget = createAsyncThunk(
       // Backend returns { message: "Budget created successfully", budget: newBudget }
       // We need to extract just the budget object
       return response.data.budget;
-    } catch (error: any) {
+    } catch (error: unknown) {
+      const axiosError = error as {
+        response?: { data?: { message?: string } };
+      };
       return rejectWithValue(
-        error.response?.data?.message || "Failed to add budget"
+        axiosError.response?.data?.message || "Failed to add budget",
       );
     }
-  }
+  },
 );
 
 const budgetSlice = createSlice({
@@ -81,7 +87,7 @@ const budgetSlice = createSlice({
         (state, action: PayloadAction<BudgetApiResponse[]>) => {
           state.loading = false;
           state.budgets = action.payload;
-        }
+        },
       )
       .addCase(fetchBudgets.rejected, (state, action) => {
         state.loading = false;
@@ -100,7 +106,7 @@ const budgetSlice = createSlice({
           state.loading = false;
           // The payload is now the budget object directly from response.data.budget
           state.budgets.push(action.payload);
-        }
+        },
       )
       .addCase(addBudget.rejected, (state, action) => {
         state.loading = false;

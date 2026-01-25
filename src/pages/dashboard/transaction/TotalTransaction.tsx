@@ -8,31 +8,34 @@ const TotalTransaction: React.FC = () => {
     totalTransaction: totalVolume,
     totalIncome: netIncome,
     totalExpense: rawExpense,
+    totalComparison,
+    expenseComparison,
+    incomeComparison,
   } = useTransactionHook();
 
   const transactions: TransactionSummary[] = [
     {
       title: "Total Transaction",
       amount: `$${totalVolume.toFixed(2)}`,
-      percentage: "6.4%",
-      difference: `+$${(totalVolume * 0.05).toFixed(2)}`,
-      isPositive: totalVolume >= 0,
+      percentage: totalComparison.percentage,
+      difference: totalComparison.difference,
+      isPositive: totalComparison.isPositive,
       type: "total",
     },
     {
       title: "Incomes",
       amount: `$${netIncome.toFixed(2)}`,
-      percentage: "10.5%",
-      difference: netIncome >= 0 ? "+$487.00" : "-$487.00",
-      isPositive: netIncome >= 0,
+      percentage: incomeComparison.percentage,
+      difference: incomeComparison.difference,
+      isPositive: incomeComparison.isPositive,
       type: "income",
     },
     {
       title: "Expenses",
       amount: `$${rawExpense.toFixed(2)}`,
-      percentage: "8.35%",
-      difference: "-$194.00",
-      isPositive: false,
+      percentage: expenseComparison.percentage,
+      difference: expenseComparison.difference,
+      isPositive: expenseComparison.isPositive,
       type: "expense",
     },
   ];

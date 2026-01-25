@@ -79,3 +79,25 @@ export interface TransactionState {
   transactions: TransactionItem[];
   selectedMonth: Month;
 }
+
+export interface ProfileFormData {
+  fullName: string;
+  email: string;
+  phoneNumber: string;
+  dateOfBirth: string;
+  paymentMethod: string;
+  cardNumber: string;
+  billingAddress: string;
+}
+
+export interface ProfileApiResponse {
+  id: string;
+  userId: string;
+  phoneNumber: string;
+  dateOfBirth: string;
+  paymentMethod: string;
+  cardNumber: string;
+  billingAddress: string;
+  createdAt: string;
+  updatedAt: string;
+}

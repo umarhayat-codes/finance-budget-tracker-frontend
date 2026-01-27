@@ -5,6 +5,7 @@ export type { IconType, PieLabelRenderProps };
 export interface CategoryFormData {
   categoryName: string;
   amount: string;
+  type?: "income" | "expense";
 }
 
 export interface SavingFormData {
@@ -17,6 +18,27 @@ export interface SignUpFormData {
   fullName: string;
   email: string;
   password?: string;
+}
+
+export interface NavItemProps {
+  to: string;
+  icon: IconType;
+  label: string;
+  isDashboard?: boolean;
+  onClick?: () => void;
+}
+
+export interface FooterItemProps {
+  to: string;
+  icon: IconType;
+  label: string;
+  fontSize: string;
+  weight: string;
+  onClick?: () => void;
+}
+
+export interface LayoutProps {
+  children: React.ReactNode;
 }
 
 export interface User {
@@ -48,6 +70,15 @@ export interface AuthResponse {
 
 export interface ApiErrorResponse {
   message: string;
+}
+
+export interface AxiosErrorType {
+  response?: {
+    status: number;
+    data?: {
+      message?: string;
+    };
+  };
 }
 
 export interface AuthHook {
@@ -91,7 +122,6 @@ export interface ExpenseItem {
   percentage: number;
   color: string;
   isMain?: boolean;
-  [key: string]: string | number | boolean | undefined;
 }
 
 export interface TransactionFormData {
@@ -102,8 +132,6 @@ export interface TransactionFormData {
   method: string;
   type: "income" | "expense";
 }
-
-export type IncomeCategory = "Salary" | "Freelancing";
 
 export interface BudgeFormData {
   month: string;
@@ -172,6 +200,7 @@ export interface CategoryApiResponse {
   id: string;
   name: string;
   amount: number;
+  type?: "income" | "expense";
   userId: string;
   createdAt: string;
   updatedAt: string;
@@ -230,10 +259,10 @@ export interface BudgeSummaryItem {
   title: string;
   amount: string;
   percentage?: string;
-  fraction?: string; // for the "used from" part
+  fraction?: string;
   isPositive?: boolean;
   type: "total" | "income" | "expense";
-  trend?: string; // for "+$487.00"
+  trend?: string;
 }
 
 export interface BudgetApiResponse {
@@ -246,6 +275,10 @@ export interface BudgetApiResponse {
   year: string;
   createdAt: string;
   updatedAt: string;
+}
+
+export interface LatestBudgetApiResponse extends BudgetApiResponse {
+  spent: number;
 }
 
 export interface GraphDataPoint {
@@ -321,13 +354,9 @@ export interface UseTransactionsResult {
   error: string | null;
   selectedMonth: Month;
   handleMonthSelect: (month: Month) => void;
-  // totalTransaction represents the Total Volume (Sum of Income + Sum of Expense)
   totalTransaction: number;
-  // totalIncome represents the Net Balance (Sum of Income - Sum of Expense)
   totalIncome: number;
-  // totalExpense represents the Sum of Expense
   totalExpense: number;
-  incomeCategories: IncomeCategory[];
   validateExpense: (params: BudgetCheckParams) => ExpenseValidationResult;
   totalComparison: TransactionComparison;
   expenseComparison: TransactionComparison;
@@ -464,20 +493,18 @@ export interface ReminderItem {
   id: string;
   title: string;
   amount: string;
-  subtitle: string;
-  dateStr: string; // "8000k" or similar from requirements
-  type:
-    | "creditCard"
-    | "electricity"
-    | "carInsurance"
-    | "rent"
-    | "studentLoan"
-    | "travel"
-    | "salary"
-    | "loan";
-  row: 1 | 2 | 3;
-  userId?: string;
+  subtitle?: string;
+  dateStr: string;
+  type: string;
+  userId: string;
   createdAt?: string;
+  updatedAt?: string;
+}
+
+export interface ReminderFormData {
+  title: string;
+  amount: string;
+  dateStr: string;
 }
 
 export interface ReminderResponse {
@@ -492,20 +519,15 @@ export interface ReminderPreference {
   type: "toggle" | "dropdown";
 }
 
-export interface NewReminderFormData {
-  title: string;
-  amount: string;
-  dateStr: string;
-}
-
 export interface UseReminderHookResult {
+  loading: boolean;
   remindersRow1: ReminderItem[];
   remindersRow2: ReminderItem[];
   remindersRow3: ReminderItem[];
   preferences: ReminderPreference[];
   completionRate: number;
   handlePreferenceToggle: (id: string) => void;
-  addReminder: (data: NewReminderFormData) => void;
+  addReminder: (data: ReminderFormData) => Promise<void>;
 }
 
 export interface SettingProps {}
@@ -577,6 +599,7 @@ export interface BudgetGoalData {
   completedPercentage: number;
   currentAmount: string;
   targetAmount: string;
+  remainingAmount: string;
   status: "On Track" | "Moderate";
 }
 
@@ -617,6 +640,7 @@ export interface UseFinanceHookResult {
   handleMonthChange: (month: string) => void;
   totalPages: number;
   isLoading: boolean;
+  loading: boolean;
   availableMonths: MonthOption[];
   expenseDistribution: ExpenseDistributionItem[];
   renderCustomizedLabel: (props: CustomLabelProps) => React.ReactNode;
@@ -691,4 +715,18 @@ export interface FAQItem {
   id: string;
   question: string;
   answer: string;
+}
+
+export interface BudgetCardProps {
+  title: string;
+  icon?: React.ReactNode;
+  amount: string | number;
+  percentage?: string;
+  isPositive?: boolean;
+  difference?: string;
+  headerRight?: React.ReactNode;
+  children?: React.ReactNode;
+  showTrend?: boolean;
+  className?: string;
+  bodyRightContent?: React.ReactNode;
 }

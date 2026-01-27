@@ -13,13 +13,10 @@ const GoalPage: React.FC = () => {
         index
         element={
           <Layout>
-            {/* Header */}
             <DashboardHeader />
 
-            {/* Main Content Grid */}
             <AddGoal />
 
-            {/* Sidebar: Breakdown */}
             <BreakDownGoal />
           </Layout>
         }

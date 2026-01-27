@@ -30,7 +30,7 @@ const ReportBreakDown: React.FC = () => {
               </th>
             </tr>
           </thead>
-          <tbody className="bg-white">
+          <tbody className="bg-clarioIconBg">
             {reportData.recentTransactions.map((transaction) => (
               <tr key={transaction.id}>
                 <td className="px-4 py-4 text-recentTransactionRowText text-[13px] font-inter font-bold">

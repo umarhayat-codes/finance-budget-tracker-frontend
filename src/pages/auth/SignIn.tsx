@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { toast } from "react-toastify";
-import { SignInFormData } from "../../types";
+import { SignInFormData } from "../../../types";
 import { useAuthHook } from "./useAuthHook";
 import { useNavigate } from "react-router-dom";
 import { useAppDispatch } from "../../redux/useReduxHook";
@@ -33,8 +33,6 @@ const SignIn: React.FC = () => {
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  // navigate and dispatch already defined above
-
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
@@ -44,7 +42,6 @@ const SignIn: React.FC = () => {
         dispatch(fetchUserProfile());
         toast.success(message);
         navigate("/");
-        // Redirect or update app state
       } else {
         toast.error("Wrong email or password");
       }
@@ -69,7 +66,7 @@ const SignIn: React.FC = () => {
               placeholder="jane@framer.com"
               value={formData.email}
               onChange={handleChange}
-              className="signup-input h-[50px] rounded-[10px] px-4 outline-none focus:ring-2 focus:ring-[#8CFF2E] placeholder:font-normal placeholder:text-[14px]"
+              className="signup-input h-[50px] rounded-[10px] px-4 outline-none focus:ring-2 focus:ring-clarioGreen placeholder:font-normal placeholder:text-[14px]"
             />
           </div>
 
@@ -83,7 +80,7 @@ const SignIn: React.FC = () => {
               placeholder="Please specify"
               value={formData.password}
               onChange={handleChange}
-              className="signup-input h-[50px] rounded-[10px] px-4 outline-none focus:ring-2 focus:ring-[#8CFF2E] placeholder:font-normal placeholder:text-[14px]"
+              className="signup-input h-[50px] rounded-[10px] px-4 outline-none focus:ring-2 focus:ring-clarioGreen placeholder:font-normal placeholder:text-[14px]"
             />
           </div>
 

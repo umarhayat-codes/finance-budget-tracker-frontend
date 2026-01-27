@@ -56,7 +56,6 @@ const RecentTransaction: React.FC = () => {
 
   return (
     <div className="bg-white border-[0.95px] border-recentBorder rounded-[13px] p-6 font-poppins shadow-sm">
-      {/* Header */}
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
         <div>
           <h2 className="text-[17px] font-bold text-recentTextTitle leading-tight">
@@ -79,7 +78,6 @@ const RecentTransaction: React.FC = () => {
         </div>
       </div>
 
-      {/* Filters & Search */}
       <div className="flex flex-wrap items-center gap-3 mb-8">
         <button
           onClick={() => {
@@ -161,7 +159,6 @@ const RecentTransaction: React.FC = () => {
         </div>
       </div>
 
-      {/* Table */}
       <div className="overflow-x-auto">
         <table className="w-full text-left border-collapse">
           <thead>
@@ -210,7 +207,7 @@ const RecentTransaction: React.FC = () => {
                   className="group hover:bg-gray-50/50 transition-colors"
                 >
                   <td className="py-4 align-middle">
-                    <div className="w-10 h-10 rounded-full bg-[#f4f7f2] flex items-center justify-center">
+                    <div className="w-10 h-10 rounded-full bg-recentF4F7F2 flex items-center justify-center">
                       {getIcon(transaction.iconType)}
                     </div>
                   </td>
@@ -283,7 +280,6 @@ const RecentTransaction: React.FC = () => {
         </table>
       </div>
 
-      {/* Pagination */}
       <div className="flex items-center justify-center mt-8 gap-2">
         <button
           onClick={() => setCurrentPage(1)}

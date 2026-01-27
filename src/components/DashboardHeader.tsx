@@ -4,14 +4,11 @@ import man1 from "../assets/dashboard_header_image.png";
 import { useAuth } from "src/redux/useReduxHook";
 import { IconType } from "react-icons";
 
-// import { DashboardHeaderProps } from "../../../types";
-
 const DashboardHeader: React.FC = () => {
   const SearchIcon = IoSearchOutline as IconType;
-  const { user, authorized } = useAuth();
+  const { user } = useAuth();
   return (
     <div className="flex w-full items-center justify-between py-4">
-      {/* Search Bar */}
       <div className="flex h-[45px] w-[434px] items-center rounded-[200px] border border-headerBorder bg-transparent px-4">
         <input
           type="text"
@@ -21,7 +18,6 @@ const DashboardHeader: React.FC = () => {
         <SearchIcon className="text-xl text-textGray" />
       </div>
 
-      {/* User Logic */}
       <div className="flex items-center gap-3">
         <div className="flex flex-col items-end">
           <span className="font-inter text-[13px] font-bold text-black">

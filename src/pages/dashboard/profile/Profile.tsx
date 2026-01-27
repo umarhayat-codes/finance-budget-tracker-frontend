@@ -6,7 +6,6 @@ import { FiCheck } from "react-icons/fi";
 import { useAuth } from "../../../redux/useReduxHook";
 import { useProfileHook } from "./useProfileHook";
 import { ProfileFormData, IconType } from "../../../../types";
-// Importing the asset as requested
 import profileImage from "../../../assets/profile_image.png";
 
 const Profile: React.FC = () => {
@@ -65,7 +64,7 @@ const Profile: React.FC = () => {
         await saveProfileData(user.id, formData);
         toast.success("Profile updated successfully!");
       } catch (err) {
-        console.error("Failed to save profile:", err);
+        toast.error("Failed to save profile");
       }
     }
   };
@@ -73,16 +72,13 @@ const Profile: React.FC = () => {
   return (
     <Layout>
       <div className="flex flex-col gap-8 min-h-screen bg-white">
-        {/* Header */}
         <DashboardHeader />
 
         <div className="flex flex-col gap-8 px-4 md:px-0">
-          {/* Title */}
           <h1 className="font-inter font-bold text-[20px] text-profileTitle">
             User Profile
           </h1>
 
-          {/* Profile Image */}
           <div className="flex justify-center">
             <img
               src={profileImage}
@@ -92,7 +88,6 @@ const Profile: React.FC = () => {
           </div>
 
           <div className="flex flex-col lg:flex-row gap-8 lg:gap-12">
-            {/* Personal Information */}
             <div className="flex flex-col gap-4 flex-1">
               <h2 className="font-inter font-bold text-[15px] text-profileSectionTitle">
                 Personal Information
@@ -130,14 +125,13 @@ const Profile: React.FC = () => {
                     name="dateOfBirth"
                     value={formData.dateOfBirth}
                     onChange={handleInputChange}
-                    placeholder="Date Bioth" // Keeping typo from figma request "Date Bioth"
+                    placeholder="Date Bioth"
                     className="w-full h-[60px] px-4 font-inter text-[15px] text-profileInputText placeholder:text-profileInputText outline-none border-b border-gray-100"
                   />
                 </div>
               </div>
             </div>
 
-            {/* Billing Information */}
             <div className="flex flex-col gap-4 flex-1">
               <h2 className="font-inter font-bold text-[15px] text-profileBillingTitle">
                 Billing Information
@@ -165,7 +159,7 @@ const Profile: React.FC = () => {
                     name="billingAddress"
                     value={formData.billingAddress}
                     onChange={handleInputChange}
-                    placeholder="Biling Addreess" // Keeping typo from figma request "Biling Addreess"
+                    placeholder="Biling Addreess"
                     className="w-full h-[56px] px-4 font-inter text-[15px] text-profileInputBillingText placeholder:text-profileInputBillingText outline-none border-b border-profileInputBillingBorder"
                   />
                 </div>
@@ -173,22 +167,20 @@ const Profile: React.FC = () => {
             </div>
           </div>
 
-          {/* Footer Actions */}
           <div className="flex flex-col md:flex-row items-center justify-between gap-6 mt-4">
             <div className="flex gap-4">
               <button
                 onClick={handleSave}
                 disabled={loading}
-                className="px-6 py-3 bg-[#050505] rounded-[5px] font-inter font-bold text-[15px] text-white hover:bg-black/90 transition-colors disabled:bg-gray-400"
+                className="px-6 py-3 bg-buttonBg rounded-[5px] font-inter font-bold text-[15px] text-white hover:bg-black/90 transition-colors disabled:bg-gray-400"
               >
                 {loading ? "Saving..." : "Save Changes"}
               </button>
-              <button className="px-6 py-3 bg-[#F0F0F0] rounded-[5px] font-inter font-bold text-[15px] text-profileDeleteBtnText hover:bg-gray-200 transition-colors">
+              <button className="px-6 py-3 bg-transactionTableHeaderBg rounded-[5px] font-inter font-bold text-[15px] text-profileDeleteBtnText hover:bg-gray-200 transition-colors">
                 Delete Account
               </button>
             </div>
 
-            {/* Subscription Tier Badge */}
             <div className="flex items-center gap-3 px-4 py-2 bg-profileSubTierBg border-[2px] border-profileSubTierBorder rounded-[4px]">
               <div className="flex flex-col items-end">
                 <span className="font-inter font-bold text-[15px] text-black">

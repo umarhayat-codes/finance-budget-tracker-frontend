@@ -6,6 +6,7 @@ import {
   UseFinanceHookResult,
   SummaryCardData,
   BudgetGoalData,
+  LatestBudgetApiResponse,
   ExpenseBreakdownApiResponse,
   RecentTransactionItem,
   FinancialSummary,
@@ -15,8 +16,8 @@ import {
   CustomLabelProps,
 } from "../../../../types";
 import { toast } from "react-toastify";
+import { useAppSelector } from "src/redux/useReduxHook";
 
-// Base API URL
 const API_URL = "http://localhost:3000/api";
 
 const api = axios.create({
@@ -25,6 +26,10 @@ const api = axios.create({
 });
 
 export const useFinanceHook = (): UseFinanceHookResult => {
+  const { transactions: reduxTransactions } = useAppSelector(
+    (state) => state.transaction,
+  );
+
   const [data, setData] = useState<MonthlyFinancialData[]>([]);
   const [startMonth, setStartMonth] = useState<string>("");
   const [endMonth, setEndMonth] = useState<string>("");
@@ -34,6 +39,19 @@ export const useFinanceHook = (): UseFinanceHookResult => {
     totalSaving: 0,
     totalBudget: 0,
   });
+  const [loading, setLoading] = useState<boolean>(true);
+  const [budgetGoals, setBudgetGoals] = useState<BudgetGoalData[]>([]);
+
+  // Calculate Global Totals from Redux (Instant Update)
+  const globalRawIncome = reduxTransactions
+    .filter((t) => t.type === "income")
+    .reduce((acc, curr) => acc + Number(curr.amount), 0);
+
+  const globalRawExpense = reduxTransactions
+    .filter((t) => t.type === "expense")
+    .reduce((acc, curr) => acc + Number(curr.amount), 0);
+
+  const globalNetIncome = globalRawIncome - globalRawExpense;
 
   const formatAmount = (amount: number): string => {
     if (amount >= 1000000) {
@@ -47,20 +65,62 @@ export const useFinanceHook = (): UseFinanceHookResult => {
 
   useEffect(() => {
     const fetchFinanceData = async () => {
+      setLoading(true);
       try {
-        const [trendResponse, summaryResponse, distributionResponse] =
-          await Promise.all([
-            api.get<MonthlyFinancialApiResponse>("/transactions/summary"),
-            api.get<FinancialSummary>("/transactions/financial-summary"),
-            api.get<ExpenseBreakdownApiResponse>("/finance/distribution"),
-          ]);
+        const [
+          trendResponse,
+          summaryResponse,
+          distributionResponse,
+          budgetResponse,
+        ] = await Promise.all([
+          api.get<MonthlyFinancialApiResponse>("/transactions/summary"),
+          api.get<FinancialSummary>("/transactions/financial-summary"),
+          api.get<ExpenseBreakdownApiResponse>("/finance/distribution"),
+          api.get<LatestBudgetApiResponse[]>("/budgets/latest"),
+        ]);
 
         const summaryData = trendResponse.data;
         const financialSummaryData = summaryResponse.data;
         const distributionData = distributionResponse.data;
+        const latestBudgets = budgetResponse.data;
 
         setFinancialSummary(financialSummaryData);
         setBreakdownData(distributionData);
+
+        const formattedBudgets: BudgetGoalData[] = latestBudgets.map(
+          (b: LatestBudgetApiResponse) => {
+            const percentage =
+              b.amount > 0 ? Math.round((b.spent / b.amount) * 100) : 0;
+            const monthNames = [
+              "January",
+              "February",
+              "March",
+              "April",
+              "May",
+              "June",
+              "July",
+              "August",
+              "September",
+              "October",
+              "November",
+              "December",
+            ];
+            const monthIndex = parseInt(b.month) - 1;
+            const dueDate = `${monthNames[monthIndex]} ${b.year}`;
+
+            return {
+              id: b.id,
+              name: b.category,
+              dueDate: dueDate,
+              completedPercentage: percentage,
+              currentAmount: formatAmount(b.spent),
+              targetAmount: formatAmount(b.amount),
+              remainingAmount: formatAmount(Math.max(0, b.amount - b.spent)),
+              status: "On Track",
+            };
+          },
+        );
+        setBudgetGoals(formattedBudgets);
 
         if (
           summaryData.trend &&
@@ -103,6 +163,8 @@ export const useFinanceHook = (): UseFinanceHookResult => {
         });
         setStartMonth(currentMonth);
         setEndMonth(currentMonth);
+      } finally {
+        setLoading(false);
       }
     };
 
@@ -113,7 +175,7 @@ export const useFinanceHook = (): UseFinanceHookResult => {
     {
       id: "1",
       title: "Total Income",
-      amount: formatAmount(financialSummary.totalIncome),
+      amount: formatAmount(globalNetIncome), // Use Global Net Income
       type: "income",
       description: "Pulls From All Income Categories",
       bgColor: "bg-summaryTotalIncomeBg",
@@ -125,7 +187,7 @@ export const useFinanceHook = (): UseFinanceHookResult => {
     {
       id: "2",
       title: "Total Spending",
-      amount: formatAmount(financialSummary.totalExpense),
+      amount: formatAmount(globalRawExpense), // Use Global Expense
       type: "spending",
       description: "Categorized by Bills, Food, Invoice, etc.",
       bgColor: "bg-summaryTotalSpendingBg",
@@ -167,11 +229,9 @@ export const useFinanceHook = (): UseFinanceHookResult => {
   const [totalPages, setTotalPages] = useState(1);
   const [isLoading, setIsLoading] = useState(false);
 
-  // Generate available months for dropdown
   const generateAvailableMonths = (): MonthOption[] => {
     const months: MonthOption[] = [{ label: "All Months", value: "all" }];
 
-    // Generate 12 months (January to December)
     const monthNames = [
       "January",
       "February",
@@ -188,7 +248,7 @@ export const useFinanceHook = (): UseFinanceHookResult => {
     ];
 
     monthNames.forEach((name, index) => {
-      const monthNumber = String(index + 1).padStart(2, "0"); // "01", "02", etc.
+      const monthNumber = String(index + 1).padStart(2, "0");
       months.push({ label: name, value: monthNumber });
     });
 
@@ -197,7 +257,6 @@ export const useFinanceHook = (): UseFinanceHookResult => {
 
   const [availableMonths] = useState<MonthOption[]>(generateAvailableMonths());
 
-  // Fetch transactions from API
   const fetchTransactions = async () => {
     setIsLoading(true);
     try {
@@ -234,36 +293,14 @@ export const useFinanceHook = (): UseFinanceHookResult => {
     }
   };
 
-  // Fetch transactions when filters change
   useEffect(() => {
     fetchTransactions();
   }, [currentPage, selectedMonth]);
 
   const handleMonthChange = (month: string) => {
     setSelectedMonth(month);
-    setCurrentPage(1); // Reset to first page when filter changes
+    setCurrentPage(1);
   };
-
-  const [budgetGoals] = useState<BudgetGoalData[]>([
-    {
-      id: "1",
-      name: "Emergency",
-      dueDate: "December 2025",
-      completedPercentage: 70,
-      currentAmount: "7M",
-      targetAmount: "10M",
-      status: "On Track",
-    },
-    {
-      id: "2",
-      name: "Travel Fund",
-      dueDate: "August 2025",
-      completedPercentage: 40,
-      currentAmount: "2M",
-      targetAmount: "5M",
-      status: "Moderate",
-    },
-  ]);
 
   const [breakdownData, setBreakdownData] =
     useState<ExpenseBreakdownApiResponse | null>(null);
@@ -375,6 +412,7 @@ export const useFinanceHook = (): UseFinanceHookResult => {
     handleMonthChange,
     totalPages,
     isLoading,
+    loading,
     availableMonths,
     expenseDistribution: breakdownData?.mainCategories || [],
     renderCustomizedLabel,

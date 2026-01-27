@@ -4,14 +4,9 @@ import {
   TransactionItem,
   TransactionFormData,
   CategoryApiResponse,
-  Month,
-  IncomeCategory,
   UseTransactionsResult,
-  BudgetApiResponse,
-  ExpenseValidationResult,
-  BudgetCheckParams,
 } from "../../../../types";
-import { useAuth, useTransactions } from "src/redux/useReduxHook";
+import { useTransactions } from "src/redux/useReduxHook";
 import { toast } from "react-toastify";
 
 const TRANSACTIONS_API_URL = "http://localhost:3000/api/transactions";
@@ -53,7 +48,6 @@ export const useTransactionHook = (): UseTransactionsResult => {
         setCategories(response.data);
       } catch (err) {
         toast.error("Failed to fetch categories");
-        console.error("Error fetching categories:", err);
         setError("Failed to fetch categories");
       } finally {
         setLoading(false);

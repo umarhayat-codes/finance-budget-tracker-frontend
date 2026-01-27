@@ -1,6 +1,6 @@
 import { useState } from "react";
 import axios from "axios";
-import { SignUpFormData, SignInFormData } from "../../types";
+import { SignUpFormData, SignInFormData } from "../../../types";
 
 export const useAuthHook = () => {
   const [loading, setLoading] = useState(false);
@@ -42,7 +42,6 @@ export const useAuthHook = () => {
     } catch (err) {
       setError("Something went wrong");
       console.log("login error", err);
-      // throw err;
     } finally {
       setLoading(false);
     }

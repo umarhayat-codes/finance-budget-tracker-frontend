@@ -7,10 +7,8 @@ import {
   Month,
 } from "../../../types";
 
-// Base API URL
 const API_URL = "http://localhost:3000/api/budgets";
 
-// Axios instance
 const api = axios.create({
   baseURL: "http://localhost:3000/api",
   withCredentials: true,
@@ -23,7 +21,6 @@ const initialState: BudgetState = {
   selectedMonth: "All",
 };
 
-// Async Thunks
 export const fetchBudgets = createAsyncThunk(
   "budget/fetchBudgets",
   async (userId: string, { rejectWithValue }) => {
@@ -43,18 +40,9 @@ export const fetchBudgets = createAsyncThunk(
 
 export const addBudget = createAsyncThunk(
   "budget/addBudget",
-  // Modified to include userId directly in data or passed separately?
-  // Based on useBudgeHook, we pass { ...formData, userId }.
   async (data: BudgeFormData & { userId: string }, { rejectWithValue }) => {
     try {
       const response = await api.post("/budgets", data);
-      // The backend response structure might vary. Assuming it returns the created budget
-      // or we might need to re-fetch.
-      // If backend returns the object: return response.data.budget;
-      // But typically we might just return the response data.
-      // Let's assume response.data is the new budget object or contains it.
-      // Backend returns { message: "Budget created successfully", budget: newBudget }
-      // We need to extract just the budget object
       return response.data.budget;
     } catch (error: unknown) {
       const axiosError = error as {
@@ -76,7 +64,6 @@ const budgetSlice = createSlice({
     },
   },
   extraReducers: (builder) => {
-    // Fetch Budgets
     builder
       .addCase(fetchBudgets.pending, (state) => {
         state.loading = true;
@@ -94,7 +81,6 @@ const budgetSlice = createSlice({
         state.error = action.payload as string;
       });
 
-    // Add Budget
     builder
       .addCase(addBudget.pending, (state) => {
         state.loading = true;
@@ -104,8 +90,14 @@ const budgetSlice = createSlice({
         addBudget.fulfilled,
         (state, action: PayloadAction<BudgetApiResponse>) => {
           state.loading = false;
-          // The payload is now the budget object directly from response.data.budget
-          state.budgets.push(action.payload);
+          const index = state.budgets.findIndex(
+            (b) => b.id === action.payload.id,
+          );
+          if (index !== -1) {
+            state.budgets[index] = action.payload;
+          } else {
+            state.budgets.push(action.payload);
+          }
         },
       )
       .addCase(addBudget.rejected, (state, action) => {

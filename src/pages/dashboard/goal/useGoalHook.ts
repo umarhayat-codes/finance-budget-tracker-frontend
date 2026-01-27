@@ -58,10 +58,6 @@ export const useGoalHook = (): UseGoalHookResult => {
     ).length;
     const pending = goalList.filter((g) => g.goalStatus === "Pending").length;
 
-    // For spent savings, we could sum up something if available,
-    // but the requirement says "currect goal section" and stats.
-    // I'll keep it as a mock or sum targetAmounts if that's what's meant,
-    // but let's stick to the base numbers for now.
     const totalSavings = goalList.reduce(
       (acc, curr) => acc + curr.targetAmount,
       0,
@@ -133,7 +129,6 @@ export const useGoalHook = (): UseGoalHookResult => {
         { goalStatus: newStatus },
         { withCredentials: true },
       );
-      // Update local state to reflect change immediately
       setGoals((prev) => {
         const updated = prev.map((g) =>
           g.id === id ? { ...g, goalStatus: newStatus } : g,

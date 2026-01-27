@@ -8,17 +8,13 @@ const CategoriesPage: React.FC = () => {
   return (
     <Layout>
       <div className="flex flex-col gap-6 min-h-screen bg-categoryPageBg">
-        {/* Header */}
         <DashboardHeader />
 
-        {/* Main Content Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-6 items-start">
-          {/* Main Grid: Add Categories (Takes up 3/4 space on large screens) */}
           <div className="lg:col-span-3">
             <AddCategories />
           </div>
 
-          {/* Sidebar: Breakdown (Takes up 1/4 space) */}
           <div className="lg:col-span-1 h-full">
             <BreakDownCategories />
           </div>

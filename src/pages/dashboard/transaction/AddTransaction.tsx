@@ -1,4 +1,8 @@
-import { AddTransactionProps, TransactionFormData } from "../../../../types";
+import {
+  AddTransactionProps,
+  Month,
+  TransactionFormData,
+} from "../../../../types";
 import { useAppDispatch } from "src/redux/useReduxHook";
 import { saveTransaction } from "src/redux/slice/TransactionSlice";
 import { IconType } from "react-icons";
@@ -14,13 +18,8 @@ const AddTransaction: React.FC<AddTransactionProps> = () => {
   const PlusIcon = FiPlus as IconType;
   const CrossIcon = FiX as IconType;
 
-  const {
-    categories,
-    incomeCategories,
-    selectedMonth,
-    handleMonthSelect,
-    validateExpense,
-  } = useTransactionHook();
+  const { categories, selectedMonth, handleMonthSelect, validateExpense } =
+    useTransactionHook();
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [validationError, setValidationError] = useState<string | null>(null);
@@ -33,7 +32,6 @@ const AddTransaction: React.FC<AddTransactionProps> = () => {
     type: "expense",
   });
 
-  // Set default date and time from system
   useEffect(() => {
     if (isModalOpen) {
       const now = new Date();
@@ -87,7 +85,6 @@ const AddTransaction: React.FC<AddTransactionProps> = () => {
     dispatch(saveTransaction(formData));
     toast.success("Transaction added successfully");
     setIsModalOpen(false);
-    // Reset form
     setFormData({
       category: "",
       date: "",
@@ -136,7 +133,6 @@ const AddTransaction: React.FC<AddTransactionProps> = () => {
   return (
     <>
       <div className="flex w-full flex-col justify-between gap-4 py-6 md:flex-row md:items-center">
-        {/* Header Text */}
         <div className="flex flex-col gap-1">
           <h1 className="font-inter text-[20px] font-bold text-transactionTitle">
             Transactions
@@ -146,9 +142,7 @@ const AddTransaction: React.FC<AddTransactionProps> = () => {
           </p>
         </div>
 
-        {/* Action Buttons */}
         <div className="flex flex-wrap items-center gap-3">
-          {/* Month Filter */}
           <div className="relative" ref={monthRef}>
             <Button
               onClick={() => setIsMonthDropdownOpen(!isMonthDropdownOpen)}
@@ -177,14 +171,13 @@ const AddTransaction: React.FC<AddTransactionProps> = () => {
               </span>
             </Button>
 
-            {/* Dropdown Menu */}
             {isMonthDropdownOpen && (
               <div className="absolute top-full left-0 mt-2 w-40 rounded-lg border border-gray-200 bg-white shadow-lg z-50 max-h-60 overflow-y-auto">
                 {months.map((month) => (
                   <div
                     key={month}
                     onClick={() => {
-                      handleMonthSelect(month as any);
+                      handleMonthSelect(month as Month);
                       setIsMonthDropdownOpen(false);
                     }}
                     className={`cursor-pointer px-4 py-2 text-[12px] font-manrope hover:bg-gray-50 ${
@@ -200,7 +193,6 @@ const AddTransaction: React.FC<AddTransactionProps> = () => {
             )}
           </div>
 
-          {/* Export Button */}
           <Button
             className="rounded-lg border-[0.86px] border-exportBorder bg-exportBg px-4 py-2 font-manrope text-[10px] font-medium text-transactionTitle hover:bg-gray-100"
             leftIcon={<DownloadIcon size={14} />}
@@ -208,7 +200,6 @@ const AddTransaction: React.FC<AddTransactionProps> = () => {
             <span>Export</span>
           </Button>
 
-          {/* Add Transaction Button */}
           <Button
             onClick={() => setIsModalOpen(true)}
             className="rounded-lg border-[0.86px] border-addBtnBorder bg-addBtnBg px-4 py-2 font-manrope text-[10px] font-medium text-addBtnText hover:bg-black/90 transition-all"
@@ -219,11 +210,9 @@ const AddTransaction: React.FC<AddTransactionProps> = () => {
         </div>
       </div>
 
-      {/* Modal */}
       {isModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm p-4">
           <div className="w-full max-w-[500px] rounded-2xl bg-white p-6 shadow-2xl animate-fade-in relative">
-            {/* Close Button */}
             <button
               onClick={() => setIsModalOpen(false)}
               className="absolute right-4 top-4 text-textGray hover:text-black transition-colors"
@@ -236,14 +225,12 @@ const AddTransaction: React.FC<AddTransactionProps> = () => {
             </h2>
 
             <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-              {/* Validation Error Message */}
               {validationError && (
                 <div className="rounded-lg bg-red-50 p-3 text-[12px] font-medium text-red-600 border border-red-200">
                   {validationError}
                 </div>
               )}
 
-              {/* Transaction Type Toggle */}
               <div className="flex p-1 bg-gray-100 rounded-lg">
                 <button
                   type="button"
@@ -273,7 +260,6 @@ const AddTransaction: React.FC<AddTransactionProps> = () => {
                 </button>
               </div>
 
-              {/* Category */}
               <div className="flex flex-col gap-1">
                 <label className="font-manrope text-[12px] font-semibold text-transactionTitle">
                   Category
@@ -289,20 +275,23 @@ const AddTransaction: React.FC<AddTransactionProps> = () => {
                     Select category
                   </option>
                   {formData.type === "income"
-                    ? incomeCategories.map((cat) => (
-                        <option key={cat} value={cat}>
-                          {cat}
-                        </option>
-                      ))
-                    : categories.map((cat) => (
-                        <option key={cat.id} value={cat.name}>
-                          {cat.name}
-                        </option>
-                      ))}
+                    ? categories
+                        .filter((cat) => cat.type === "income")
+                        .map((cat) => (
+                          <option key={cat.id} value={cat.name}>
+                            {cat.name}
+                          </option>
+                        ))
+                    : categories
+                        .filter((cat) => !cat.type || cat.type === "expense")
+                        .map((cat) => (
+                          <option key={cat.id} value={cat.name}>
+                            {cat.name}
+                          </option>
+                        ))}
                 </select>
               </div>
 
-              {/* Date and Time */}
               <div className="flex gap-4">
                 <div className="flex flex-1 flex-col gap-1">
                   <label className="font-manrope text-[12px] font-semibold text-transactionTitle">
@@ -332,7 +321,6 @@ const AddTransaction: React.FC<AddTransactionProps> = () => {
                 </div>
               </div>
 
-              {/* Amount */}
               <div className="flex flex-col gap-1">
                 <label className="font-manrope text-[12px] font-semibold text-transactionTitle">
                   Amount
@@ -353,7 +341,6 @@ const AddTransaction: React.FC<AddTransactionProps> = () => {
                 </div>
               </div>
 
-              {/* Method */}
               <div className="flex flex-col gap-1">
                 <label className="font-manrope text-[12px] font-semibold text-transactionTitle">
                   Payment Method
@@ -373,7 +360,6 @@ const AddTransaction: React.FC<AddTransactionProps> = () => {
                 </select>
               </div>
 
-              {/* Submit Button */}
               <Button
                 type="submit"
                 className="mt-2 w-full justify-center rounded-lg bg-black py-3 font-manrope text-[14px] font-bold text-white transition-opacity hover:opacity-90"

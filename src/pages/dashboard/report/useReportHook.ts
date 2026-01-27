@@ -71,13 +71,7 @@ export const useReportHook = (): UseReportHookResult => {
           ...prev,
           monthlyBreakdown: {
             totalIncome: totalIncome,
-            // totalIncome >= 1000000
-            //   ? `$${(totalIncome / 1000000).toFixed(1)}M`
-            //   : `$${(totalIncome / 1000).toFixed(0)}K`,
             totalExpense: totalExpense,
-            // totalExpense >= 1000000
-            //   ? `$${(totalExpense / 1000000).toFixed(1)}M`
-            //   : `$${(totalExpense / 1000).toFixed(0)}K`,
             data: categoryBreakdown.map((item) => ({
               category: item.category,
               value: item.value,
@@ -92,7 +86,6 @@ export const useReportHook = (): UseReportHookResult => {
         setError(null);
       } catch (err) {
         toast.error("Failed to fetch report data");
-        console.error("Error fetching report data:", err);
         setError("Failed to fetch report data");
       } finally {
         setLoading(false);

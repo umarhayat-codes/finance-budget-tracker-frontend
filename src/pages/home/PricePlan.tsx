@@ -17,7 +17,6 @@ import {
 
 import { IconProps } from "types";
 
-// Helper to resolve React 19 / react-icons type mismatch
 const Icon = ({ icon: IconComponent, size }: IconProps) => (
   <IconComponent size={size} />
 );
@@ -27,13 +26,11 @@ const PricePlan: React.FC = () => {
 
   return (
     <section className="bg-black text-white py-20 px-6 md:px-12 xlg:px-[200px] font-manrope flex flex-col items-center">
-      {/* Pricing Badge */}
       <div className="flex items-center gap-2 mb-12">
         <span className="w-2 h-2 rounded-full bg-primary shadow-[0_0_8px_#8CFF2E]"></span>
         <span className="text-primary text-sm font-medium">Pricing</span>
       </div>
 
-      {/* Toggle */}
       <div className="flex items-center gap-4 mb-16">
         <span
           className={`${
@@ -54,9 +51,7 @@ const PricePlan: React.FC = () => {
         </button>
       </div>
 
-      {/* Pricing Cards */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8 w-full max-w-6xl mb-8">
-        {/* Starter Card */}
         <div className="bg-cardBg border border-cardBorder rounded-[40px] p-8 md:p-12 flex flex-col h-full">
           <h3 className="text-2xl md:text-3xl font-semibold mb-6">Starter</h3>
           <div className="flex items-baseline gap-2 mb-6">
@@ -83,7 +78,6 @@ const PricePlan: React.FC = () => {
           </ul>
         </div>
 
-        {/* Pro Card */}
         <div className="bg-cardBg border border-cardBorder rounded-[40px] p-8 md:p-12 flex flex-col h-full relative overflow-hidden">
           <div className="absolute top-6 right-6">
             <span className="bg-[#142308] text-primary text-[10px] font-bold tracking-widest px-3 py-1 rounded-full uppercase">
@@ -124,7 +118,6 @@ const PricePlan: React.FC = () => {
         </div>
       </div>
 
-      {/* Partners Banner */}
       <div className="w-full max-w-6xl bg-cardBg border border-cardBorder rounded-[40px] p-8 md:p-12 flex flex-col items-start gap-8 md:flex-row md:items-center md:gap-16">
         <div className="flex-1">
           <h2 className="text-3xl md:text-4xl font-semibold mb-4">
@@ -140,7 +133,6 @@ const PricePlan: React.FC = () => {
           </button>
         </div>
 
-        {/* Logo Cloud */}
         <div className="flex-1 grid grid-cols-4 md:grid-cols-6 gap-y-10 gap-x-8 items-center opacity-40">
           <Icon icon={FaGoogle} size={24} />
           <Icon icon={SiWise} size={24} />
@@ -152,7 +144,7 @@ const PricePlan: React.FC = () => {
           <Icon icon={SiShopify} size={24} />
           <Icon icon={FaApple} size={24} />
           <Icon icon={SiZapier} size={24} />
-          <div className="text-xl font-bold text-white">F</div> {/* Logo F */}
+          <div className="text-xl font-bold text-white">F</div>
           <Icon icon={SiQuickbooks} size={24} />
         </div>
       </div>

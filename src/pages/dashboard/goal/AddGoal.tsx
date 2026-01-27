@@ -17,7 +17,6 @@ const AddGoal = () => {
     "Completed",
   ];
 
-  // Color mapping functions as requested
   const getStatusStyles = (status: string) => {
     switch (status) {
       case "On Track":
@@ -35,7 +34,6 @@ const AddGoal = () => {
 
   return (
     <div className="flex flex-col gap-8 w-full bg-bgColor p-6 font-inter min-h-screen">
-      {/* Header Section */}
       <div className="flex flex-col gap-4">
         <h1 className="text-[20px] font-bold text-goalTitle">
           Financial Goals
@@ -108,7 +106,6 @@ const AddGoal = () => {
         </div>
       </div>
 
-      {/* Cards Section */}
       <div className="flex flex-col gap-4">
         <h2 className="text-[16px] font-bold text-black">Current Goals</h2>
 
@@ -118,12 +115,11 @@ const AddGoal = () => {
               key={goal.id}
               className="bg-goalCardBg border border-goalCardBorder rounded-[5px] p-6 flex flex-col items-center text-center gap-4 shadow-sm relative"
             >
-              {/* Dots Menu */}
               <div className="absolute top-4 right-4 cursor-pointer">
                 <HiDotsVertical
                   onClick={() =>
                     setActiveDropdown(
-                      activeDropdown === goal.id ? null : goal.id
+                      activeDropdown === goal.id ? null : goal.id,
                     )
                   }
                   className="text-gray-400 hover:text-gray-600"
@@ -148,31 +144,26 @@ const AddGoal = () => {
                 )}
               </div>
 
-              {/* Icon */}
               <div className="text-4xl mb-2 text-primary">
                 {goal.icon && <goal.icon />}
               </div>
 
-              {/* Title */}
               <h3 className="text-[14px] font-bold text-goalText">
                 {goal.goalName}
               </h3>
 
-              {/* Subtitle / Amount */}
               <span className="text-[12px] font-bold text-goalSubtitle">
                 Target: IDR {goal.targetAmount.toLocaleString()}
               </span>
 
-              {/* Status Button */}
               <div
                 className={`text-[12px] font-bold border-[0.9px] px-3 py-1 rounded w-full ${getStatusStyles(
-                  goal.goalStatus
+                  goal.goalStatus,
                 )}`}
               >
                 {goal.goalStatus}
               </div>
 
-              {/* Date */}
               <span className="text-[14px] font-bold text-goalDate">
                 {goal.targetDate}
               </span>

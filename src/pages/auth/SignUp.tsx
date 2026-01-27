@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { toast } from "react-toastify";
-import { SignUpFormData } from "../../types";
+import { SignUpFormData } from "../../../types";
 
 import { useAuthHook } from "./useAuthHook";
 import { useNavigate } from "react-router-dom";
@@ -29,16 +29,14 @@ const SignUp: React.FC = () => {
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  // navigate defined above
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
       await signup(formData);
       toast.success("Signup successful!");
       navigate("/auth/signin");
-      // You can redirect here if needed
     } catch (err) {
-      console.error("Signup failed", err);
+      toast.error("Signup failed");
     }
   };
 
@@ -58,7 +56,7 @@ const SignUp: React.FC = () => {
               placeholder="Jane"
               value={formData.fullName}
               onChange={handleChange}
-              className="signup-input h-[50px] rounded-[10px] px-4 outline-none focus:ring-2 focus:ring-[#8CFF2E] placeholder:font-normal placeholder:text-[14px]"
+              className="signup-input h-[50px] rounded-[10px] px-4 outline-none focus:ring-2 focus:ring-primary placeholder:font-normal placeholder:text-[14px]"
             />
           </div>
 
@@ -72,7 +70,7 @@ const SignUp: React.FC = () => {
               placeholder="jane@framer.com"
               value={formData.email}
               onChange={handleChange}
-              className="signup-input h-[50px] rounded-[10px] px-4 outline-none focus:ring-2 focus:ring-[#8CFF2E] placeholder:font-normal placeholder:text-[14px]"
+              className="signup-input h-[50px] rounded-[10px] px-4 outline-none focus:ring-2 focus:ring-primary placeholder:font-normal placeholder:text-[14px]"
             />
           </div>
 
@@ -86,7 +84,7 @@ const SignUp: React.FC = () => {
               placeholder="Please specify"
               value={formData.password}
               onChange={handleChange}
-              className="signup-input h-[50px] rounded-[10px] px-4 outline-none focus:ring-2 focus:ring-[#8CFF2E] placeholder:font-normal placeholder:text-[14px]"
+              className="signup-input h-[50px] rounded-[10px] px-4 outline-none focus:ring-2 focus:ring-primary placeholder:font-normal placeholder:text-[14px]"
             />
           </div>
 

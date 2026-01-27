@@ -9,7 +9,6 @@ const Header: React.FC = () => {
   return (
     <header className="w-full bg-black border-b border-zinc-800/50 sticky top-0 z-50">
       <div className="max-w-[1440px] mx-auto px-6 md:px-12 h-[88px] flex items-center justify-between">
-        {/* Logo Section */}
         <Link to="/" className="flex items-center gap-2 cursor-pointer">
           <img
             src={mainIcon}
@@ -21,20 +20,18 @@ const Header: React.FC = () => {
           </span>
         </Link>
 
-        {/* Center Navigation - Desktop */}
         <nav className="hidden lg:flex items-center gap-8">
           {["How it works", "Features", "Pricing", "Blog"].map((item) => (
             <a
               key={item}
               href={`#${item.toLowerCase().replace(/\s+/g, "-")}`}
-              className="header-nav-link font-medium text-[16px] transition-colors hover:text-[#8CFF2E]"
+              className="header-nav-link font-medium text-[16px] transition-colors hover:text-primary"
             >
               {item}
             </a>
           ))}
         </nav>
 
-        {/* Actions Section - Desktop */}
         <div className="hidden lg:flex items-center gap-4">
           <button
             onClick={() => navigate("/wishlist")}
@@ -50,9 +47,7 @@ const Header: React.FC = () => {
           </button>
         </div>
 
-        {/* Mobile Menu Toggle */}
         <div className="lg:hidden flex items-center gap-4">
-          {/* Mobile Contact Button (Visible on tablet) */}
           <button
             onClick={() => navigate("/contact")}
             className="hidden sm:block mobile-contact px-4 py-2 rounded-[23px] font-semibold text-[14px]"
@@ -95,7 +90,6 @@ const Header: React.FC = () => {
         </div>
       </div>
 
-      {/* Mobile Menu Dropdown */}
       {isMenuOpen && (
         <div className="lg:hidden bg-black border-t border-zinc-800 px-6 py-8 flex flex-col gap-6 animate-in slide-in-from-top duration-300">
           <nav className="flex flex-col gap-6">

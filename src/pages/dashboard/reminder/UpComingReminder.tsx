@@ -2,7 +2,7 @@ import React from "react";
 import Layout from "../../../components/Layout";
 import DashboardHeader from "../../../components/DashboardHeader";
 import { useReminderHook } from "./useReminderHook";
-import { ReminderItem } from "../../../../types";
+import { ReminderItem, ReminderFormData } from "../../../../types";
 import {
   FaCreditCard,
   FaBolt,
@@ -22,7 +22,6 @@ import { RiBillLine } from "react-icons/ri";
 import { PiStudent } from "react-icons/pi";
 import { BsToggleOn, BsToggleOff } from "react-icons/bs";
 import { FiPlus } from "react-icons/fi";
-
 const UpComingReminder = () => {
   const {
     remindersRow1,
@@ -30,16 +29,37 @@ const UpComingReminder = () => {
     remindersRow3,
     preferences,
     completionRate,
+    loading,
     handlePreferenceToggle,
     addReminder,
   } = useReminderHook();
 
   const [isModalOpen, setIsModalOpen] = React.useState(false);
-  const [formData, setFormData] = React.useState({
+  const [formData, setFormData] = React.useState<ReminderFormData>({
     title: "",
     amount: "",
     dateStr: "",
   });
+
+  if (loading) {
+    return (
+      <Layout>
+        <div className="bg-white min-h-screen">
+          <div className="p-6">
+            <DashboardHeader />
+            <div className="flex flex-col items-center justify-center min-h-[60vh]">
+              <div className="flex flex-col items-center gap-4">
+                <div className="w-12 h-12 border-4 border-buttonBg border-t-transparent rounded-full animate-spin"></div>
+                <p className="text-[14px] font-bold text-reminderTitle font-inter">
+                  Loading reminders...
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </Layout>
+    );
+  }
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -59,7 +79,6 @@ const UpComingReminder = () => {
     }
   };
 
-  // Helper to render graph bars (simulated visual from figma)
   const renderBars = (color: string) => (
     <div className="flex items-end gap-[2px] h-[20px]">
       <div className={`w-[3px] h-[40%] ${color} rounded-sm`}></div>
@@ -73,7 +92,6 @@ const UpComingReminder = () => {
   const getCardStyleAndIcon = (title: string) => {
     const t = title.toLowerCase();
 
-    // Default Style
     let style = {
       cardBg: "bg-reminderCardDark",
       radius: "rounded-[4px]",
@@ -89,14 +107,14 @@ const UpComingReminder = () => {
 
     if (t.includes("travel") || t.includes("salary")) {
       style = {
-        cardBg: "bg-[#FCFDFD]",
+        cardBg: "bg-profileSubTierBg",
         radius: "rounded-[1px]", // Matches radius:1 request
-        border: "border border-[#EEEEEE]",
+        border: "border border-reminderBorderRow3",
         titleColor: "text-black",
         amountColor: "text-gray-500",
         subColor: "text-gray-400",
-        iconBg: "bg-gray-100 text-black",
-        barColor: "bg-black",
+        iconBg: "bg-gray-100 text-settingSearchText",
+        barColor: "bg-settingSearchText",
         icon: t.includes("travel") ? (
           <IoMdTrain className="text-lg" />
         ) : (
@@ -110,9 +128,9 @@ const UpComingReminder = () => {
       t.includes("studnet")
     ) {
       style = {
-        cardBg: "bg-[#D6DFD0]",
-        radius: "rounded-[1px]", // Matches radius:1 request
-        border: "border border-[#DEE4D9]",
+        cardBg: "bg-reminderCardGray",
+        radius: "rounded-[1px]",
+        border: "border border-reminderBorderRow2",
         titleColor: "text-black",
         amountColor: "text-gray-600",
         subColor: "text-gray-500",
@@ -127,33 +145,33 @@ const UpComingReminder = () => {
       };
     } else if (t.includes("electricity") || t.includes("elecrity")) {
       style = {
-        cardBg: "bg-[#333C2F]",
+        cardBg: "bg-reminderCardDark",
         radius: "rounded-[20px]",
         border: "border-none",
         titleColor: "text-white",
         amountColor: "text-gray-300",
         subColor: "text-gray-400",
         iconBg: "bg-white/10 text-white",
-        barColor: "bg-[#8CFF2E]",
+        barColor: "bg-primary",
         icon: <FaBolt className="text-lg" />,
         checkMark: false,
       };
     } else if (t.includes("car insurance")) {
       style = {
-        cardBg: "bg-[#050505]",
+        cardBg: "bg-buttonBg",
         radius: "rounded-[20px]",
         border: "border-none",
         titleColor: "text-white",
         amountColor: "text-gray-300",
         subColor: "text-gray-400",
         iconBg: "bg-white/10 text-white",
-        barColor: "bg-[#8CFF2E]",
+        barColor: "bg-primary",
         icon: <FaCar className="text-lg" />,
         checkMark: false,
       };
     } else if (t.includes("credit card")) {
       style = {
-        cardBg: "bg-[#8CFF2E]",
+        cardBg: "bg-primary",
         radius: "rounded-[20px]",
         border: "border-none",
         titleColor: "text-black",
@@ -231,46 +249,7 @@ const UpComingReminder = () => {
       >
         <div className="flex justify-between items-start">
           <div className="p-2 rounded-full bg-gray-200/50">
-            {
-              /* getIcon is not defined in the original file, it used getCardStyleAndIcon logic or was missing? 
-               Wait, looking at original line 224: getIcon(item.type, ...). 
-               getIcon function seems missing in the file I viewed (Step 12). 
-               Wait, step 12 file content shows `getIcon` at line 224 but `getIcon` definition is NOT in lines 1-473? 
-               Ah, I might have missed it or it was imported? 
-               Imports: React, Layout, DashboardHeader, useReminderHook, Icons. 
-               No `getIcon` import. 
-               Let me double check the file content from Step 12.
-               Lines 72-169 define `getCardStyleAndIcon`.
-               Line 224 calls `getIcon`.
-               Line 210 `CardGeneric` definition.
-               If `getIcon` is not defined, this code was already broken or I missed viewing it.
-               The file content I saw was lines 1-473.
-               Line 224: `{getIcon(item.type, ...)}`
-               I don't see `const getIcon = ...` anywhere.
-               It might be that `getCardStyleAndIcon` was meant to be used or `getIcon` is missing.
-               The user asked me not to use `any`.
-               I will attempt to fix the `any` and if `getIcon` is valid (maybe from local scope I missed? No, I saw "entire file").
-               I will assume `getIcon` is intended to be there or I should replace it with suitable logic.
-               However, my task is "store reminder in database... then ... pass in frontend".
-               The user also said "use same styling format".
-               I will preserve `getIcon` call if it was there, assuming it might be available or I should fix it?
-               Wait, if I replace the content, I must ensure valid code.
-               If `getIcon` is missing, I should probably implement it or use `getCardStyleAndIcon`.
-               `getCardStyleAndIcon` takes `title`. `CardGeneric` uses `item.type` for `getIcon`.
-               Let's look at `CardRow1` logic again. It uses `getCardStyleAndIcon(item.title)`.
-               `CardGeneric` seems to use `getIcon`.
-               I'll define a simple `getIcon` or use the one from `CardRow1` logic if applicable.
-               Actually, checking `types.d.ts`, `ReminderItem` has `type`.
-               I'll add a helper `getIcon` inside `UpComingReminder` or just use the icon from `getCardStyleAndIcon`?
-               But `getCardStyleAndIcon` returns a complex object, `getIcon` seems to return just the JSX.
-               I'll assume `getIcon` might be a helper I need to add or it was a hallucination in the "original" view if I didn't see it?
-               No, `view_file` showed exact content. `getIcon` was used but not defined.
-               This implies the user's current code might have errors or I missed an import? 
-               But imports are at the top.
-               I will add a `getIcon` helper function to make it work and strict type it.
-            */
-              getCardStyleAndIcon(item.title).icon
-            }
+            {getCardStyleAndIcon(item.title).icon}
           </div>
           <span className={`${subColor} text-[10px] font-bold`}>
             {item.subtitle || "Reminder"}
@@ -309,7 +288,6 @@ const UpComingReminder = () => {
           </div>
 
           <div className="flex flex-col xlg:flex-row gap-8">
-            {/* Left Column: Reminders */}
             <div className="flex-1">
               <div className="flex items-center justify-between">
                 <h2 className="text-reminderTitle text-[25px] font-inter font-bold mb-6">
@@ -359,9 +337,7 @@ const UpComingReminder = () => {
               </div>
             </div>
 
-            {/* Right Column: Sidebar */}
             <div className="w-full xlg:w-[320px] flex flex-col gap-6 font-inter">
-              {/* Reminder Preferences */}
               <div className="bg-reminderPreferencesBg border border-reminderPreferencesBorder rounded-xl p-6 relative">
                 <div className="flex justify-between items-center mb-6">
                   <h3 className="text-reminderPrefTitle text-[17px] font-bold">
@@ -398,7 +374,6 @@ const UpComingReminder = () => {
                     </span>
                     <BsToggleOn className="text-reminderCardDark/80 text-3xl" />
                   </div>
-                  {/* Dropdown for default time */}
                   <div className="flex justify-between items-center mt-2 p-2 rounded hover:bg-gray-50 cursor-pointer">
                     <span className="text-reminderPrefLabel text-[14px] font-bold">
                       Default Reminder Time
@@ -408,7 +383,6 @@ const UpComingReminder = () => {
                 </div>
               </div>
 
-              {/* Completion Rate */}
               <div className="bg-reminderCompletionBg border border-reminderCompletionBorder rounded-[10px] p-6 h-[300px] flex flex-col items-center justify-center">
                 <h3 className="text-reminderCompletionText text-[17px] font-bold mb-6 self-start w-full text-center">
                   Completion Rate
@@ -444,7 +418,6 @@ const UpComingReminder = () => {
           </div>
         </div>
 
-        {/* Modal */}
         {isModalOpen && (
           <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
             <div className="bg-white rounded-xl p-8 w-[400px] shadow-2xl relative font-inter">

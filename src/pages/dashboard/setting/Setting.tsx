@@ -9,13 +9,7 @@ const Setting = () => {
   const {
     darkMode,
     toggleDarkMode,
-    emailNotifications,
-    toggleEmailNotifications,
-    pushNotifications,
-    togglePushNotifications,
     defaultCurrency,
-    twoFactorAuth,
-    toggleTwoFactorAuth,
     newPassword,
     setNewPassword,
     confirmPassword,
@@ -28,14 +22,11 @@ const Setting = () => {
       <div className="min-h-screen bg-settingPageBg">
         <DashboardHeader />
         <div className="mt-8 flex flex-col gap-8 px-4 lg:flex-row lg:px-8">
-          {/* Left Column */}
           <div className="flex flex-1 flex-col gap-8">
             <div className="flex flex-col gap-4">
               <h1 className="font-inter text-[25px] font-bold text-settingTitle">
                 General Settings
               </h1>
-              {/* Note: User asked for search "below title" based on "search style:" after title. 
-                  But screenshot shows it might be near. Design: Search Bar below name. */}
               <div className="flex h-[45px] w-full max-w-[400px] items-center rounded-[200px] border border-settingSearchBorder bg-transparent px-4">
                 <input
                   type="text"
@@ -46,19 +37,16 @@ const Setting = () => {
               </div>
             </div>
 
-            {/* General Preferences */}
             <div className="flex flex-col gap-4">
               <h2 className="font-inter text-[17px] font-bold text-settingSectionTitle">
                 General Preferences
               </h2>
               <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
-                {/* Card 1 */}
                 <div className="flex flex-col justify-between rounded-[10px] border border-settingCardBorder bg-settingCardBg p-4">
                   <div className="flex items-center justify-between">
                     <span className="font-inter text-[13px] font-bold text-settingTextDark">
                       Dark Mode
                     </span>
-                    {/* Toggle Mock */}
                     <div
                       className={`h-4 w-8 rounded-full ${
                         darkMode ? "bg-black" : "bg-gray-300"
@@ -76,7 +64,6 @@ const Setting = () => {
                   </div>
                 </div>
 
-                {/* Card 2 */}
                 <div className="flex flex-col justify-between rounded-[9px] border-2 border-settingCardBorder2 bg-settingCardBg2 p-4">
                   <div className="mb-2 font-inter text-[12px] font-bold text-settingTextMuted">
                     Push Notifications
@@ -87,13 +74,11 @@ const Setting = () => {
                     readOnly
                     className="h-[35px] w-full rounded-[5px] bg-settingInputBg px-3 font-inter text-[12px] text-settingInputText outline-none"
                   />
-                  {/* Encit NifiGdns ? Typo in prompt, mimicking layout */}
                   <div className="mt-2 text-[10px] text-gray-400">
                     Encit NifiGdns
                   </div>
                 </div>
 
-                {/* Card 3 */}
                 <div className="flex flex-col justify-between rounded-[7px] border border-settingCardBorder3 bg-settingCardBg2 p-4">
                   <div className="flex items-center justify-between mb-4">
                     <span className="font-inter text-[13px] font-bold text-settingTextDark">
@@ -107,7 +92,6 @@ const Setting = () => {
               </div>
             </div>
 
-            {/* Security Section (Left) */}
             <div className="flex flex-col gap-4">
               <h2 className="font-inter text-[17px] font-bold text-settingSectionTitle">
                 Security
@@ -135,16 +119,9 @@ const Setting = () => {
                     Change Password
                   </button>
                 </div>
-
-                {/* <div className="flex items-center justify-between mt-2">
-                  <span className="font-inter text-[15px] font-bold text-settingPlaceholder">
-                    two-Factor Authantication
-                  </span>
-                </div> */}
               </div>
             </div>
 
-            {/* Action Buttons */}
             <div className="flex gap-4 mt-4">
               <button className="bg-settingButtonSaveBg text-settingButtonSaveText rounded-[5px] px-8 py-3 font-inter text-[13px] font-bold shadow-lg">
                 Save Changes
@@ -155,9 +132,7 @@ const Setting = () => {
             </div>
           </div>
 
-          {/* Right Column */}
           <div className="flex w-full flex-col gap-8 lg:w-[350px]">
-            {/* Credit Card Image */}
             <div className="w-full">
               <img
                 src={danielleImg}
@@ -166,7 +141,6 @@ const Setting = () => {
               />
             </div>
 
-            {/* Security (Right) */}
             <div className="flex flex-col gap-2">
               <h2 className="font-inter text-[17px] font-bold text-settingSectionTitle">
                 Security
@@ -185,7 +159,6 @@ const Setting = () => {
               </div>
             </div>
 
-            {/* App Integrations */}
             <div className="flex flex-col gap-2">
               <h2 className="font-inter text-[17px] font-bold text-settingIntegrationTitle">
                 App Integrations
@@ -204,7 +177,6 @@ const Setting = () => {
               </div>
             </div>
 
-            {/* Subscription Tier */}
             <div className="flex flex-col gap-2">
               <h2 className="font-inter text-[14px] font-bold text-settingSubscriptionTitle">
                 Subscription Tier

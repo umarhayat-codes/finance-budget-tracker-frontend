@@ -60,7 +60,6 @@ const AddBudge: React.FC<AddBudgeProps> = () => {
   return (
     <>
       <div className="flex w-full flex-col justify-between gap-4 py-6 md:flex-row md:items-center">
-        {/* Header Text */}
         <div className="flex flex-col gap-1">
           <h1 className="font-inter text-[20px] font-bold text-transactionTitle">
             Budge
@@ -70,9 +69,7 @@ const AddBudge: React.FC<AddBudgeProps> = () => {
           </p>
         </div>
 
-        {/* Action Buttons */}
         <div className="flex flex-wrap items-center gap-3">
-          {/* Month/Year Filter */}
           <div className="relative" ref={monthRef}>
             <Button
               onClick={() => setIsMonthDropdownOpen(!isMonthDropdownOpen)}
@@ -101,7 +98,6 @@ const AddBudge: React.FC<AddBudgeProps> = () => {
               </span>
             </Button>
 
-            {/* Dropdown Menu */}
             {isMonthDropdownOpen && (
               <div className="absolute top-full left-0 mt-2 w-40 rounded-lg border border-gray-200 bg-white shadow-lg z-50 max-h-60 overflow-y-auto">
                 {months.map((month) => (
@@ -124,7 +120,6 @@ const AddBudge: React.FC<AddBudgeProps> = () => {
             )}
           </div>
 
-          {/* Export Button */}
           <Button
             className="rounded-lg border-[0.86px] border-exportBorder bg-exportBg px-4 py-2 font-manrope text-[10px] font-medium text-transactionTitle hover:bg-gray-100"
             leftIcon={<DownloadIcon size={14} />}
@@ -132,7 +127,6 @@ const AddBudge: React.FC<AddBudgeProps> = () => {
             <span>Export</span>
           </Button>
 
-          {/* Set New Budget Button */}
           <Button
             onClick={openModal}
             className="rounded-lg border-[0.86px] border-addBtnBorder bg-addBtnBg px-4 py-2 font-manrope text-[10px] font-medium text-addBtnText hover:bg-black/90 transition-all"
@@ -143,11 +137,9 @@ const AddBudge: React.FC<AddBudgeProps> = () => {
         </div>
       </div>
 
-      {/* Modal */}
       {isModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm p-4">
           <div className="w-full max-w-[500px] rounded-2xl bg-white p-6 shadow-2xl animate-fade-in relative">
-            {/* Close Button */}
             <button
               onClick={closeModal}
               className="absolute right-4 top-4 text-textGray hover:text-black transition-colors"
@@ -160,7 +152,6 @@ const AddBudge: React.FC<AddBudgeProps> = () => {
             </h2>
 
             <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-              {/* Month Selection */}
               <div className="flex flex-col gap-1">
                 <label className="font-manrope text-[12px] font-semibold text-transactionTitle">
                   Select Month
@@ -196,7 +187,6 @@ const AddBudge: React.FC<AddBudgeProps> = () => {
                 </select>
               </div>
 
-              {/* Year Selection */}
               <div className="flex flex-col gap-1">
                 <label className="font-manrope text-[12px] font-semibold text-transactionTitle">
                   Select Year
@@ -226,15 +216,16 @@ const AddBudge: React.FC<AddBudgeProps> = () => {
                   <option value="" disabled>
                     Select category
                   </option>
-                  {categories.map((cat) => (
-                    <option key={cat.id} value={cat.name}>
-                      {cat.name}
-                    </option>
-                  ))}
+                  {categories
+                    .filter((cat) => !cat.type || cat.type === "expense")
+                    .map((cat) => (
+                      <option key={cat.id} value={cat.name}>
+                        {cat.name}
+                      </option>
+                    ))}
                 </select>
               </div>
 
-              {/* Budget Amount */}
               <div className="flex flex-col gap-1">
                 <label className="font-manrope text-[12px] font-semibold text-transactionTitle">
                   Budget Amount
@@ -255,7 +246,6 @@ const AddBudge: React.FC<AddBudgeProps> = () => {
                 </div>
               </div>
 
-              {/* Submit Button */}
               <Button
                 type="submit"
                 className="mt-2 w-full justify-center rounded-lg bg-black py-3 font-manrope text-[14px] font-bold text-white transition-opacity hover:opacity-90"

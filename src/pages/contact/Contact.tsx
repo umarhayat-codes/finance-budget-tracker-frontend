@@ -3,7 +3,6 @@ import React from "react";
 const Contact: React.FC = () => {
   return (
     <div className="bg-black flex flex-col items-center pt-20 pb-32 px-6">
-      {/* Badge */}
       <div className="flex items-center gap-2 mb-8">
         <span className="w-2 h-2 rounded-full bg-primary"></span>
         <span className="text-primary font-manrope text-[16px]">
@@ -11,7 +10,6 @@ const Contact: React.FC = () => {
         </span>
       </div>
 
-      {/* Main Heading Section */}
       <div className="text-center mb-16 max-w-2xl">
         <h1 className="font-manrope font-medium text-[48px] text-white leading-tight mb-4">
           We’re here to help
@@ -22,7 +20,6 @@ const Contact: React.FC = () => {
         </p>
       </div>
 
-      {/* Form Container */}
       <div className="bg-formBg w-full max-w-[600px] min-h-[580.58px] rounded-[20px] p-[25px] flex flex-col gap-6 shadow-2xl transition-all hover:shadow-primary/5">
         <h2 className="font-manrope font-medium text-[24px] text-white">
           Write us a message
@@ -30,7 +27,6 @@ const Contact: React.FC = () => {
 
         <form className="flex flex-col gap-6">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {/* Full Name */}
             <div className="flex flex-col gap-2">
               <label className="font-manrope font-medium text-[16px] text-white">
                 Full name
@@ -41,7 +37,6 @@ const Contact: React.FC = () => {
                 className="bg-inputBg rounded-[10px] p-4 text-white font-manrope font-normal text-[14px] placeholder:text-zinc-500 border-none outline-none focus:ring-1 focus:ring-primary/30 transition-all"
               />
             </div>
-            {/* Email */}
             <div className="flex flex-col gap-2">
               <label className="font-manrope font-medium text-[16px] text-white">
                 Email
@@ -54,7 +49,6 @@ const Contact: React.FC = () => {
             </div>
           </div>
 
-          {/* Reason for contact */}
           <div className="flex flex-col gap-2">
             <label className="font-manrope font-medium text-[16px] text-white">
               Reason for contact
@@ -66,7 +60,6 @@ const Contact: React.FC = () => {
             />
           </div>
 
-          {/* How can we help you? */}
           <div className="flex flex-col gap-2">
             <label className="font-manrope font-medium text-[16px] text-white">
               How can we help you?
@@ -78,7 +71,6 @@ const Contact: React.FC = () => {
             />
           </div>
 
-          {/* Privacy Policy */}
           <div className="flex items-center gap-3">
             <input
               type="checkbox"
@@ -93,7 +85,6 @@ const Contact: React.FC = () => {
             </label>
           </div>
 
-          {/* Submit Button */}
           <button
             type="submit"
             className="bg-primary hover:bg-primary/90 rounded-[10px] w-full py-4 text-buttonText font-manrope font-semibold text-[15px] transition-all transform active:scale-[0.98]"

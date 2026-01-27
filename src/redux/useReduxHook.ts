@@ -9,7 +9,6 @@ import {
   BudgetApiResponse,
   BudgetCheckParams,
   ExpenseValidationResult,
-  IncomeCategory,
 } from "../../types";
 import { loadTransactions, setSelectedMonth } from "./slice/TransactionSlice";
 
@@ -210,8 +209,6 @@ export const useTransactions = (): Omit<
     dispatch(setSelectedMonth(month));
   };
 
-  const incomeCategories: IncomeCategory[] = ["Salary", "Freelancing"];
-
   return {
     transactions,
     selectedMonth,
@@ -219,8 +216,7 @@ export const useTransactions = (): Omit<
     totalTransaction: totalVolume,
     totalIncome: netIncome,
     totalExpense: rawExpense,
-    totalBalance: netIncome, // Using netIncome as balance
-    incomeCategories,
+    totalBalance: netIncome,
     validateExpense,
     totalComparison,
     expenseComparison,

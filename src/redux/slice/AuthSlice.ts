@@ -7,7 +7,6 @@ const initialState: AuthState = {
   isInitialized: false,
 };
 
-// Async thunk to handle server-side logout (clearing httpOnly cookie)
 export const logoutUser = createAsyncThunk(
   "auth/logoutUser",
   async (_, { rejectWithValue }) => {
@@ -40,7 +39,7 @@ const authSlice = createSlice({
     },
     logout: (state) => {
       state.authorized = false;
-      state.isInitialized = true; // Still initialized, just logged out
+      state.isInitialized = true;
     },
     setAuthorized: (state, action: PayloadAction<boolean>) => {
       state.authorized = action.payload;
@@ -53,7 +52,6 @@ const authSlice = createSlice({
     builder.addCase(logoutUser.fulfilled, (state) => {
       state.authorized = false;
     });
-    // Can handle pending/rejected if needed
   },
 });
 

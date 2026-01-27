@@ -20,7 +20,6 @@ const BudgetGoal: React.FC = () => {
 
   return (
     <div className="bg-white border-[0.95px] border-budgetGoalBorder rounded-[13px] p-6 font-poppins shadow-sm">
-      {/* Header */}
       <div className="flex flex-col md:flex-row md:items-start justify-between gap-4 mb-6">
         <div>
           <h2 className="text-[17px] font-bold text-budgetGoalTextMain leading-tight">
@@ -33,7 +32,6 @@ const BudgetGoal: React.FC = () => {
         <FiMoreVertical className="text-budgetGoalTextSub cursor-pointer text-xl" />
       </div>
 
-      {/* Action Buttons */}
       <div className="flex flex-wrap items-center gap-3 mb-10">
         <button
           onClick={onAddNewGoal}
@@ -52,11 +50,9 @@ const BudgetGoal: React.FC = () => {
         </button>
       </div>
 
-      {/* Goals List */}
       <div className="space-y-12">
         {budgetGoals.map((goal, index) => (
           <div key={goal.id} className="relative">
-            {/* Goal Header */}
             <div className="flex flex-col md:flex-row md:items-center justify-between flex-wrap gap-y-2 mb-4">
               <h3 className="text-[25px] font-semibold text-budgetGoalTextMain">
                 {goal.name}
@@ -78,10 +74,9 @@ const BudgetGoal: React.FC = () => {
               </div>
             </div>
 
-            {/* Goal Details */}
             <div className="flex items-center gap-3 mb-5">
               <div className="flex items-center gap-2 px-4 py-2 bg-budgetGoalIconBg2/40 rounded-full">
-                <div className="w-2.5 h-2.5 bg-[#7B9069] rounded-full" />
+                <div className="w-2.5 h-2.5 bg-recentSortBg rounded-full" />
                 <span className="text-[13px] font-semibold text-budgetGoalTextMain">
                   {goal.status}
                 </span>
@@ -101,21 +96,20 @@ const BudgetGoal: React.FC = () => {
               </div>
             </div>
 
-            {/* Progress */}
             <div className="mb-2 flex justify-between items-end">
               <span className="text-[9px] font-medium italic text-budgetGoalTextMain">
                 {goal.completedPercentage}% Completed
               </span>
               <div className="text-[11px] font-normal text-budgetGoalTextMain">
+                <span className="text-budgetGoalTextSub">Complete: </span>
                 <span className="font-bold">IDR {goal.currentAmount}</span>{" "}
-                <span className="text-budgetGoalTextSub">/</span>{" "}
+                <span className="text-budgetGoalTextSub ml-2">Remain: </span>
                 <span className="font-bold text-budgetGoalTextSub">
-                  IDR {goal.targetAmount}
+                  IDR {goal.remainingAmount}
                 </span>
               </div>
             </div>
 
-            {/* Progress Bar */}
             <div className="w-full h-3 bg-budgetGoalBorder rounded-full overflow-hidden">
               <div
                 className="h-full bg-budgetGoalTextMain rounded-full"
@@ -123,7 +117,6 @@ const BudgetGoal: React.FC = () => {
               />
             </div>
 
-            {/* Separator - Only show between items */}
             {index < budgetGoals.length - 1 && (
               <div className="mt-12 border-b-[0.95px] border-budgetGoalBorder opacity-50" />
             )}

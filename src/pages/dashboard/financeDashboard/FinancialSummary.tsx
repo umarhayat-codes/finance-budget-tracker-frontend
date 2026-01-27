@@ -1,20 +1,25 @@
 import React from "react";
 import { useFinanceHook } from "./useFinanceHook";
 import { BsThreeDotsVertical } from "react-icons/bs";
-import {
-  FiBriefcase,
-  FiShoppingCart,
-  FiTarget,
-  FiDollarSign,
-} from "react-icons/fi";
-import {
-  MdOutlineAccountBalanceWallet,
-  MdOutlineAttachMoney,
-} from "react-icons/md";
+import { FiShoppingCart, FiTarget } from "react-icons/fi";
+import { MdOutlineAttachMoney } from "react-icons/md";
 import { IoWalletOutline } from "react-icons/io5";
 
 const FinancialSummary: React.FC = () => {
-  const { summaryCards } = useFinanceHook();
+  const { summaryCards, loading } = useFinanceHook();
+
+  if (loading) {
+    return (
+      <div className="bg-white rounded-[13px] border-[0.95px] border-monthlyCardBorder p-6 h-auto xlg:h-1/2 flex items-center justify-center font-poppins">
+        <div className="flex flex-col items-center gap-2">
+          <div className="w-8 h-8 border-4 border-recentSortBg border-t-transparent rounded-full animate-spin"></div>
+          <p className="text-[11px] font-medium text-summarySubtitle font-poppins">
+            Loading summary...
+          </p>
+        </div>
+      </div>
+    );
+  }
 
   const getIcon = (type: string) => {
     switch (type) {
@@ -32,7 +37,7 @@ const FinancialSummary: React.FC = () => {
   };
 
   return (
-    <div className="bg-white rounded-[13px] border-[0.95px] border-monthlyCardBorder p-6 h-1/2 flex flex-col font-poppins">
+    <div className="bg-white rounded-[13px] border-[0.95px] border-monthlyCardBorder p-6 h-auto xlg:h-1/2 flex flex-col font-poppins">
       <div className="flex justify-between items-start mb-6">
         <div>
           <h2 className="text-[17px] font-bold text-summaryTitle font-poppins">
@@ -51,7 +56,7 @@ const FinancialSummary: React.FC = () => {
         {summaryCards.map((card) => (
           <div
             key={card.id}
-            className={`rounded-[13px] border-[0.95px] ${card.borderColor} ${card.bgColor} p-3 flex flex-col justify-between h-auto lg:min-h-[100px]`}
+            className={`rounded-[13px] border-[0.95px] ${card.borderColor} ${card.bgColor} p-3 mb-2 flex flex-col justify-between h-auto lg:min-h-[120px]`}
           >
             <div className="flex justify-between items-start">
               <div className="flex flex-col">
@@ -71,14 +76,11 @@ const FinancialSummary: React.FC = () => {
                   card.type === "income" ? "bg-gray-100" : "bg-white/20"
                 }`}
               >
-                {/* Icons - simplified for now */}
-                {/* Specific icons based on design would be imported or SVG, using generic for now */}
                 <div
                   className={
                     card.type === "income" ? "text-gray-600" : "text-white"
                   }
                 >
-                  {/* Placeholder icon shape */}
                   <div className="w-4 h-4 rounded-full border border-current flex items-center justify-center text-[10px]">
                     $
                   </div>

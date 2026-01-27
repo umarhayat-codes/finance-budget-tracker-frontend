@@ -1,7 +1,4 @@
 import React from "react";
-import FONTS from "../../constants/font";
-import COLORS from "../../constants/color";
-
 import debitCardImg from "../../assets/debit_card_image.png";
 import balanceCardImg from "../../assets/balance_card_image.png";
 import dailyLimitImg from "../../assets/daily_limit_card.png";
@@ -32,21 +29,12 @@ const ClarioWorkSection: React.FC = () => {
   ];
 
   return (
-    <section
-      className="w-full py-20 px-6 md:px-12 flex flex-col items-center"
-      style={{ backgroundColor: COLORS.black, fontFamily: FONTS.family }}
-    >
+    <section className="w-full py-20 px-6 md:px-12 flex flex-col items-center font-manrope bg-black">
       <div className="max-w-[1240px] w-full">
-        {/* Watch Video Link */}
         <div className="pt-[90px] mb-4 flex justify-center md:justify-start">
           <a
             href="#watch-video"
-            className="flex items-center gap-2 transition-opacity hover:opacity-80"
-            style={{
-              color: COLORS.primary,
-              fontSize: "16px",
-              fontWeight: FONTS.weight.medium,
-            }}
+            className="text-[16px] font-medium font-manrope text-primary flex items-center gap-2 transition-opacity hover:opacity-80"
           >
             Watch video
             <svg
@@ -61,23 +49,16 @@ const ClarioWorkSection: React.FC = () => {
           </a>
         </div>
 
-        {/* Section Heading */}
-        <h2
-          className="text-[32px] md:text-[48px] text-center md:text-left leading-tight mb-12"
-          style={{ color: COLORS.textWhite, fontWeight: FONTS.weight.medium }}
-        >
+        <h2 className="font-manrope font-medium text-textWhite text-[32px] md:text-[48px] text-center md:text-left leading-tight mb-12">
           How Clario works
         </h2>
 
-        {/* Cards Grid */}
         <div className="flex flex-wrap md:flex-nowrap gap-[20px] pt-[40px] justify-center md:justify-start">
           {cards.map((card, index) => (
             <div
               key={index}
-              className="group flex flex-col p-[10px] rounded-[30px] transition-transform hover:scale-[1.02] w-full max-w-[320px] h-[513.19px]"
-              style={{ backgroundColor: "#0D0D0D" }} // Slightly lighter than black to distinguish cards
+              className="group bg-cardBg flex flex-col p-[10px] rounded-[30px] transition-transform hover:scale-[1.02] w-full max-w-[320px] h-[513.19px]"
             >
-              {/* Image Container */}
               <div className="relative w-full aspect-[300/250] overflow-hidden rounded-[20px] bg-black flex items-center justify-center p-4">
                 <img
                   src={card.image}
@@ -86,47 +67,24 @@ const ClarioWorkSection: React.FC = () => {
                 />
               </div>
 
-              {/* Card Content */}
               <div className="flex flex-col mt-6">
-                {/* Step Button */}
                 <div className="flex">
                   <span
-                    className="px-4 py-1.5 rounded-full flex items-center gap-2"
+                    className="text-[16px] bg-buttonBg text-primary font-medium font-manrope px-4 py-1.5 rounded-full flex items-center gap-2"
                     style={{
-                      backgroundColor: COLORS.buttonBg,
-                      color: COLORS.primary,
-                      fontSize: "16px",
-                      fontWeight: FONTS.weight.medium,
-                      boxShadow: `0 0 10px ${COLORS.shadow}`,
+                      boxShadow: `0 0 10px #8CFF2F03`,
                     }}
                   >
-                    <span
-                      className="w-1.5 h-1.5 rounded-full"
-                      style={{ backgroundColor: COLORS.primary }}
-                    ></span>
+                    <span className="w-1.5 h-1.5 rounded-full bg-primary"></span>
                     {card.step}
                   </span>
                 </div>
 
-                {/* Heading */}
-                <h3
-                  className="text-[20px] md:text-[24px] pt-[10px]"
-                  style={{
-                    color: COLORS.textWhite,
-                    fontWeight: FONTS.weight.medium,
-                  }}
-                >
+                <h3 className="text-textWhite font-medium text-[20px] md:text-[24px] pt-[10px]">
                   {card.title}
                 </h3>
 
-                {/* Description */}
-                <p
-                  className="text-[14px] md:text-[16px] pt-[10px] opacity-70"
-                  style={{
-                    color: COLORS.textWhite,
-                    fontWeight: FONTS.weight.regular,
-                  }}
-                >
+                <p className="text-textWhite font-regular text-[14px] md:text-[16px] pt-[10px] opacity-70">
                   {card.description}
                 </p>
               </div>

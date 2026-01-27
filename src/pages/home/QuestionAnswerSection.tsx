@@ -3,7 +3,6 @@ import { FiPlus, FiMinus } from "react-icons/fi";
 
 import { IconProps, FAQItem } from "types";
 
-// Helper to resolve React 19 / react-icons type mismatch
 const Icon = ({ icon: IconComponent, size }: IconProps) => (
   <IconComponent size={size} />
 );
@@ -57,7 +56,6 @@ const QuestionAnswerSection: React.FC = () => {
   return (
     <section className="bg-black text-white py-24 px-6 md:px-12 xlg:px-[200px] font-manrope">
       <div className="max-w-[1000px] mx-auto">
-        {/* Header Section */}
         <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-16 gap-8">
           <div>
             <h2 className="text-[40px] md:text-[48px] font-medium leading-tight mb-4">
@@ -75,7 +73,6 @@ const QuestionAnswerSection: React.FC = () => {
           </div>
         </div>
 
-        {/* Accordion List */}
         <div className="space-y-4">
           {faqs.map((faq) => {
             const isOpen = openId === faq.id;

@@ -24,7 +24,7 @@ const BreakDownCategories: React.FC = () => {
     {
       id: "3",
       label: "Aoger Hi Dreoord Btons",
-      color: "#5B7511", // Darker green
+      color: "#5B7511",
       value: 18,
     },
     {
@@ -43,7 +43,6 @@ const BreakDownCategories: React.FC = () => {
 
   return (
     <div className="flex flex-col gap-6 rounded-[10px] border border-categorySidebarBorder bg-categorySidebarBg p-6 h-full shadow-sm">
-      {/* Header */}
       <div className="flex items-center justify-between">
         <h2 className="font-inter font-bold text-[15px] text-categoryTitleSidebar">
           Category Breakdown
@@ -53,7 +52,6 @@ const BreakDownCategories: React.FC = () => {
         </button>
       </div>
 
-      {/* Donut Chart */}
       <div className="h-[250px] w-full relative">
         <ResponsiveContainer width="100%" height="100%">
           <PieChart>
@@ -84,9 +82,7 @@ const BreakDownCategories: React.FC = () => {
         </ResponsiveContainer>
       </div>
 
-      {/* Custom Legend */}
       <div className="flex flex-col gap-4">
-        {/* Top Legend Item (Special) */}
         <div className="flex items-start justify-between">
           <div className="flex items-center gap-3">
             <div className="w-8 h-8 rounded-full bg-[#FAFAFA] flex items-center justify-center text-xs text-categoryTextSecondary">
@@ -111,7 +107,6 @@ const BreakDownCategories: React.FC = () => {
           </div>
         </div>
 
-        {/* Regular List */}
         <div className="flex flex-col gap-3 mt-2">
           {data.slice(1).map((item) => (
             <div key={item.id} className="flex items-center gap-2">

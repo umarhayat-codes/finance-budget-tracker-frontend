@@ -8,20 +8,17 @@ const WishList: React.FC = () => {
       <Header />
       <div className="w-full min-h-screen bg-black flex flex-col items-center justify-center p-4">
         <div className="flex flex-col items-center text-center max-w-[800px] w-full">
-          {/* Main Heading */}
           <h1 className="font-manrope font-medium text-[64px] leading-tight text-white mb-6">
             We’re getting
             <br />
             ready to launch
           </h1>
 
-          {/* Sub Heading */}
           <p className="font-manrope font-normal text-[18px] text-white max-w-[500px] mb-12">
             Join our waitlist to get early access to Clario’s next-gen features,
             exclusive updates.
           </p>
 
-          {/* Form Card */}
           <div className="w-full max-w-[500px] bg-wishlistCardBg rounded-[20px] p-6 flex flex-col gap-4">
             <input
               type="email"
@@ -33,7 +30,6 @@ const WishList: React.FC = () => {
             </button>
           </div>
 
-          {/* Footer Text */}
           <p className="font-manrope font-normal text-[14px] text-white mt-8 opacity-60">
             Limited spots available before public release.
           </p>

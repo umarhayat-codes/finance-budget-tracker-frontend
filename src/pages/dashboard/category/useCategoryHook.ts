@@ -65,6 +65,7 @@ export const useCategoryHook = () => {
   const [formData, setFormData] = useState<CategoryFormData>({
     categoryName: "",
     amount: "",
+    type: "expense",
   });
   const [savingFormData, setSavingFormData] = useState<SavingFormData>({
     title: "",
@@ -106,7 +107,6 @@ export const useCategoryHook = () => {
     } catch (err) {
       const error = err as AxiosError<ApiErrorResponse>;
       toast.error("Failed to fetch categories");
-      console.error("Error fetching categories:", err);
       setError("Failed to fetch categories");
     } finally {
       setLoading(false);
@@ -144,7 +144,6 @@ export const useCategoryHook = () => {
     } catch (err) {
       const error = err as AxiosError<ApiErrorResponse>;
       toast.error("Failed to fetch data");
-      console.error("Error fetching data:", err);
       setError("Failed to fetch data");
     } finally {
       setLoading(false);
@@ -158,7 +157,7 @@ export const useCategoryHook = () => {
   const handleOpenModal = () => setIsModalOpen(true);
   const handleCloseModal = () => {
     setIsModalOpen(false);
-    setFormData({ categoryName: "", amount: "" });
+    setFormData({ categoryName: "", amount: "", type: "expense" });
   };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -191,7 +190,6 @@ export const useCategoryHook = () => {
       toast.success("Saving created successfully ✅");
       handleCloseSavingModal();
     } catch (err) {
-      console.error("Error creating saving:", err);
       toast.error("Failed to create saving");
     }
   };
@@ -202,6 +200,7 @@ export const useCategoryHook = () => {
       const response = await api.post("/categories", {
         name: formData.categoryName,
         amount: parseFloat(formData.amount.replace(/[^0-9.]/g, "")),
+        type: formData.type,
       });
 
       const newCategory = mapApiToCardData(response.data);
@@ -211,8 +210,11 @@ export const useCategoryHook = () => {
     } catch (err) {
       const error = err as AxiosError<ApiErrorResponse>;
       toast.error("Failed to create category");
-      console.error("Error creating category:", err);
     }
+  };
+
+  const handleTypeChange = (type: "income" | "expense") => {
+    setFormData((prev) => ({ ...prev, type }));
   };
 
   return {
@@ -224,6 +226,7 @@ export const useCategoryHook = () => {
     handleOpenModal,
     handleCloseModal,
     handleInputChange,
+    handleTypeChange, // Add this
     handleCreateCategory,
     PlusIcon,
     savings,

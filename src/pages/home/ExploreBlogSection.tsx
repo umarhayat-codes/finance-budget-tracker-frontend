@@ -8,7 +8,6 @@ const ExploreBlogSection: React.FC = () => {
   return (
     <section className="bg-black py-20 px-4 md:px-10 lg:px-20">
       <div className="w-full mx-auto xlg:px-[200px] xlg:max-w-[1400px]">
-        {/* Header */}
         <div className="flex justify-between items-center mb-10">
           <h2 className="text-white font-manrope font-medium text-[32px] md:text-[40px] lg:text-[48px] leading-tight">
             Explore the blog
@@ -18,8 +17,7 @@ const ExploreBlogSection: React.FC = () => {
           </button>
         </div>
 
-        {/* Upper Card */}
-        <div className="bg-[#0D0D0D] rounded-[40px] overflow-hidden flex flex-col lg:flex-row items-center p-[10px] mb-8 border border-[#1F1F1F]">
+        <div className="bg-[#0D0D0D] rounded-[40px] overflow-hidden flex flex-col lg:flex-row items-center p-[10px] mb-8 border border-cardBorder">
           <div className="w-full lg:w-[470px] h-auto lg:h-[400px] flex-shrink-0">
             <img
               src={explore_blog_man_1}
@@ -49,10 +47,8 @@ const ExploreBlogSection: React.FC = () => {
           </div>
         </div>
 
-        {/* Three Cards Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {/* Card 1 */}
-          <div className="bg-[#0D0D0D] rounded-[40px] p-[10px] border border-[#1F1F1F] flex flex-col h-full lg:w-[320px] lg:h-[482.59px] mx-auto">
+          <div className="bg-[#0D0D0D] rounded-[40px] p-[10px] border border-cardBorder flex flex-col h-full lg:w-[320px] lg:h-[482.59px] mx-auto">
             <div className="w-full h-[250px] lg:h-[290px] mb-6">
               <img
                 src={explore_blog_man_2}
@@ -79,8 +75,7 @@ const ExploreBlogSection: React.FC = () => {
             </div>
           </div>
 
-          {/* Card 2 */}
-          <div className="bg-[#0D0D0D] rounded-[40px] p-[10px] border border-[#1F1F1F] flex flex-col h-full lg:w-[320px] lg:h-[482.59px] mx-auto">
+          <div className="bg-cardBg rounded-[40px] p-[10px] border border-cardBorder flex flex-col h-full lg:w-[320px] lg:h-[482.59px] mx-auto">
             <div className="w-full h-[250px] lg:h-[290px] mb-6">
               <img
                 src={explore_blog_man_3}
@@ -107,7 +102,6 @@ const ExploreBlogSection: React.FC = () => {
             </div>
           </div>
 
-          {/* Card 3 */}
           <div className="bg-[#0D0D0D] rounded-[40px] p-[10px] border border-[#1F1F1F] flex flex-col h-full lg:w-[320px] lg:h-[482.59px] mx-auto">
             <div className="w-full h-[250px] lg:h-[290px] mb-6">
               <img

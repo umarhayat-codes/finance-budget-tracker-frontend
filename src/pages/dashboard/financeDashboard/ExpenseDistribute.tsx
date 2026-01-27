@@ -1,14 +1,8 @@
 import React from "react";
 import { FiMoreVertical } from "react-icons/fi";
-import {
-  PieChart,
-  Pie,
-  Cell,
-  ResponsiveContainer,
-  PieLabelRenderProps,
-} from "recharts";
+import { PieChart, Pie, Cell, ResponsiveContainer } from "recharts";
 import { useFinanceHook } from "./useFinanceHook";
-import { ExpenseDistributionItem, CustomLabelProps } from "../../../../types";
+import { ExpenseDistributionItem } from "../../../../types";
 
 const RADIAN = Math.PI / 180;
 
@@ -17,7 +11,6 @@ const ExpenseDistribute: React.FC = () => {
 
   return (
     <div className="bg-white border-[0.95px] border-budgetGoalBorder rounded-[13px] p-6 font-poppins shadow-sm h-full flex flex-col justify-between">
-      {/* Header */}
       <div className="flex items-start justify-between mb-4">
         <div>
           <h2 className="text-[17px] font-bold text-budgetGoalTextMain leading-tight">
@@ -30,7 +23,6 @@ const ExpenseDistribute: React.FC = () => {
         <FiMoreVertical className="text-budgetGoalTextSub cursor-pointer text-xl" />
       </div>
 
-      {/* Pie Chart Area */}
       <div className="relative flex justify-center items-center py-2 flex-grow">
         <div className="w-full h-[320px]">
           <ResponsiveContainer width="100%" height="100%">
@@ -62,7 +54,6 @@ const ExpenseDistribute: React.FC = () => {
         </div>
       </div>
 
-      {/* Legend */}
       <div className="grid grid-cols-2 gap-y-4 gap-x-2 mt-4 border-t-[0.95px] border-budgetGoalBorder pt-4">
         {expenseDistribution.map((item: ExpenseDistributionItem) => (
           <div key={item.id} className="flex flex-col">
@@ -87,7 +78,6 @@ const ExpenseDistribute: React.FC = () => {
         ))}
       </div>
 
-      {/* Footer Text */}
       <p className="text-[9px] font-normal text-budgetGoalTextSub leading-relaxed mt-4">
         Shows the breakdown of your expenses across different categories.
       </p>

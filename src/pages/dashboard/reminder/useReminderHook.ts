@@ -1,13 +1,16 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import axios from "axios";
 import {
+  ReminderFormData,
   ReminderItem,
   ReminderPreference,
   UseReminderHookResult,
 } from "../../../../types";
 import { toast } from "react-toastify";
+import { useAuth } from "../../../redux/useReduxHook";
 
 export const useReminderHook = (): UseReminderHookResult => {
+  const { user } = useAuth();
   const [preferences, setPreferences] = useState<ReminderPreference[]>([
     {
       id: "1",
@@ -34,6 +37,11 @@ export const useReminderHook = (): UseReminderHookResult => {
       type: "toggle",
     },
   ]);
+  const [loading, setLoading] = useState<boolean>(true);
+
+  const [remindersRow1, setRemindersRow1] = useState<ReminderItem[]>([]);
+  const [remindersRow2, setRemindersRow2] = useState<ReminderItem[]>([]);
+  const [remindersRow3, setRemindersRow3] = useState<ReminderItem[]>([]);
 
   const handlePreferenceToggle = (id: string) => {
     setPreferences((prev) =>
@@ -43,35 +51,14 @@ export const useReminderHook = (): UseReminderHookResult => {
     );
   };
 
-  const [remindersRow1, setRemindersRow1] = useState<ReminderItem[]>([]);
-  const [remindersRow2, setRemindersRow2] = useState<ReminderItem[]>([]);
-  const [remindersRow3, setRemindersRow3] = useState<ReminderItem[]>([]);
-
-  // Assuming user ID is stored/available. For now hardcoded or fetched from context if available.
-  // Using a placeholder ID or retrieving from local storage/auth context would be ideal.
-  // For this task, I will use a dummy ID or passed ID if the user requested passing ID from frontend.
-  // The user said "get data reminder by using user id which id come from frontend".
-  // I will assume a fixed ID for now or grab from localStorage if implemented.
-  // Let's assume a generic user ID or one that matches standard test users.
-  const userId = "65a123456789abcde1234567"; // Placeholder, would come from Auth Context
-
-  useEffect(() => {
-    fetchReminders();
-  }, []);
-
-  const fetchReminders = async () => {
+  const fetchReminders = useCallback(async () => {
+    if (!user?.id) return;
+    setLoading(true);
     try {
       const response = await axios.get(
-        `http://localhost:3000/api/reminder/get/${userId}`,
+        `http://localhost:3000/api/reminder/get/${user.id}`,
       );
       const data: ReminderItem[] = response.data.data;
-
-      // Distribute reminders into rows or just put all in row1 for now as per logic
-      // Or we can distribute them cyclically or based on some property.
-      // Previous logic had them in different rows.
-      // Let's put all in row 1 for simplicity or split them.
-      // The user wants "same styling format". The styling depends on rows in the UI (CardRow1 vs CardGeneric).
-      // I'll put recent ones in row 1, others in row 2/3.
 
       const r1: ReminderItem[] = [];
       const r2: ReminderItem[] = [];
@@ -88,15 +75,24 @@ export const useReminderHook = (): UseReminderHookResult => {
       setRemindersRow3(r3);
     } catch (error) {
       console.error("Failed to fetch reminders", error);
+    } finally {
+      setLoading(false);
     }
-  };
+  }, [user?.id]);
 
-  const addReminder = async (data: {
-    title: string;
-    amount: string;
-    dateStr: string;
-  }) => {
-    let type: ReminderItem["type"] = "rent"; // default
+  useEffect(() => {
+    if (user?.id) {
+      fetchReminders();
+    }
+  }, [user?.id, fetchReminders]);
+
+  const addReminder = async (data: ReminderFormData) => {
+    if (!user?.id) {
+      toast.error("User not authenticated");
+      return;
+    }
+
+    let type = "rent";
     const lowerTitle = data.title.toLowerCase();
 
     if (lowerTitle.includes("credit card")) {
@@ -116,13 +112,12 @@ export const useReminderHook = (): UseReminderHookResult => {
 
     try {
       await axios.post("http://localhost:3000/api/reminder/create", {
-        userId,
+        userId: user.id,
         title: data.title,
         amount: data.amount,
         dateStr: data.dateStr,
         type,
       });
-      // Refresh list
       toast.success("Reminder created successfully");
       fetchReminders();
     } catch (error) {
@@ -137,6 +132,7 @@ export const useReminderHook = (): UseReminderHookResult => {
     remindersRow3,
     preferences,
     completionRate: 85,
+    loading,
     handlePreferenceToggle,
     addReminder,
   };

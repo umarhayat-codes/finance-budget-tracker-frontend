@@ -13,6 +13,7 @@ const AddCategories: React.FC = () => {
     handleOpenModal,
     handleCloseModal,
     handleInputChange,
+    handleTypeChange,
     handleCreateCategory,
     PlusIcon,
     savings,
@@ -34,7 +35,6 @@ const AddCategories: React.FC = () => {
   }
 
   if (error) {
-    console.log("----error----", error);
     return (
       <div className="flex h-64 flex-col items-center justify-center gap-4">
         <p className="text-red-500 font-inter">{error}</p>
@@ -72,9 +72,7 @@ const AddCategories: React.FC = () => {
         </div>
       </div>
 
-      {/* Grid of Cards */}
       <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
-        {/* Render Savings first, then Categories */}
         {savings.map((save) => {
           const Icon = save.icon;
           return (
@@ -178,7 +176,6 @@ const AddCategories: React.FC = () => {
         })}
       </div>
 
-      {/* Saving Modal */}
       {isSavingModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm">
           <div className="relative w-full max-w-md transform rounded-[20px] bg-white p-6 shadow-xl transition-all">
@@ -261,7 +258,6 @@ const AddCategories: React.FC = () => {
         </div>
       )}
 
-      {/* Category Modal */}
       {isModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm">
           <div className="relative w-full max-w-md transform rounded-[20px] bg-white p-6 shadow-xl transition-all">
@@ -280,6 +276,30 @@ const AddCategories: React.FC = () => {
               onSubmit={handleCreateCategory}
               className="flex flex-col gap-4"
             >
+              <div className="flex p-1 bg-gray-100 rounded-lg">
+                <button
+                  type="button"
+                  onClick={() => handleTypeChange("income")}
+                  className={`flex-1 py-2 rounded-md text-[14px] font-medium transition-all ${
+                    formData.type === "income"
+                      ? "bg-white text-green-600 shadow-sm"
+                      : "text-gray-500 hover:text-black"
+                  }`}
+                >
+                  Income
+                </button>
+                <button
+                  type="button"
+                  onClick={() => handleTypeChange("expense")}
+                  className={`flex-1 py-2 rounded-md text-[14px] font-medium transition-all ${
+                    formData.type === "expense"
+                      ? "bg-white text-red-600 shadow-sm"
+                      : "text-gray-500 hover:text-black"
+                  }`}
+                >
+                  Expense
+                </button>
+              </div>
               <div className="flex flex-col gap-2">
                 <label
                   htmlFor="categoryName"

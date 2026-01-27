@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
-import { ProfileState, User } from "../../types";
+import { ProfileState, User, AxiosErrorType } from "../../../types";
 import { setAuthorized, setInitialized, logoutUser } from "./AuthSlice";
 
 const initialState: ProfileState = {
@@ -9,31 +9,30 @@ const initialState: ProfileState = {
   error: null,
 };
 
-// Async thunk to fetch user profile
 export const fetchUserProfile = createAsyncThunk(
   "profile/fetchUserProfile",
   async (_, { dispatch, rejectWithValue }) => {
     try {
-      // Assuming cookie is automatically sent with request
       const response = await axios.get<{ user: User }>(
         "http://localhost:3000/api/auth/me",
         {
           withCredentials: true,
-        }
+        },
       );
       dispatch(setAuthorized(true));
       return response.data.user;
-    } catch (error: any) {
-      if (error.response && error.response.status === 401) {
+    } catch (error: unknown) {
+      const axiosError = error as AxiosErrorType;
+      if (axiosError.response && axiosError.response.status === 401) {
         dispatch(setAuthorized(false));
       }
       return rejectWithValue(
-        error.response?.data?.message || "Failed to fetch profile"
+        axiosError.response?.data?.message || "Failed to fetch profile",
       );
     } finally {
       dispatch(setInitialized(true));
     }
-  }
+  },
 );
 
 const profileSlice = createSlice({

@@ -18,9 +18,8 @@ const Footer: React.FC = () => {
   ];
 
   return (
-    <footer className="bg-[#0D0D0D] py-16 px-6 md:px-12 lg:px-20 border-t border-cardBorder">
+    <footer className="bg-cardBg py-16 px-6 md:px-12 lg:px-20 border-t border-cardBorder">
       <div className="max-w-[1440px] mx-auto xlg:px-[80px] flex flex-col md:flex-row justify-between gap-12 md:gap-8">
-        {/* Left Section - Brand Info */}
         <div className="flex flex-col max-w-[320px]">
           <div className="flex items-center gap-2 mb-6">
             <img
@@ -42,9 +41,7 @@ const Footer: React.FC = () => {
           </p>
         </div>
 
-        {/* Right Section - Menus */}
         <div className="flex gap-16 md:gap-24 lg:gap-32">
-          {/* Quick Menu */}
           <div>
             <h4 className="text-white font-manrope font-medium text-[16px] mb-6">
               Quick Menu
@@ -63,7 +60,6 @@ const Footer: React.FC = () => {
             </ul>
           </div>
 
-          {/* Information */}
           <div>
             <h4 className="text-white font-manrope font-medium text-[16px] mb-6">
               Information
@@ -83,7 +79,6 @@ const Footer: React.FC = () => {
           </div>
         </div>
 
-        {/* Mobile Copyright */}
         <p className="text-white font-manrope font-normal text-[16px] md:hidden mt-8 text-center border-t border-cardBorder pt-8 opacity-60">
           Designed by <span className="text-primary font-medium">Kadirov</span>{" "}
           ©2025

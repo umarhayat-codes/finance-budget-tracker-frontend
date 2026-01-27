@@ -1,10 +1,5 @@
 import { createSlice, PayloadAction, createAsyncThunk } from "@reduxjs/toolkit";
-import {
-  TransactionItem,
-  TransactionState,
-  TransactionFormData,
-  Month,
-} from "../../../types";
+import { TransactionState, TransactionFormData, Month } from "../../../types";
 import {
   addTransactionApi,
   fetchTransactionsApi,

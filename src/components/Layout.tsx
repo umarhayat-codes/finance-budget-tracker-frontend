@@ -15,11 +15,7 @@ import {
   FiX,
 } from "react-icons/fi";
 import mainIcon from "../assets/main_icon.png";
-import {
-  NavItemProps,
-  FooterItemProps,
-  LayoutProps,
-} from "../types/layout.type";
+import { NavItemProps, FooterItemProps, LayoutProps } from "../../types";
 import { logoutUser } from "src/redux/slice/AuthSlice";
 import { useAppDispatch, useLoadTransactions } from "src/redux/useReduxHook";
 
@@ -91,11 +87,10 @@ const NavItem: React.FC<NavItemProps> = ({
 };
 
 const Layout: React.FC<LayoutProps> = ({ children }) => {
-  useLoadTransactions(); // Load transactions globally
+  useLoadTransactions();
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
-  // Icons matching Figma image
   const navItems: NavItemProps[] = [
     {
       to: "/dashboard/finance",
@@ -143,39 +138,35 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
 
   return (
     <div className="flex min-h-screen bg-clarioBlack text-clarioWhite">
-      {/* Mobile Header */}
-      <div className="lg:hidden flex items-center justify-between p-4 w-full fixed top-0 bg-clarioBlack z-40 border-b border-cardBorder">
+      <div className="sidebar:hidden flex items-center justify-between p-4 w-full fixed top-0 bg-clarioBlack z-40 border-b border-cardBorder">
         <div className="flex items-center gap-2">
           <img src={mainIcon} alt="Clario" className="w-8 h-8 object-contain" />
           <span className="font-manrope font-semibold text-[20px]">Clario</span>
         </div>
         <button onClick={toggleSidebar} className="text-clarioWhite p-2">
-          {isSidebarOpen
-            ? React.createElement(FiX as any, { size: 24 })
-            : React.createElement(FiMenu as any, { size: 24 })}
+          {isSidebarOpen ? <FiX size={24} /> : <FiMenu size={24} />}
         </button>
       </div>
 
-      {/* Sidebar Overlay for Mobile */}
       {isSidebarOpen && (
         <div
-          className="lg:hidden fixed inset-0 bg-black/50 z-40 backdrop-blur-sm"
+          className="sidebar:hidden fixed inset-0 bg-black/50 z-40 backdrop-blur-sm"
           onClick={() => setIsSidebarOpen(false)}
         />
       )}
 
-      {/* Sidebar */}
       <aside
         className={`
-        fixed lg:static inset-y-0 left-0 z-50
+        fixed sidebar:static inset-y-0 left-0 z-50
         w-[280px] h-screen bg-clarioBlack flex flex-col pt-8 pb-10
         transition-transform duration-300 ease-in-out
         ${
-          isSidebarOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"
+          isSidebarOpen
+            ? "translate-x-0"
+            : "-translate-x-full sidebar:translate-x-0"
         }
       `}
       >
-        {/* Logo Section */}
         <div className="px-8 mb-10 flex items-center gap-3">
           <img
             src={mainIcon}
@@ -187,7 +178,6 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
           </span>
         </div>
 
-        {/* Navigation Items */}
         <nav className="flex-1 flex flex-col gap-1 pr-6">
           {navItems.map((item) => (
             <NavItem
@@ -198,7 +188,6 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
           ))}
         </nav>
 
-        {/* Footer Items */}
         <div className="px-8 mt-auto flex flex-col gap-6 pt-8 border-t border-cardBorder/30">
           {footerItems.map((item) => (
             <NavLink
@@ -227,8 +216,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
         </div>
       </aside>
 
-      {/* Main Content Area */}
-      <main className="flex-1 lg:p-4 overflow-auto pt-20 lg:pt-4 bg-[#F5F5F5]">
+      <main className="flex-1 sidebar:p-4 overflow-auto pt-20 sidebar:pt-4 bg-[#F5F5F5]">
         <div className="min-h-full bg-white rounded-[24px] border border-transactionBorder p-6 shadow-sm overflow-hidden text-black">
           {children}
         </div>

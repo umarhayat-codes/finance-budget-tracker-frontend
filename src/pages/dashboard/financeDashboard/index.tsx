@@ -14,24 +14,27 @@ const FinanceDashboardPage: React.FC = () => {
       <div className="flex flex-col gap-6 ">
         <DashboardHeader />
 
-        <div className="grid grid-cols-1 desktop:grid-cols-4 gap-6">
-          {/* Top Row: Monthly Trend and Financial Summary side-by-side */}
-          <div className="desktop:col-span-2">
-            <MonthlyFinancial />
+        <div className="flex flex-col desktop:flex-row gap-6">
+          <div className="contents desktop:flex desktop:flex-col desktop:w-1/2 gap-6">
+            <div className="order-1">
+              <MonthlyFinancial />
+            </div>
+            <div className="contents desktop:grid desktop:grid-cols-2 gap-6 order-3">
+              <div className="order-3">
+                <BudgetGoal />
+              </div>
+              <div className="order-4">
+                <ExpenseDistribute />
+              </div>
+            </div>
           </div>
-          <div className="desktop:col-span-2">
-            <FinancialSummary />
-          </div>
-
-          {/* Bottom Row: Goals and Transactions */}
-          <div className="desktop:col-span-1">
-            <BudgetGoal />
-          </div>
-          <div className="desktop:col-span-1">
-            <ExpenseDistribute />
-          </div>
-          <div className="desktop:col-span-2">
-            <RecentTransaction />
+          <div className="contents desktop:flex desktop:flex-col desktop:w-1/2 gap-6">
+            <div className="order-2">
+              <FinancialSummary />
+            </div>
+            <div className="order-5">
+              <RecentTransaction />
+            </div>
           </div>
         </div>
       </div>

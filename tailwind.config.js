@@ -25,6 +25,7 @@ module.exports = {
         clarioBlack: "#000000",
         clarioWhite: "#FFFFFF",
         clarioIconBg: "#FFFFFF",
+        clarioColor: "#D4D4D4",
         clarioIconActiveBg: "#000000",
         headerBorder: "#2F2F2F",
         textSecondary: "#939494",
@@ -41,6 +42,8 @@ module.exports = {
         transactionNegative: "#C32F27",
         transactionBorder: "#EBEBEB",
         transactionBg: "#F8F8F8",
+        transactionActiveBg: "#2D4F4D",
+        transactioncolor: "#F9F9F9",
         transactionTagPositiveBg: "#EAF3EF",
         transactionTagNegativeBg: "#FCEAE9",
         transactionTableHeaderBg: "#F0F0F0",
@@ -49,7 +52,6 @@ module.exports = {
         expenseBubbleTransport: "#459900",
         expenseBubbleOthers: "#8CFF2E",
         expenseBubbleSavings: "#050505",
-        // Category Page Colors
         categoryPageBg: "#FAFAFA",
         categoryCardBorder: "#D8D8D8",
         categoryCardBg: "#FFFFFF",
@@ -64,7 +66,6 @@ module.exports = {
         categoryLegendText: "#A4A4A3",
         categoryLegendSub: "#BCBCBC",
         categoryLegendMain: "#A4A4A3",
-        // Profile Page Colors
         profileTitle: "#3B3B3A",
         profileSectionTitle: "#646463",
         profileBillingTitle: "#656565",
@@ -77,26 +78,23 @@ module.exports = {
         profileSubTierBg: "#FCFDFD",
         profileSubTierBorder: "#F4F4F4",
         profileSubTierText: "#717271",
-        // Budget specific
         budgeBg: "#F8F8F8",
         budgeBorder: "#EBEBEB",
         budgeText: "#060F0D",
         budgeBadgeBg: "#F4F4F4",
-        // Graph specific
+        budgetTotal: "#C7FF99",
         graphBudget: "#2E6600",
         graphSpend: "#5CCC00",
         graphBudgetUnselected: "#2E660033",
         graphSpendUnselected: "#5CCC0033",
         graphBorder: "#C2D0D2",
         graphSpendUnselectedBorder: "#C2D0D6",
-        // Breakdown specific
         breakdownHeader: "#F0F0F0",
         breakdownTextLight: "#A5A5A5",
         progressBarStart: "#588D73",
         progressBarEnd: "#3B6064",
         progressBarTrack: "#809B9E",
         breakdownTextUsed: "#3B6064",
-        // Goal specific
         goalTitle: "#525252",
         goalText: "#0D0D0D",
         goalCardBg: "#FEFEFE",
@@ -112,14 +110,12 @@ module.exports = {
         goalDelayedBorder: "#E1E1E1",
         goalDelayedText: "#F4F4F5",
         goalDate: "#9B9B9A",
-        // Goal History specific
         goalHistoryHeaderBg: "#F1F1F1",
         goalHistoryHeaderText: "#767676",
         goalHistoryRowText: "#ADADAD",
         archivedBtnBg: "#CE413F",
         archivedBtnBorder: "#CF302D",
         archivedBtnText: "#E6ADAA",
-        // Create Goal Page Colors
         createGoalBg: "#FEFEFE",
         createGoalTitle: "#4C4C4B",
         createGoalLabel: "#757474",
@@ -132,7 +128,6 @@ module.exports = {
         createGoalCardBorder: "#C4C4C4",
         createGoalButtonCancelBg: "#F0F0F0",
         createGoalButtonCancelText: "#484948",
-        // Financial Report specific
         reportBg: "#FAFAFA",
         reportTitle: "#000000",
         reportSubtitle: "#969696",
@@ -162,7 +157,6 @@ module.exports = {
         reportChartExpense: "#565555",
         reportChartTrendIncome: "#8CFF2E",
         reportChartTrendExpense: "#8C8C8C",
-        // Recent Transaction specific
         recentTransactionTitle: "#8E8D8D",
         recentTransactionHeaderBg: "#F1F1F1",
         recentTransactionHeaderText: "#767676",
@@ -173,14 +167,13 @@ module.exports = {
         statusCompletedBg: "#73C932",
         statusCompletedBorder: "#5FBF19",
         statusCompletedText: "#C1E6A0",
-        // Reminder Page Colors
         reminderTitle: "#4F4E4D",
         reminderCardGreen: "#8CFF2E",
         reminderCardDark: "#333C2F",
         reminderCardBlack: "#050505",
-        reminderCardGray: "#D6DFD0", // Normalized from D6DFD0FE
+        reminderCardGray: "#D6DFD0",
         reminderCardWhite: "#FCFDFD",
-        reminderPreferencesBg: "#FDFDFD", // Normalized from FDFDFDFE
+        reminderPreferencesBg: "#FDFDFD",
         reminderPreferencesBorder: "#F6F6F6",
         reminderCompletionBg: "#FCFCFC",
         reminderCompletionBorder: "#F4F5F4",
@@ -198,7 +191,6 @@ module.exports = {
         reminderCompletionText: "#717171",
         reminderBorderRow2: "#DEE4D9",
         reminderBorderRow3: "#EEEEEE",
-        // Setting Page Colors
         settingPageBg: "#FAFAFA",
         settingTitle: "#3D3D3C",
         settingSearchBorder: "#868585",
@@ -207,13 +199,13 @@ module.exports = {
         settingCardBorder: "#F0F0F0",
         settingCardBg2: "#FDFDFD",
         settingCardBorder2: "#F3F3F4",
-        settingCardBorder3: "#F6F7F6", // Also for third card
+        settingCardBorder3: "#F6F7F6",
         settingTextDark: "#000000",
         settingTextGray: "#A2A2A1",
         settingTextLightGray: "#A1A1A0",
         settingTextMuted: "#A09F9F",
         settingInputBg: "#FBFBFB",
-        settingInputText: "#B1B2B2", // Also used for some placeholders? check req
+        settingInputText: "#B1B2B2",
         settingSectionTitle: "#60605F",
         settingInputBgWhite: "#FFFFFF",
         settingPlaceholder: "#9A9A99",
@@ -229,7 +221,6 @@ module.exports = {
         settingButtonCancelText: "#313030",
         settingSubscriptionBg: "#FCFCFC",
 
-        // Recent Transaction New UI Colors
         recentBorder: "#E8E8E8",
         recentTextTitle: "#050505",
         recentTextSub: "#8A8A8A",
@@ -242,8 +233,7 @@ module.exports = {
         recentTableNegative: "#906969",
         recentPendingEnd: "#DFE4DB",
         recentPendingBg: "#FFFFFF",
-
-        // Budget Goals specific
+        recentF4F7F2: "#f4f7f2",
         budgetGoalTextMain: "#1F1F1F",
         budgetGoalTextSub: "#8A8A8A",
         budgetGoalBorder: "#E8E8E8",
@@ -253,8 +243,7 @@ module.exports = {
         budgetGoalIconBg1Start: "#7B9069",
         budgetGoalIconBg1End: "#050505",
         budgetGoalIconBg2: "#DFE4DB",
-
-        // Expense Distribution specific
+        budgetValue: "#B8C94E",
         distTextMain: "#1F1F1F",
         distTextSub: "#8A8A8A",
         distPie28: "#F1FFE5",
@@ -262,7 +251,6 @@ module.exports = {
         distPie16: "#5CCC00",
         distPie26: "#2E6600",
 
-        // Monthly Financial Trend Specific Colors
         monthlyCardBorder: "#E8E8E8",
         monthlyTextMain: "#1F1F1F",
         monthlyTextSub: "#8A8A8A",
@@ -284,7 +272,6 @@ module.exports = {
         monthlyValueText: "#8A8A8A",
         monthlyGridBorder: "#E8E8E8",
 
-        // Financial Summary Specific Colors
         summaryTotalIncomeBg: "#FFFFFF",
         summaryTotalSpendingBg: "#5CCC00",
         summarySpentBudgetBg: "#2E6600",
@@ -301,6 +288,7 @@ module.exports = {
       screens: {
         desktop: "1235px",
         xlg: "1440px",
+        sidebar: "1239px",
       },
       fontFamily: {
         manrope: ["Manrope", "sans-serif"],

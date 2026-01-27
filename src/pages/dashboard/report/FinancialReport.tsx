@@ -7,8 +7,6 @@ import {
   PieChart,
   Pie,
   Cell,
-  LineChart,
-  Line,
   XAxis,
   YAxis,
   CartesianGrid,
@@ -17,7 +15,7 @@ import {
   AreaChart,
   Area,
 } from "recharts";
-import { FiFilter, FiDownload, FiShare2 } from "react-icons/fi";
+import { FiFilter, FiShare2 } from "react-icons/fi";
 import { TrendChartData, TooltipValueFormatter } from "types";
 
 const FinancialReport: React.FC = () => {
@@ -25,8 +23,6 @@ const FinancialReport: React.FC = () => {
 
   if (loading) return <div>Loading...</div>;
   if (error) return <div>Error: {error}</div>;
-  console.log(reportData.monthlyBreakdown.totalIncome);
-  console.log(reportData.monthlyBreakdown.totalExpense);
 
   return (
     <Layout>
@@ -34,7 +30,6 @@ const FinancialReport: React.FC = () => {
         <DashboardHeader />
 
         <div className="flex flex-col gap-6">
-          {/* Title Section */}
           <div className="flex flex-col gap-1">
             <h1 className="text-reportTitle text-[20px] font-inter font-bold">
               Financial Reports
@@ -44,7 +39,6 @@ const FinancialReport: React.FC = () => {
             </p>
           </div>
 
-          {/* Action Row */}
           <div className="flex flex-wrap items-center justify-between gap-4">
             <div className="flex items-center gap-3">
               <button className="h-[45px] px-6 rounded-[1px] bg-reportButtonDateBg border border-reportButtonDateBorder text-reportButtonDateText text-[15px] font-inter font-bold">
@@ -85,15 +79,13 @@ const FinancialReport: React.FC = () => {
           </div>
 
           <div className="mt-4">
-            <h2 className="text-[17px] font-bold text-[#8A8989] mb-4">
+            <h2 className="text-[17px] font-bold text-reportTrendTitle mb-4">
               Key Metrics
             </h2>
           </div>
 
-          {/* Metrics Grid */}
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            {/* Monthly Expense Breakdown Card */}
-            <div className="bg-reportCardBg p-6 rounded-[20px] shadow-sm border border-[#F8F8F8]">
+            <div className="bg-reportCardBg p-6 rounded-[20px] shadow-sm border border-exportBg">
               <div className="mb-8">
                 <h3 className="text-reportCardTitle text-[17px] font-inter font-bold">
                   Monthly Expense Breakdwwn
@@ -163,8 +155,7 @@ const FinancialReport: React.FC = () => {
               </div>
             </div>
 
-            {/* Income vs Expense Trend Card */}
-            <div className="bg-reportCardBg p-6 rounded-[20px] shadow-sm border-[2px] border-[#F8F8F8]">
+            <div className="bg-reportCardBg p-6 rounded-[20px] shadow-sm border-[2px] border-exportBg">
               <div className="mb-8">
                 <h3 className="text-reportTrendTitle text-[17px] font-inter font-bold">
                   Income vs Expense Trend
@@ -192,28 +183,39 @@ const FinancialReport: React.FC = () => {
                       >
                         <stop
                           offset="5%"
-                          stopColor="#8CFF2E"
+                          stopColor="primary"
                           stopOpacity={0.1}
                         />
                         <stop
                           offset="95%"
-                          stopColor="#8CFF2E"
+                          stopColor="primary"
                           stopOpacity={0}
                         />
                       </linearGradient>
                     </defs>
-                    <CartesianGrid vertical={false} stroke="#F0F1F1" />
+                    <CartesianGrid
+                      vertical={false}
+                      stroke="reportButtonDateBorder"
+                    />
                     <XAxis
                       dataKey="name"
                       axisLine={false}
                       tickLine={false}
-                      tick={{ fill: "#BFBFBF", fontSize: 13, fontWeight: 700 }}
+                      tick={{
+                        fill: "reportButtonDateText",
+                        fontSize: 13,
+                        fontWeight: 700,
+                      }}
                       dy={10}
                     />
                     <YAxis
                       axisLine={false}
                       tickLine={false}
-                      tick={{ fill: "#B5B4B5", fontSize: 13, fontWeight: 700 }}
+                      tick={{
+                        fill: "reportTrendYAxis",
+                        fontSize: 13,
+                        fontWeight: 700,
+                      }}
                       tickFormatter={(value) => `$${value}`}
                     />
                     <Tooltip
@@ -227,7 +229,7 @@ const FinancialReport: React.FC = () => {
                     <Area
                       type="monotone"
                       dataKey="income"
-                      stroke="#8CFF2E"
+                      stroke="primary"
                       strokeWidth={3}
                       fillOpacity={1}
                       fill="url(#colorIncome)"
@@ -235,7 +237,7 @@ const FinancialReport: React.FC = () => {
                     <Area
                       type="monotone"
                       dataKey="expense"
-                      stroke="#8C8C8C"
+                      stroke="categoryTextPrice"
                       strokeWidth={3}
                       fill="transparent"
                     />

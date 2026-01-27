@@ -2,8 +2,6 @@ import React from "react";
 import man1 from "../../assets/man_1.png";
 import man2 from "../../assets/man_2.png";
 import man3 from "../../assets/man_3.png";
-
-// Duplicate for marquee effect
 const reviewsRow1 = [
   {
     text: "Big effort - high quality. Best Framer content out there.",
@@ -54,7 +52,6 @@ const ReviewCard: React.FC<{
 }> = ({ text, name, role, image }) => (
   <div className="min-w-[400px] md:min-w-[450px] bg-[#0D0D0D] p-8 rounded-[30px] flex flex-col justify-between mx-3">
     <div className="mb-6">
-      {/* Quote Icon */}
       <svg
         width="40"
         height="40"
@@ -90,7 +87,6 @@ const ReviewSection: React.FC = () => {
   return (
     <section className="w-full py-20 bg-black font-manrope overflow-hidden">
       <div className="w-full flex flex-col items-center">
-        {/* Section Heading */}
         <div className="flex flex-col lg:flex-row justify-between items-start lg:items-end mb-16 px-4 w-full max-w-[1000px] mx-auto gap-8">
           <h2 className="text-[32px] md:text-[48px] font-medium text-textWhite leading-tight text-left lg:max-w-[500px]">
             Loved by individuals and small teams
@@ -101,36 +97,27 @@ const ReviewSection: React.FC = () => {
           </p>
         </div>
 
-        {/* Row 1 */}
         <div className="w-full flex mb-6 overflow-hidden relative">
-          {/* Gradient Overlay Left */}
           <div className="absolute left-0 top-0 bottom-0 w-[100px] md:w-[200px] bg-gradient-to-r from-black to-transparent z-10"></div>
-          {/* Gradient Overlay Right */}
           <div className="absolute right-0 top-0 bottom-0 w-[100px] md:w-[200px] bg-gradient-to-l from-black to-transparent z-10"></div>
 
-          {/* Marquee Content */}
           <div className="flex animate-scroll-left min-w-full">
             {[...reviewsRow1, ...reviewsRow1, ...reviewsRow1].map(
               (review, i) => (
                 <ReviewCard key={i} {...review} />
-              )
+              ),
             )}
           </div>
         </div>
 
-        {/* Row 2 */}
         <div className="w-full flex overflow-hidden relative">
-          {/* Gradient Overlay Left */}
           <div className="absolute left-0 top-0 bottom-0 w-[100px] md:w-[200px] bg-gradient-to-r from-black to-transparent z-10"></div>
-          {/* Gradient Overlay Right */}
           <div className="absolute right-0 top-0 bottom-0 w-[100px] md:w-[200px] bg-gradient-to-l from-black to-transparent z-10"></div>
-
-          {/* Marquee Content */}
           <div className="flex animate-scroll-right min-w-full">
             {[...reviewsRow2, ...reviewsRow2, ...reviewsRow2].map(
               (review, i) => (
                 <ReviewCard key={i} {...review} />
-              )
+              ),
             )}
           </div>
         </div>

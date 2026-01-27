@@ -6,14 +6,12 @@ const HeroSection: React.FC = () => {
   const navigate = useNavigate();
   return (
     <section className="w-full min-h-screen bg-black flex flex-col items-center text-center pt-[60px] px-6">
-      {/* Badge container */}
       <div className="flex justify-center mb-8">
         <span className="hero-badge px-4 py-1.5 rounded-full font-medium text-[16px] border border-[#8CFF2E]/20 shadow-[0_0_15px_rgba(140,255,46,0.1)]">
           All-in-One Finance Toolkit
         </span>
       </div>
 
-      {/* Heading Section */}
       <div className="max-w-[1000px] mx-auto space-y-6">
         <h1 className="hero-heading text-[40px] md:text-[64px] font-medium leading-[1.1] tracking-tight">
           Smart way to <br className="hidden md:block" /> manage your finance
@@ -26,7 +24,6 @@ const HeroSection: React.FC = () => {
         </p>
       </div>
 
-      {/* CTA Button */}
       <div className="mt-[20px]">
         <button
           onClick={() => navigate("/auth/signin")}
@@ -36,10 +33,8 @@ const HeroSection: React.FC = () => {
         </button>
       </div>
 
-      {/* Dashboard Image */}
       <div className="mt-[50px] w-full max-w-[1000px] flex justify-center pb-20 overflow-hidden">
         <div className="relative w-full aspect-[1000/600] group">
-          {/* Subtle Glow effect behind image */}
           <div className="absolute -inset-1 bg-gradient-to-t from-[#8CFF2E]/10 to-transparent blur-2xl opacity-50 transition duration-1000 group-hover:opacity-75"></div>
 
           <img

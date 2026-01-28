@@ -4,6 +4,7 @@ import AddBudge from "./AddBudge";
 import TotalBudge from "./TotalBudge";
 import GraphBudget from "./GraphBudget";
 import BudgetSpendBreakDown from "./BudgetSpendBreakDown";
+import LastSixMonthSpent from "./LastSixMonthSpent";
 
 const BudgePage: React.FC = () => {
   return (
@@ -12,7 +13,14 @@ const BudgePage: React.FC = () => {
         <AddBudge />
         <TotalBudge />
         <GraphBudget />
-        <BudgetSpendBreakDown />
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          <div className="lg:col-span-1">
+            <LastSixMonthSpent />
+          </div>
+          <div className="lg:col-span-2">
+            <BudgetSpendBreakDown />
+          </div>
+        </div>
       </div>
     </Layout>
   );

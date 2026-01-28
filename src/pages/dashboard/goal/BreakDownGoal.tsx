@@ -33,22 +33,20 @@ const BreakDownGoal = () => {
           <tbody className="bg-white">
             {history.map((item) => (
               <tr key={item.id} className="border-b border-gray-100">
-                <td className="py-4 px-4 text-[13px] font-bold text-goalHistoryRowText font-inter whitespace-nowrap">
+                <td className="py-4 px-4 text-[13px] font-bold text-goalSubtitle font-inter whitespace-nowrap">
                   {item.date}
                 </td>
-                <td className="py-4 px-4 text-[13px] font-bold text-goalHistoryRowText font-inter whitespace-nowrap">
+                <td className="py-4 px-4 text-[13px] font-bold text-goalSubtitle font-inter whitespace-nowrap">
                   {item.goalName}
                 </td>
-                <td className="py-4 px-4 text-[13px] font-bold text-goalHistoryRowText font-inter whitespace-nowrap">
+                <td className="py-4 px-4 text-[13px] font-bold text-goalSubtitle font-inter whitespace-nowrap">
                   {item.trackStatus}
                 </td>
-                <td className="py-4 px-4 text-[13px] font-bold text-goalHistoryRowText font-inter whitespace-nowrap">
+                <td className="py-4 px-4 text-[13px] font-bold text-goalSubtitle font-inter whitespace-nowrap">
                   {item.processStatus}
                 </td>
-                <td className="py-4 px-4">
-                  <button className="bg-archivedBtnBg border border-archivedBtnBorder text-archivedBtnText text-[12px] font-bold font-inter px-3 py-1.5 rounded-md">
-                    {item.amountStatus}
-                  </button>
+                <td className="py-4 px-4 text-[13px] font-bold text-goalSubtitle font-inter whitespace-nowrap">
+                  {item.amountStatus}
                 </td>
               </tr>
             ))}

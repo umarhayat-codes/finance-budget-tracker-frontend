@@ -15,7 +15,7 @@ const FinanceDashboardPage: React.FC = () => {
         <DashboardHeader />
 
         <div className="flex flex-col desktop:flex-row gap-6">
-          <div className="contents desktop:flex desktop:flex-col desktop:w-1/2 gap-6">
+          <div className="contents desktop:flex desktop:flex-col desktop:w-[55%] gap-6">
             <div className="order-1">
               <MonthlyFinancial />
             </div>
@@ -28,7 +28,7 @@ const FinanceDashboardPage: React.FC = () => {
               </div>
             </div>
           </div>
-          <div className="contents desktop:flex desktop:flex-col desktop:w-1/2 gap-6">
+          <div className="contents desktop:flex desktop:flex-col desktop:w-[45%] gap-6">
             <div className="order-2">
               <FinancialSummary />
             </div>

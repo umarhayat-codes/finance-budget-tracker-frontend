@@ -730,3 +730,22 @@ export interface BudgetCardProps {
   className?: string;
   bodyRightContent?: React.ReactNode;
 }
+
+export interface RadarDataPoint {
+  month: string;
+  fullMonth: string;
+  year: number;
+  spent: number;
+  totalBudget: number;
+  totalSpent: number;
+}
+
+export interface RadarTooltipProps {
+  active?: boolean;
+  payload?: Array<{
+    payload: RadarDataPoint;
+    name: string;
+    value: number;
+    color: string;
+  }>;
+}

@@ -42,7 +42,6 @@ export const useFinanceHook = (): UseFinanceHookResult => {
   const [loading, setLoading] = useState<boolean>(true);
   const [budgetGoals, setBudgetGoals] = useState<BudgetGoalData[]>([]);
 
-  // Calculate Global Totals from Redux (Instant Update)
   const globalRawIncome = reduxTransactions
     .filter((t) => t.type === "income")
     .reduce((acc, curr) => acc + Number(curr.amount), 0);
@@ -73,7 +72,7 @@ export const useFinanceHook = (): UseFinanceHookResult => {
           distributionResponse,
           budgetResponse,
         ] = await Promise.all([
-          api.get<MonthlyFinancialApiResponse>("/transactions/summary"),
+          api.get<MonthlyFinancialApiResponse>("/finance/summary"),
           api.get<FinancialSummary>("/transactions/financial-summary"),
           api.get<ExpenseBreakdownApiResponse>("/finance/distribution"),
           api.get<LatestBudgetApiResponse[]>("/budgets/latest"),
@@ -105,9 +104,12 @@ export const useFinanceHook = (): UseFinanceHookResult => {
               "November",
               "December",
             ];
+            let monthName = b.month;
             const monthIndex = parseInt(b.month) - 1;
-            const dueDate = `${monthNames[monthIndex]} ${b.year}`;
-
+            if (!isNaN(monthIndex) && monthNames[monthIndex]) {
+              monthName = monthNames[monthIndex];
+            }
+            const dueDate = `${monthName} ${b.year}`;
             return {
               id: b.id,
               name: b.category,
@@ -154,7 +156,6 @@ export const useFinanceHook = (): UseFinanceHookResult => {
             "An unexpected error occurred while fetching finance data",
           );
         }
-        console.error("Error fetching finance data:", error);
         setData([]);
         const now = new Date();
         const currentMonth = now.toLocaleString("en-US", {
@@ -285,7 +286,6 @@ export const useFinanceHook = (): UseFinanceHookResult => {
       } else {
         toast.error("An unexpected error occurred while fetching transactions");
       }
-      console.error("Error fetching transactions:", error);
       setTransactions([]);
       setTotalPages(1);
     } finally {
@@ -306,27 +306,27 @@ export const useFinanceHook = (): UseFinanceHookResult => {
     useState<ExpenseBreakdownApiResponse | null>(null);
 
   const onDownload = () => {
-    console.log("Download clicked");
+    toast.success("Download clicked");
   };
 
   const onShare = () => {
-    console.log("Share clicked");
+    toast.success("Share clicked");
   };
 
   const onAddNewGoal = () => {
-    console.log("Add New Goal clicked");
+    toast.success("Add New Goal clicked");
   };
 
   const onManageBudgets = () => {
-    console.log("Manage Budgets clicked");
+    toast.success("Manage Budgets clicked");
   };
 
   const onEditGoal = (id: string) => {
-    console.log("Edit Goal clicked", id);
+    toast.success("Edit Goal clicked");
   };
 
   const onDeleteGoal = (id: string) => {
-    console.log("Delete Goal clicked", id);
+    toast.success("Delete Goal clicked");
   };
 
   const RADIAN = Math.PI / 180;

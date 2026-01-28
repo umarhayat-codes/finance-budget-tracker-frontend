@@ -19,7 +19,7 @@ const Setting = () => {
 
   return (
     <Layout>
-      <div className="min-h-screen bg-settingPageBg">
+      <div className="min-h-screen">
         <DashboardHeader />
         <div className="mt-8 flex flex-col gap-8 px-4 lg:flex-row lg:px-8">
           <div className="flex flex-1 flex-col gap-8">
@@ -92,7 +92,7 @@ const Setting = () => {
               </div>
             </div>
 
-            <div className="flex flex-col gap-4">
+            <div className="flex flex-col gap-4 border-settingCardBorder2 bg-settingCardBg2">
               <h2 className="font-inter text-[17px] font-bold text-settingSectionTitle">
                 Security
               </h2>

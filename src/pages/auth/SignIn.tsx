@@ -46,7 +46,7 @@ const SignIn: React.FC = () => {
         toast.error("Wrong email or password");
       }
     } catch (err) {
-      console.error("Login failed", err);
+      toast.error("Login failed");
     }
   };
 

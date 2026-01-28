@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useMemo } from "react";
 import axios from "axios";
 import {
   BudgeFormData,
@@ -6,6 +6,7 @@ import {
   GraphDataPoint,
   BreakdownData,
   TransactionItem,
+  RadarDataPoint,
 } from "../../../../types";
 import {
   useAuth,
@@ -75,6 +76,42 @@ export const useBudgeHook = () => {
     amount: "",
     category: "",
   });
+
+  const [isFirstHalf, setIsFirstHalf] = useState(false);
+
+  const toggleSixMonths = (direction: "up" | "down") => {
+    if (direction === "up") {
+      setIsFirstHalf(true);
+    } else {
+      setIsFirstHalf(false);
+    }
+  };
+
+  const currentYearNum = new Date().getFullYear();
+
+  const [radarAnalysisData, setRadarAnalysisData] = useState<RadarDataPoint[]>(
+    [],
+  );
+
+  const fetchRadarAnalysis = useCallback(async () => {
+    try {
+      const response = await api.get<RadarDataPoint[]>("/budgets/analysis");
+      setRadarAnalysisData(response.data);
+    } catch (err) {
+      console.error("Error fetching radar analysis:", err);
+    }
+  }, []);
+
+  useEffect(() => {
+    fetchRadarAnalysis();
+  }, [fetchRadarAnalysis]);
+
+  const radarData = useMemo(() => {
+    if (radarAnalysisData.length === 0) return [];
+    return isFirstHalf
+      ? radarAnalysisData.slice(0, 6)
+      : radarAnalysisData.slice(6, 12);
+  }, [radarAnalysisData, isFirstHalf]);
 
   useEffect(() => {
     const fetchCategories = async () => {
@@ -255,5 +292,8 @@ export const useBudgeHook = () => {
     totalExpense,
     breakdownData,
     graphData,
+    radarData,
+    isFirstHalf,
+    toggleSixMonths,
   };
 };

@@ -36,12 +36,10 @@ export const useAuthHook = () => {
         formData,
         { withCredentials: true },
       );
-      console.log("login response", response);
       setSuccess(true);
       return response.data.message;
     } catch (err) {
       setError("Something went wrong");
-      console.log("login error", err);
     } finally {
       setLoading(false);
     }

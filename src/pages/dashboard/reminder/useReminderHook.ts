@@ -74,7 +74,7 @@ export const useReminderHook = (): UseReminderHookResult => {
       setRemindersRow2(r2);
       setRemindersRow3(r3);
     } catch (error) {
-      console.error("Failed to fetch reminders", error);
+      toast.error("Failed to fetch reminders");
     } finally {
       setLoading(false);
     }
@@ -122,7 +122,6 @@ export const useReminderHook = (): UseReminderHookResult => {
       fetchReminders();
     } catch (error) {
       toast.error("Failed to create reminder");
-      console.error("Failed to create reminder", error);
     }
   };
 

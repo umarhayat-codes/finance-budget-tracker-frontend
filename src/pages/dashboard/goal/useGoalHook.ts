@@ -80,6 +80,16 @@ export const useGoalHook = (): UseGoalHookResult => {
         icon: getIconForGoal(goal.goalName),
       }));
       setGoals(fetchedGoals);
+      setHistory(
+        fetchedGoals.map((goal: GoalItem) => ({
+          id: goal.id,
+          date: goal.targetDate, // Or goal.createdAt? Requirement says "date in date col"
+          goalName: goal.goalName,
+          trackStatus: "On Track" as GoalStatus,
+          processStatus: goal.goalStatus,
+          amountStatus: `IDR ${goal.targetAmount.toLocaleString()}`,
+        })),
+      );
       calculateStats(fetchedGoals);
     } catch (err) {
       const axiosError = err as AxiosError<ApiErrorResponse>;
@@ -104,7 +114,7 @@ export const useGoalHook = (): UseGoalHookResult => {
     try {
       await axios.post(BASE_URL, goalForm, { withCredentials: true });
       toast.success("Goal created successfully");
-      navigate("/dashboard/goal");
+      navigate("/dashboard/goals");
     } catch (err) {
       const axiosError = err as AxiosError<ApiErrorResponse>;
       toast.error("Failed to create goal");

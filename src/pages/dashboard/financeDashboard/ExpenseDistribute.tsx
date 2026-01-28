@@ -23,60 +23,63 @@ const ExpenseDistribute: React.FC = () => {
         <FiMoreVertical className="text-budgetGoalTextSub cursor-pointer text-xl" />
       </div>
 
-      <div className="relative flex justify-center items-center py-2 flex-grow">
-        <div className="w-full h-[320px]">
-          <ResponsiveContainer width="100%" height="100%">
-            <PieChart>
-              <Pie
-                data={expenseDistribution}
-                cx="50%"
-                cy="50%"
-                innerRadius={0}
-                outerRadius={140}
-                paddingAngle={0}
-                dataKey="percentage"
-                labelLine={false}
-                label={renderCustomizedLabel}
-                stroke="none"
-              >
-                {expenseDistribution.map(
-                  (entry: ExpenseDistributionItem, index: number) => (
-                    <Cell
-                      key={`cell-${index}`}
-                      fill={entry.color}
-                      stroke="none"
-                    />
-                  ),
-                )}
-              </Pie>
-            </PieChart>
-          </ResponsiveContainer>
-        </div>
-      </div>
-
-      <div className="grid grid-cols-2 gap-y-4 gap-x-2 mt-4 border-t-[0.95px] border-budgetGoalBorder pt-4">
-        {expenseDistribution.map((item: ExpenseDistributionItem) => (
-          <div key={item.id} className="flex flex-col">
-            <div className="flex items-center gap-2 mb-1">
-              <div
-                className="w-3 h-3 rounded-full"
-                style={{ backgroundColor: item.color }}
-              />
-              <span className="text-[12px] font-semibold text-budgetGoalTextMain">
-                {item.category}
-              </span>
-            </div>
-            <div className="pl-5 flex flex-col">
-              <span className="text-[11px] font-medium text-gray-800">
-                {item.amount}
-              </span>
-              <span className="text-[10px] text-gray-500">
-                {item.percentage}%
-              </span>
-            </div>
+      <>
+        <div className="relative flex justify-center items-center py-2 flex-grow">
+          {/* <div className="w-full h-[320px] xlg:h-[350px]"> */}
+          <div className="w-full h-[320px]">
+            <ResponsiveContainer width="100%" height="100%">
+              <PieChart>
+                <Pie
+                  data={expenseDistribution}
+                  cx="50%"
+                  cy="50%"
+                  innerRadius={0}
+                  outerRadius={140}
+                  paddingAngle={0}
+                  dataKey="percentage"
+                  labelLine={false}
+                  label={renderCustomizedLabel}
+                  stroke="none"
+                >
+                  {expenseDistribution.map(
+                    (entry: ExpenseDistributionItem, index: number) => (
+                      <Cell
+                        key={`cell-${index}`}
+                        fill={entry.color}
+                        stroke="none"
+                      />
+                    ),
+                  )}
+                </Pie>
+              </PieChart>
+            </ResponsiveContainer>
           </div>
-        ))}
-      </div>
+        </div>
+
+        <div className="grid grid-cols-2 gap-y-4 gap-x-2 mt-4 border-t-[0.95px] border-budgetGoalBorder pt-4">
+          {expenseDistribution.map((item: ExpenseDistributionItem) => (
+            <div key={item.id} className="flex flex-col">
+              <div className="flex items-center gap-2 mb-1">
+                <div
+                  className="w-3 h-3 rounded-full"
+                  style={{ backgroundColor: item.color }}
+                />
+                <span className="text-[12px] font-semibold text-budgetGoalTextMain">
+                  {item.category}
+                </span>
+              </div>
+              <div className="pl-5 flex flex-col">
+                <span className="text-[11px] font-medium text-gray-800">
+                  {item.amount}
+                </span>
+                <span className="text-[10px] text-gray-500">
+                  {item.percentage}%
+                </span>
+              </div>
+            </div>
+          ))}
+        </div>
+      </>
 
       <p className="text-[9px] font-normal text-budgetGoalTextSub leading-relaxed mt-4">
         Shows the breakdown of your expenses across different categories.

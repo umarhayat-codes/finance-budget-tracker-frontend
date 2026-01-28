@@ -6,8 +6,14 @@ import { GoalStatus } from "../../../../types";
 
 const AddGoal = () => {
   const navigate = useNavigate();
-  const { goals, stats, updateGoalStatus, filterStatus, handleFilterChange } =
-    useGoalHook();
+  const {
+    goals,
+    stats,
+    updateGoalStatus,
+    filterStatus,
+    handleFilterChange,
+    loading,
+  } = useGoalHook();
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
 
   const statuses: GoalStatus[] = [
@@ -33,7 +39,7 @@ const AddGoal = () => {
   };
 
   return (
-    <div className="flex flex-col gap-8 w-full bg-bgColor p-6 font-inter min-h-screen">
+    <div className="flex flex-col gap-8 w-full  p-6 font-inter ">
       <div className="flex flex-col gap-4">
         <h1 className="text-[20px] font-bold text-goalTitle">
           Financial Goals
@@ -107,69 +113,87 @@ const AddGoal = () => {
       </div>
 
       <div className="flex flex-col gap-4">
-        <h2 className="text-[16px] font-bold text-black">Current Goals</h2>
+        <h2 className="text-[16px] font-bold text-black">
+          {filterStatus === "Completed"
+            ? "Complete Goal"
+            : filterStatus === "Pending"
+              ? "Pending Goal"
+              : "Current Goals"}
+        </h2>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4">
-          {goals.map((goal) => (
-            <div
-              key={goal.id}
-              className="bg-goalCardBg border border-goalCardBorder rounded-[5px] p-6 flex flex-col items-center text-center gap-4 shadow-sm relative"
-            >
-              <div className="absolute top-4 right-4 cursor-pointer">
-                <HiDotsVertical
-                  onClick={() =>
-                    setActiveDropdown(
-                      activeDropdown === goal.id ? null : goal.id,
-                    )
-                  }
-                  className="text-gray-400 hover:text-gray-600"
-                />
-                {activeDropdown === goal.id && (
-                  <div className="absolute right-0 mt-2 w-32 bg-white border border-gray-200 rounded shadow-lg z-10">
-                    <ul className="py-1">
-                      {statuses.map((status) => (
-                        <li
-                          key={status}
-                          onClick={() => {
-                            updateGoalStatus(goal.id, status);
-                            setActiveDropdown(null);
-                          }}
-                          className="px-4 py-2 hover:bg-gray-100 text-left text-[12px] font-medium text-gray-700"
-                        >
-                          {status}
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                )}
-              </div>
-
-              <div className="text-4xl mb-2 text-primary">
-                {goal.icon && <goal.icon />}
-              </div>
-
-              <h3 className="text-[14px] font-bold text-goalText">
-                {goal.goalName}
-              </h3>
-
-              <span className="text-[12px] font-bold text-goalSubtitle">
-                Target: IDR {goal.targetAmount.toLocaleString()}
-              </span>
-
+        {loading ? (
+          <div className="flex justify-center items-center py-20">
+            <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary"></div>
+          </div>
+        ) : goals.length === 0 ? (
+          <div className="flex justify-center items-center py-20">
+            <h3 className="text-[18px] font-bold text-goalSubtitle">
+              No Found Goal
+            </h3>
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4">
+            {goals.map((goal) => (
               <div
-                className={`text-[12px] font-bold border-[0.9px] px-3 py-1 rounded w-full ${getStatusStyles(
-                  goal.goalStatus,
-                )}`}
+                key={goal.id}
+                className="bg-goalCardBg border h-[244px] w-[200px] border-goalCardBorder rounded-[5px] p-6 flex flex-col items-start text-left gap-4 shadow-sm relative"
               >
-                {goal.goalStatus}
-              </div>
+                <div className="absolute top-4 right-4 cursor-pointer">
+                  <HiDotsVertical
+                    onClick={() =>
+                      setActiveDropdown(
+                        activeDropdown === goal.id ? null : goal.id,
+                      )
+                    }
+                    className="text-gray-400 hover:text-gray-600"
+                  />
+                  {activeDropdown === goal.id && (
+                    <div className="absolute right-0 mt-2 w-32 bg-white border border-gray-200 rounded shadow-lg z-10">
+                      <ul className="py-1">
+                        {statuses.map((status) => (
+                          <li
+                            key={status}
+                            onClick={() => {
+                              updateGoalStatus(goal.id, status);
+                              setActiveDropdown(null);
+                            }}
+                            className="px-4 py-2 hover:bg-gray-100 text-left text-[12px] font-medium text-gray-700"
+                          >
+                            {status}
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  )}
+                </div>
 
-              <span className="text-[14px] font-bold text-goalDate">
-                {goal.targetDate}
-              </span>
-            </div>
-          ))}
-        </div>
+                <div className="w-full flex justify-center text-4xl mb-2 text-goalText">
+                  {goal.icon && <goal.icon />}
+                </div>
+
+                <h3 className="text-[14px] font-bold text-goalText">
+                  {goal.goalName}
+                </h3>
+
+                <span className="text-[12px] font-bold text-goalSubtitle">
+                  Target: IDR {goal.targetAmount.toLocaleString()}
+                </span>
+
+                <div
+                  className={`text-[12px] font-bold border-[0.9px] px-4 py-1 rounded  ${getStatusStyles(
+                    goal.goalStatus,
+                  )}`}
+                >
+                  {goal.goalStatus}
+                </div>
+
+                <span className="text-[14px] font-bold text-goalDate">
+                  {goal.targetDate}
+                </span>
+              </div>
+            ))}
+          </div>
+        )}
       </div>
     </div>
   );

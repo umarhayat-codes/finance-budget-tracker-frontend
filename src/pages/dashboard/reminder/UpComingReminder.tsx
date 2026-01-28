@@ -10,12 +10,7 @@ import {
   FaCheckCircle,
   FaEllipsisV,
 } from "react-icons/fa";
-import {
-  MdOutlineEmail,
-  MdNotificationsNone,
-  MdAccessTime,
-  MdKeyboardArrowDown,
-} from "react-icons/md";
+import { MdKeyboardArrowDown } from "react-icons/md";
 import { IoMdTrain } from "react-icons/io";
 import { GiReceiveMoney } from "react-icons/gi";
 import { RiBillLine } from "react-icons/ri";
@@ -192,7 +187,7 @@ const UpComingReminder = () => {
 
     return (
       <div
-        className={`${style.cardBg} ${style.border} ${style.radius} p-4 flex flex-col justify-between h-[140px] relative font-inter transition-all hover:shadow-lg`}
+        className={`${style.cardBg} ${style.border} ${style.radius} p-4 flex flex-col justify-between w-[222px] h-[160px] relative font-inter transition-all hover:shadow-lg`}
       >
         <div className="flex justify-between items-start">
           <div className={`p-2 rounded-full ${style.iconBg}`}>{style.icon}</div>

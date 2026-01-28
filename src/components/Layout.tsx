@@ -18,6 +18,7 @@ import mainIcon from "../assets/main_icon.png";
 import { NavItemProps, FooterItemProps, LayoutProps } from "../../types";
 import { logoutUser } from "src/redux/slice/AuthSlice";
 import { useAppDispatch, useLoadTransactions } from "src/redux/useReduxHook";
+import { toast } from "react-toastify";
 
 const NavItem: React.FC<NavItemProps> = ({
   to,
@@ -129,6 +130,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
       weight: "font-normal",
       onClick: () => {
         dispatch(logoutUser());
+        toast.success("Logout successful");
         navigate("/auth/signin");
       },
     },
@@ -137,7 +139,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
   const toggleSidebar = () => setIsSidebarOpen(!isSidebarOpen);
 
   return (
-    <div className="flex min-h-screen bg-clarioBlack text-clarioWhite">
+    <div className="flex h-screen bg-clarioBlack text-clarioWhite">
       <div className="sidebar:hidden flex items-center justify-between p-4 w-full fixed top-0 bg-clarioBlack z-40 border-b border-cardBorder">
         <div className="flex items-center gap-2">
           <img src={mainIcon} alt="Clario" className="w-8 h-8 object-contain" />
@@ -158,7 +160,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
       <aside
         className={`
         fixed sidebar:static inset-y-0 left-0 z-50
-        w-[280px] h-screen bg-clarioBlack flex flex-col pt-8 pb-10
+        w-[240px] h-screen bg-clarioBlack flex flex-col pt-8 pb-10
         transition-transform duration-300 ease-in-out
         ${
           isSidebarOpen

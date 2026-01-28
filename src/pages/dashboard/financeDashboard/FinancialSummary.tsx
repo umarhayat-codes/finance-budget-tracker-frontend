@@ -37,7 +37,7 @@ const FinancialSummary: React.FC = () => {
   };
 
   return (
-    <div className="bg-white rounded-[13px] border-[0.95px] border-monthlyCardBorder p-6 h-auto xlg:h-1/2 flex flex-col font-poppins">
+    <div className="bg-white rounded-[13px] border-[0.95px] border-monthlyCardBorder p-6 h-auto flex flex-col font-poppins">
       <div className="flex justify-between items-start mb-6">
         <div>
           <h2 className="text-[17px] font-bold text-summaryTitle font-poppins">

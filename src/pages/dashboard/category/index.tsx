@@ -7,7 +7,7 @@ import BreakDownCategories from "./BreakDownCategories";
 const CategoriesPage: React.FC = () => {
   return (
     <Layout>
-      <div className="flex flex-col gap-6 min-h-screen bg-categoryPageBg">
+      <div className="flex flex-col gap-6 min-h-screen">
         <DashboardHeader />
 
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-6 items-start">

@@ -8,7 +8,7 @@ import {
 } from "../../../../types";
 import { toast } from "react-toastify";
 
-const REPORT_API_URL = "http://localhost:3000/api/transactions/summary";
+const REPORT_API_URL = "http://localhost:3000/api/finance/summary";
 const TRANSACTIONS_API_URL = "http://localhost:3000/api/transactions";
 
 export const useReportHook = (): UseReportHookResult => {

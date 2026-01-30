@@ -15,7 +15,8 @@ import { IoCarSportOutline } from "react-icons/io5";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 
-const BASE_URL = "http://localhost:5000/api/goals";
+const API_URL = process.env.REACT_APP_API_URL || "http://localhost:5000/api";
+const BASE_URL = `${API_URL}/goals`;
 
 export const useGoalHook = (): UseGoalHookResult => {
   const navigate = useNavigate();

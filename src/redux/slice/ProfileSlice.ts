@@ -3,6 +3,8 @@ import axios from "axios";
 import { ProfileState, User, AxiosErrorType } from "../../../types";
 import { setAuthorized, setInitialized, logoutUser } from "./AuthSlice";
 
+const API_URL = process.env.REACT_APP_API_URL || "http://localhost:5000/api";
+
 const initialState: ProfileState = {
   user: null,
   loading: false,
@@ -13,12 +15,9 @@ export const fetchUserProfile = createAsyncThunk(
   "profile/fetchUserProfile",
   async (_, { dispatch, rejectWithValue }) => {
     try {
-      const response = await axios.get<{ user: User }>(
-        "http://localhost:5000/api/auth/me",
-        {
-          withCredentials: true,
-        },
-      );
+      const response = await axios.get<{ user: User }>(`${API_URL}/auth/me`, {
+        withCredentials: true,
+      });
       dispatch(setAuthorized(true));
       return response.data.user;
     } catch (error: unknown) {

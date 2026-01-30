@@ -7,6 +7,8 @@ import {
 } from "../../../../types";
 import { toast } from "react-toastify";
 
+const API_URL = process.env.REACT_APP_API_URL || "http://localhost:5000/api";
+
 export const useProfileHook = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -15,13 +17,10 @@ export const useProfileHook = () => {
     setLoading(true);
     setError(null);
     try {
-      const response = await axios.post(
-        "http://localhost:5000/api/profile/save",
-        {
-          userId,
-          ...data,
-        },
-      );
+      const response = await axios.post(`${API_URL}/profile/save`, {
+        userId,
+        ...data,
+      });
       toast.success("Profile saved successfully");
       return response.data;
     } catch (err) {
@@ -40,9 +39,7 @@ export const useProfileHook = () => {
     setLoading(true);
     setError(null);
     try {
-      const response = await axios.get(
-        `http://localhost:5000/api/profile/get/${userId}`,
-      );
+      const response = await axios.get(`${API_URL}/profile/get/${userId}`);
       return response.data.data;
     } catch (err) {
       const axiosError = err as AxiosError<ApiErrorResponse>;

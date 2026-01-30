@@ -4,6 +4,8 @@ import { toast } from "react-toastify";
 import { useAuth } from "../../../redux/useReduxHook";
 import { UseSettingHookResult } from "../../../../types";
 
+const API_URL = process.env.REACT_APP_API_URL || "http://localhost:5000/api";
+
 const useSettingHook = (): UseSettingHookResult => {
   const [darkMode, setDarkMode] = useState<boolean>(false);
   const [emailNotifications, setEmailNotifications] = useState<boolean>(true);
@@ -37,14 +39,11 @@ const useSettingHook = (): UseSettingHookResult => {
     }
 
     try {
-      const response = await axios.post(
-        "http://localhost:5000/api/auth/change-password",
-        {
-          email: user.email,
-          newPassword,
-          confirmPassword,
-        },
-      );
+      const response = await axios.post(`${API_URL}/auth/change-password`, {
+        email: user.email,
+        newPassword,
+        confirmPassword,
+      });
 
       toast.success(response.data.message);
       setNewPassword("");

@@ -2,6 +2,8 @@ import { createSlice, PayloadAction, createAsyncThunk } from "@reduxjs/toolkit";
 import { AuthState } from "../../../types";
 import axios from "axios";
 
+const API_URL = process.env.REACT_APP_API_URL || "http://localhost:5000/api";
+
 const initialState: AuthState = {
   authorized: false,
   isInitialized: false,
@@ -12,7 +14,7 @@ export const logoutUser = createAsyncThunk(
   async (_, { rejectWithValue }) => {
     try {
       await axios.post(
-        "http://localhost:5000/api/auth/logout",
+        `${API_URL}/auth/logout`,
         {},
         {
           withCredentials: true,

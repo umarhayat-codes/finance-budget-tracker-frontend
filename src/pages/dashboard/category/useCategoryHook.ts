@@ -23,8 +23,8 @@ import {
   ApiErrorResponse,
 } from "../../../../types";
 
-// Base API URL - adjust if necessary
-const API_URL = "http://localhost:5000/api";
+// Base API URL - uses environment variable with localhost fallback
+const API_URL = process.env.REACT_APP_API_URL || "http://localhost:5000/api";
 
 // Axios with credentials for cookies (JWT)
 const api = axios.create({

@@ -16,6 +16,8 @@ import { RiBillLine } from "react-icons/ri";
 import { PiStudent } from "react-icons/pi";
 import React from "react";
 
+const API_URL = process.env.REACT_APP_API_URL || "http://localhost:5000/api";
+
 export const useReminderHook = (): UseReminderHookResult => {
   const { user } = useAuth();
   const [preferences, setPreferences] = useState<ReminderPreference[]>([
@@ -74,9 +76,7 @@ export const useReminderHook = (): UseReminderHookResult => {
     if (!user?.id) return;
     setLoading(true);
     try {
-      const response = await axios.get(
-        `http://localhost:5000/api/reminder/get/${user.id}`,
-      );
+      const response = await axios.get(`${API_URL}/reminder/get/${user.id}`);
       const data: ReminderItem[] = response.data.data;
 
       const r1: ReminderItem[] = [];
@@ -130,7 +130,7 @@ export const useReminderHook = (): UseReminderHookResult => {
     }
 
     try {
-      await axios.post("http://localhost:5000/api/reminder/create", {
+      await axios.post(`${API_URL}/reminder/create`, {
         userId: user.id,
         title: data.title,
         amount: data.amount,

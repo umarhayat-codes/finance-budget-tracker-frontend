@@ -8,8 +8,9 @@ import {
 } from "../../../../types";
 import { toast } from "react-toastify";
 
-const REPORT_API_URL = "http://localhost:5000/api/finance/summary";
-const TRANSACTIONS_API_URL = "http://localhost:5000/api/transactions";
+const API_URL = process.env.REACT_APP_API_URL || "http://localhost:5000/api";
+const REPORT_API_URL = `${API_URL}/finance/summary`;
+const TRANSACTIONS_API_URL = `${API_URL}/transactions`;
 
 export const useReportHook = (): UseReportHookResult => {
   const [reportData, setReportData] = useState<ReportData>({

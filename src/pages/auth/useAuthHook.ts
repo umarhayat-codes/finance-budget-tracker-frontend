@@ -2,6 +2,8 @@ import { useState } from "react";
 import axios from "axios";
 import { SignUpFormData, SignInFormData } from "../../../types";
 
+const API_URL = process.env.REACT_APP_API_URL || "http://localhost:5000/api";
+
 export const useAuthHook = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -12,10 +14,7 @@ export const useAuthHook = () => {
     setError(null);
     setSuccess(false);
     try {
-      const response = await axios.post(
-        "http://localhost:5000/api/auth/signup",
-        formData,
-      );
+      const response = await axios.post(`${API_URL}/auth/signup`, formData);
       setSuccess(true);
       return response.data;
     } catch (err) {
@@ -31,11 +30,9 @@ export const useAuthHook = () => {
     setError(null);
     setSuccess(false);
     try {
-      const response = await axios.post(
-        "http://localhost:5000/api/auth/login",
-        formData,
-        { withCredentials: true },
-      );
+      const response = await axios.post(`${API_URL}/auth/login`, formData, {
+        withCredentials: true,
+      });
       setSuccess(true);
       return response.data.message;
     } catch (err) {

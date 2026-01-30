@@ -78,14 +78,14 @@ const CreateGoal = () => {
                     onClick={() => handleGoalChange("goalType", "Savings")}
                     className={`flex items-center gap-2 cursor-pointer px-3 py-1 rounded ${
                       goalForm.goalType === "Savings"
-                        ? "bg-white shadow-sm"
+                        ? "bg-clarioWhite shadow-sm"
                         : ""
                     }`}
                   >
                     <span
                       className={`${
                         goalForm.goalType === "Savings"
-                          ? "text-black"
+                          ? "text-clarioBlack"
                           : "text-createGoalTableRowText"
                       } text-[13px] font-bold font-inter`}
                     >
@@ -96,14 +96,14 @@ const CreateGoal = () => {
                     onClick={() => handleGoalChange("goalType", "Debt Payoff")}
                     className={`flex items-center gap-2 cursor-pointer px-3 py-1 rounded ${
                       goalForm.goalType === "Debt Payoff"
-                        ? "bg-white shadow-sm"
+                        ? "bg-clarioWhite shadow-sm"
                         : ""
                     }`}
                   >
                     <span
                       className={`${
                         goalForm.goalType === "Debt Payoff"
-                          ? "text-black"
+                          ? "text-clarioBlack"
                           : "text-createGoalTableRowText"
                       } text-[13px] font-bold font-inter`}
                     >
@@ -170,7 +170,7 @@ const CreateGoal = () => {
               </button>
               <button
                 onClick={handleCancelGoal}
-                className="w-[124px] h-[40px] bg-createGoalTableRowBg rounded-[5px] text-[#484948] text-[13px] font-bold font-inter"
+                className="w-[124px] h-[40px] bg-createGoalTableRowBg rounded-[5px] text-createGoalButtonCancelText text-[13px] font-bold font-inter"
               >
                 Cancel
               </button>

@@ -2,7 +2,11 @@ import React from "react";
 import Layout from "../../../components/Layout";
 import DashboardHeader from "../../../components/DashboardHeader";
 import { useReminderHook } from "./useReminderHook";
-import { ReminderItem, ReminderFormData } from "../../../../types";
+import {
+  ReminderItem,
+  ReminderFormData,
+  CardGenericProps,
+} from "../../../../types";
 import {
   FaCreditCard,
   FaBolt,
@@ -38,7 +42,7 @@ const UpComingReminder = () => {
   if (loading) {
     return (
       <Layout>
-        <div className="bg-white min-h-screen">
+        <div className="bg-bgColor min-h-screen">
           <div className="p-6">
             <DashboardHeader />
             <div className="flex flex-col items-center justify-center min-h-[60vh]">
@@ -88,15 +92,6 @@ const UpComingReminder = () => {
     );
   };
 
-  interface CardGenericProps {
-    item: ReminderItem;
-    bg: string;
-    border: string;
-    textColor: string;
-    amountColor: string;
-    subColor: string;
-  }
-
   const CardGeneric = ({
     item,
     bg,
@@ -110,7 +105,7 @@ const UpComingReminder = () => {
         className={`${bg} border ${border} rounded-[1px] p-4 flex flex-col justify-between h-[160px] font-inter transition-all hover:shadow-lg`}
       >
         <div className="flex justify-between items-start">
-          <div className="p-2 rounded-full bg-gray-200/50">
+          <div className="p-2 rounded-full bg-clarioIconBg">
             {getCardStyleAndIcon(item.title).icon}
           </div>
           <span className={`${subColor} text-[10px] font-bold`}>
@@ -143,7 +138,7 @@ const UpComingReminder = () => {
 
   return (
     <Layout>
-      <div className="bg-white min-h-screen">
+      <div className="bg-bgColor min-h-screen">
         <div className="p-6">
           <div className="flex justify-between items-center mb-6">
             <DashboardHeader />
@@ -205,7 +200,7 @@ const UpComingReminder = () => {
                   <h3 className="text-reminderPrefTitle text-[17px] font-bold">
                     Reminder Preferences
                   </h3>
-                  <FaEllipsisV className="text-gray-400 cursor-pointer" />
+                  <FaEllipsisV className="text-reminderTextGray cursor-pointer" />
                 </div>
 
                 <div className="flex flex-col gap-6">
@@ -224,7 +219,7 @@ const UpComingReminder = () => {
                         {pref.enabled ? (
                           <BsToggleOn className="text-reminderCardDark/80" />
                         ) : (
-                          <BsToggleOff className="text-gray-300" />
+                          <BsToggleOff className="text-reminderTextGray" />
                         )}
                       </button>
                     </div>
@@ -236,11 +231,11 @@ const UpComingReminder = () => {
                     </span>
                     <BsToggleOn className="text-reminderCardDark/80 text-3xl" />
                   </div>
-                  <div className="flex justify-between items-center mt-2 p-2 rounded hover:bg-gray-50 cursor-pointer">
+                  <div className="flex justify-between items-center mt-2 p-2 rounded hover:bg-bgColor cursor-pointer">
                     <span className="text-reminderPrefLabel text-[14px] font-bold">
                       Default Reminder Time
                     </span>
-                    <MdKeyboardArrowDown className="text-gray-400 text-xl" />
+                    <MdKeyboardArrowDown className="text-reminderTextGray text-xl" />
                   </div>
                 </div>
               </div>
@@ -256,7 +251,7 @@ const UpComingReminder = () => {
                         a 15.9155 15.9155 0 0 1 0 31.831
                         a 15.9155 15.9155 0 0 1 0 -31.831"
                       fill="none"
-                      stroke="#333C2F"
+                      className="stroke-reminderCardDark"
                       strokeWidth="4"
                       strokeDasharray="100, 100"
                     />
@@ -265,10 +260,9 @@ const UpComingReminder = () => {
                         a 15.9155 15.9155 0 0 1 0 31.831
                         a 15.9155 15.9155 0 0 1 0 -31.831"
                       fill="none"
-                      stroke="#8CFF2E"
+                      className="stroke-reminderCardGreen"
                       strokeWidth="4"
                       strokeDasharray={`${completionRate}, 100`}
-                      className="animate-spin-slow"
                     />
                   </svg>
                   <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-reminderCompletionText text-2xl font-bold">
@@ -297,7 +291,7 @@ const UpComingReminder = () => {
                     value={formData.title}
                     onChange={handleInputChange}
                     placeholder="e.g. Credit Card, Electricity Bill"
-                    className="w-full border border-gray-300 rounded-lg p-3 text-[14px] focus:outline-none focus:border-black"
+                    className="w-full border border-createGoalBorder rounded-lg p-3 text-[14px] focus:outline-none focus:border-black"
                     required
                   />
                 </div>
@@ -311,7 +305,7 @@ const UpComingReminder = () => {
                     value={formData.amount}
                     onChange={handleInputChange}
                     placeholder="e.g. $200"
-                    className="w-full border border-gray-300 rounded-lg p-3 text-[14px] focus:outline-none focus:border-black"
+                    className="w-full border border-createGoalBorder rounded-lg p-3 text-[14px] focus:outline-none focus:border-black"
                     required
                   />
                 </div>
@@ -325,7 +319,7 @@ const UpComingReminder = () => {
                     value={formData.dateStr}
                     onChange={handleInputChange}
                     placeholder="e.g. Tomorrow, Jan 20"
-                    className="w-full border border-gray-300 rounded-lg p-3 text-[14px] focus:outline-none focus:border-black"
+                    className="w-full border border-createGoalBorder rounded-lg p-3 text-[14px] focus:outline-none focus:border-black"
                     required
                   />
                 </div>

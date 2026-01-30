@@ -520,6 +520,16 @@ export interface ReminderPreference {
   type: "toggle" | "dropdown";
 }
 
+ export interface CardGenericProps {
+    item: ReminderItem;
+    bg: string;
+    border: string;
+    textColor: string;
+    amountColor: string;
+    subColor: string;
+  }
+
+
 export interface ReminderCardStyle {
   cardBg: string;
   radius: string;

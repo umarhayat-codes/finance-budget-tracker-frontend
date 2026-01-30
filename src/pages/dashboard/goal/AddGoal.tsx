@@ -32,9 +32,9 @@ const AddGoal = () => {
       case "Delayed":
         return "bg-goalDelayedBg border-goalDelayedBorder text-goalDelayedText";
       case "Completed":
-        return "bg-green-100 border-green-200 text-green-700";
+        return "bg-statusCompletedBg border-statusCompletedBorder text-statusCompletedText";
       default:
-        return "bg-gray-100 border-gray-200 text-gray-500";
+        return "bg-goalDelayedBg border-goalDelayedBorder text-goalDelayedText";
     }
   };
 
@@ -98,7 +98,7 @@ const AddGoal = () => {
             <span className="text-[14px] font-bold text-goalText">
               Spent Savings:
             </span>
-            <span className="text-[18px] font-extrabold text-black">
+            <span className="text-[18px] font-extrabold text-clarioBlack">
               {stats.spentSavings}
             </span>
           </div>
@@ -113,7 +113,7 @@ const AddGoal = () => {
       </div>
 
       <div className="flex flex-col gap-4">
-        <h2 className="text-[16px] font-bold text-black">
+        <h2 className="text-[16px] font-bold text-clarioBlack">
           {filterStatus === "Completed"
             ? "Complete Goal"
             : filterStatus === "Pending"
@@ -145,10 +145,10 @@ const AddGoal = () => {
                         activeDropdown === goal.id ? null : goal.id,
                       )
                     }
-                    className="text-gray-400 hover:text-gray-600"
+                    className="text-reminderTextGray hover:text-reminderTextRow2"
                   />
                   {activeDropdown === goal.id && (
-                    <div className="absolute right-0 mt-2 w-32 bg-white border border-gray-200 rounded shadow-lg z-10">
+                    <div className="absolute right-0 mt-2 w-32 bg-clarioWhite border border-goalHistoryHeaderBg rounded shadow-lg z-10">
                       <ul className="py-1">
                         {statuses.map((status) => (
                           <li
@@ -157,7 +157,7 @@ const AddGoal = () => {
                               updateGoalStatus(goal.id, status);
                               setActiveDropdown(null);
                             }}
-                            className="px-4 py-2 hover:bg-gray-100 text-left text-[12px] font-medium text-gray-700"
+                            className="px-4 py-2 hover:bg-bgColor text-left text-[12px] font-medium text-reminderPrefTitle"
                           >
                             {status}
                           </li>

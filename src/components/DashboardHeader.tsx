@@ -9,7 +9,7 @@ const DashboardHeader: React.FC = () => {
   const { user } = useAuth();
   return (
     <div className="flex w-full items-center justify-between py-4">
-      <div className="flex h-[45px] w-[434px] items-center rounded-[200px] border border-headerBorder bg-transparent px-4">
+      <div className="flex h-[45px] md:w-full w-[250px] max-w-[434px] items-center rounded-[200px] border border-headerBorder bg-transparent px-4">
         <input
           type="text"
           placeholder="Search"
@@ -23,7 +23,7 @@ const DashboardHeader: React.FC = () => {
           <span className="font-inter text-[13px] font-bold text-black">
             {user?.fullName}
           </span>
-          <span className="font-inter text-[13px] font-bold text-textSecondary">
+          <span className="font-inter text-[13px] font-bold text-textSecondary hidden sm:block">
             Pro Plan User
           </span>
         </div>

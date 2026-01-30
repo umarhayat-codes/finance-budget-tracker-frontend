@@ -17,10 +17,8 @@ const WhyClarioSection: React.FC = () => {
         </div>
 
         <div
-          className="w-full flex flex-col md:flex-row bg-buttonBg rounded-[40px] overflow-hidden"
-          style={{
-            maxWidth: "1000px",
-          }}
+          className="w-full flex flex-col lg:flex-row bg-buttonBg rounded-[40px] overflow-hidden"
+          style={{ maxWidth: "900px" }}
         >
           <div className="flex-1 p-10 md:p-14 md:pr-10">
             <h3 className="text-[24px] font-medium text-textWhite mb-10">

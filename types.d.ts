@@ -25,6 +25,7 @@ export interface NavItemProps {
   icon: IconType;
   label: string;
   isDashboard?: boolean;
+  isOpen?: boolean;
   onClick?: () => void;
 }
 
@@ -519,6 +520,19 @@ export interface ReminderPreference {
   type: "toggle" | "dropdown";
 }
 
+export interface ReminderCardStyle {
+  cardBg: string;
+  radius: string;
+  border: string;
+  titleColor: string;
+  amountColor: string;
+  subColor: string;
+  iconBg: string;
+  barColor: string;
+  icon: React.ReactNode;
+  checkMark: boolean;
+}
+
 export interface UseReminderHookResult {
   loading: boolean;
   remindersRow1: ReminderItem[];
@@ -528,6 +542,13 @@ export interface UseReminderHookResult {
   completionRate: number;
   handlePreferenceToggle: (id: string) => void;
   addReminder: (data: ReminderFormData) => Promise<void>;
+  isModalOpen: boolean;
+  setIsModalOpen: (open: boolean) => void;
+  formData: ReminderFormData;
+  handleInputChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  handleSubmit: (e: React.FormEvent) => void;
+  getCardStyleAndIcon: (title: string) => ReminderCardStyle;
+  renderBars: (color: string) => React.ReactNode;
 }
 
 export interface SettingProps {}

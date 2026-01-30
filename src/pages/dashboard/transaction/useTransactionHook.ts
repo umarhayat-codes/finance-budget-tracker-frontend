@@ -9,8 +9,8 @@ import {
 import { useTransactions } from "src/redux/useReduxHook";
 import { toast } from "react-toastify";
 
-const TRANSACTIONS_API_URL = "http://localhost:3000/api/transactions";
-const CATEGORIES_API_URL = "http://localhost:3000/api/categories";
+const TRANSACTIONS_API_URL = "http://localhost:5000/api/transactions";
+const CATEGORIES_API_URL = "http://localhost:5000/api/categories";
 
 export const addTransactionApi = async (
   data: TransactionFormData,

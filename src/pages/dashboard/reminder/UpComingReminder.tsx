@@ -26,15 +26,14 @@ const UpComingReminder = () => {
     completionRate,
     loading,
     handlePreferenceToggle,
-    addReminder,
+    isModalOpen,
+    setIsModalOpen,
+    formData,
+    handleInputChange,
+    handleSubmit,
+    getCardStyleAndIcon,
+    renderBars,
   } = useReminderHook();
-
-  const [isModalOpen, setIsModalOpen] = React.useState(false);
-  const [formData, setFormData] = React.useState<ReminderFormData>({
-    title: "",
-    amount: "",
-    dateStr: "",
-  });
 
   if (loading) {
     return (
@@ -56,138 +55,12 @@ const UpComingReminder = () => {
     );
   }
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
-  };
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (formData.title && formData.amount && formData.dateStr) {
-      addReminder({
-        title: formData.title,
-        amount: formData.amount,
-        dateStr: formData.dateStr,
-      });
-      setIsModalOpen(false);
-      setFormData({ title: "", amount: "", dateStr: "" });
-    }
-  };
-
-  const renderBars = (color: string) => (
-    <div className="flex items-end gap-[2px] h-[20px]">
-      <div className={`w-[3px] h-[40%] ${color} rounded-sm`}></div>
-      <div className={`w-[3px] h-[60%] ${color} rounded-sm`}></div>
-      <div className={`w-[3px] h-[100%] ${color} rounded-sm`}></div>
-      <div className={`w-[3px] h-[50%] ${color} rounded-sm`}></div>
-      <div className={`w-[3px] h-[80%] ${color} rounded-sm`}></div>
-    </div>
-  );
-
-  const getCardStyleAndIcon = (title: string) => {
-    const t = title.toLowerCase();
-
-    let style = {
-      cardBg: "bg-reminderCardDark",
-      radius: "rounded-[4px]",
-      border: "border-transparent",
-      titleColor: "text-reminderTextGray",
-      amountColor: "text-reminderTextMuted",
-      subColor: "text-reminderSubtext",
-      iconBg: "bg-white/10 text-reminderTextGray",
-      barColor: "bg-reminderCardGreen",
-      icon: <RiBillLine className="text-lg" />,
-      checkMark: false,
-    };
-
-    if (t.includes("travel") || t.includes("salary")) {
-      style = {
-        cardBg: "bg-profileSubTierBg",
-        radius: "rounded-[1px]", // Matches radius:1 request
-        border: "border border-reminderBorderRow3",
-        titleColor: "text-black",
-        amountColor: "text-gray-500",
-        subColor: "text-gray-400",
-        iconBg: "bg-gray-100 text-settingSearchText",
-        barColor: "bg-settingSearchText",
-        icon: t.includes("travel") ? (
-          <IoMdTrain className="text-lg" />
-        ) : (
-          <GiReceiveMoney className="text-lg" />
-        ),
-        checkMark: true,
-      };
-    } else if (
-      t.includes("rent") ||
-      t.includes("student") ||
-      t.includes("studnet")
-    ) {
-      style = {
-        cardBg: "bg-reminderCardGray",
-        radius: "rounded-[1px]",
-        border: "border border-reminderBorderRow2",
-        titleColor: "text-black",
-        amountColor: "text-gray-600",
-        subColor: "text-gray-500",
-        iconBg: "bg-white/40 text-black",
-        barColor: "bg-black",
-        icon: t.includes("rent") ? (
-          <RiBillLine className="text-lg" />
-        ) : (
-          <PiStudent className="text-lg" />
-        ),
-        checkMark: false,
-      };
-    } else if (t.includes("electricity") || t.includes("elecrity")) {
-      style = {
-        cardBg: "bg-reminderCardDark",
-        radius: "rounded-[20px]",
-        border: "border-none",
-        titleColor: "text-white",
-        amountColor: "text-gray-300",
-        subColor: "text-gray-400",
-        iconBg: "bg-white/10 text-white",
-        barColor: "bg-primary",
-        icon: <FaBolt className="text-lg" />,
-        checkMark: false,
-      };
-    } else if (t.includes("car insurance")) {
-      style = {
-        cardBg: "bg-buttonBg",
-        radius: "rounded-[20px]",
-        border: "border-none",
-        titleColor: "text-white",
-        amountColor: "text-gray-300",
-        subColor: "text-gray-400",
-        iconBg: "bg-white/10 text-white",
-        barColor: "bg-primary",
-        icon: <FaCar className="text-lg" />,
-        checkMark: false,
-      };
-    } else if (t.includes("credit card")) {
-      style = {
-        cardBg: "bg-primary",
-        radius: "rounded-[20px]",
-        border: "border-none",
-        titleColor: "text-black",
-        amountColor: "text-black/70",
-        subColor: "text-black/60",
-        iconBg: "bg-black/10 text-black",
-        barColor: "bg-black",
-        icon: <FaCreditCard className="text-lg" />,
-        checkMark: true,
-      };
-    }
-
-    return style;
-  };
-
   const CardRow1 = ({ item }: { item: ReminderItem }) => {
     const style = getCardStyleAndIcon(item.title);
 
     return (
       <div
-        className={`${style.cardBg} ${style.border} ${style.radius} p-4 flex flex-col justify-between w-[222px] h-[160px] relative font-inter transition-all hover:shadow-lg`}
+        className={`${style.cardBg} ${style.border} ${style.radius} p-4 flex flex-col justify-between  h-[160px] relative font-inter transition-all hover:shadow-lg`}
       >
         <div className="flex justify-between items-start">
           <div className={`p-2 rounded-full ${style.iconBg}`}>{style.icon}</div>
@@ -208,13 +81,7 @@ const UpComingReminder = () => {
                 {item.amount}
               </p>
             </div>
-            {style.checkMark ? (
-              <FaCheckCircle
-                className={`${style.cardBg.includes("8CFF2E") ? "text-black" : style.cardBg.includes("FCFDFD") ? "text-black" : "text-white"} text-xl`}
-              />
-            ) : (
-              renderBars(style.barColor)
-            )}
+            {renderBars(style.barColor)}
           </div>
         </div>
       </div>
@@ -240,7 +107,7 @@ const UpComingReminder = () => {
   }: CardGenericProps) => {
     return (
       <div
-        className={`${bg} border ${border} rounded-[1px] p-4 flex flex-col justify-between h-[140px] font-inter`}
+        className={`${bg} border ${border} rounded-[1px] p-4 flex flex-col justify-between h-[160px] font-inter transition-all hover:shadow-lg`}
       >
         <div className="flex justify-between items-start">
           <div className="p-2 rounded-full bg-gray-200/50">
@@ -297,7 +164,7 @@ const UpComingReminder = () => {
                 </button>
               </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4 ">
                 {remindersRow1.map((item, index) => (
                   <CardRow1 key={item.id} item={item} />
                 ))}

@@ -65,7 +65,7 @@ const MonthlyFinancial: React.FC = () => {
 
   return (
     <div className="bg-white rounded-[13px] border-[0.95px] border-monthlyCardBorder p-6 h-full flex flex-col font-poppins">
-      <div className="flex justify-between items-start mb-6">
+      <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center mb-6 gap-4">
         <div>
           <h2 className="text-[17px] font-bold text-cardBorder font-poppins">
             Monthly Financial Trend
@@ -99,7 +99,8 @@ const MonthlyFinancial: React.FC = () => {
         </div>
       </div>
 
-      <div className="flex justify-between items-center mb-8">
+      {/* <div className="flex justify-between items-center mb-8"> */}
+      <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center mb-6 gap-4">
         <div className="flex items-center gap-2 text-[11px] font-semibold text-cardBorder font-poppins">
           <span>Start from</span>
           <div className="flex items-center gap-1 bg-recentSortBg border-[0.95px] border-recentSortBorder rounded-[450px] px-3 py-1 text-white">

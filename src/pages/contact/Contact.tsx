@@ -1,6 +1,8 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 
 const Contact: React.FC = () => {
+  const navigate = useNavigate();
   return (
     <div className="bg-black flex flex-col items-center pt-20 pb-32 px-6">
       <div className="flex items-center gap-2 mb-8">
@@ -87,6 +89,7 @@ const Contact: React.FC = () => {
 
           <button
             type="submit"
+            onClick={() => navigate("/")}
             className="bg-primary hover:bg-primary/90 rounded-[10px] w-full py-4 text-buttonText font-manrope font-semibold text-[15px] transition-all transform active:scale-[0.98]"
           >
             Get in touch

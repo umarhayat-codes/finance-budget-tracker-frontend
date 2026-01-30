@@ -24,7 +24,7 @@ import {
 } from "../../../../types";
 
 // Base API URL - adjust if necessary
-const API_URL = "http://localhost:3000/api";
+const API_URL = "http://localhost:5000/api";
 
 // Axios with credentials for cookies (JWT)
 const api = axios.create({

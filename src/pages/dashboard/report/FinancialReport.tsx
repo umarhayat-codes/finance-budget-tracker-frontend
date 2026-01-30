@@ -92,70 +92,82 @@ const FinancialReport: React.FC = () => {
 
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
               <div className="bg-reportCardBg p-6 rounded-[20px] shadow-sm border border-exportBg">
-                <div className="mb-8">
-                  <h3 className="text-reportCardTitle text-[17px] font-inter font-bold">
-                    Monthly Expense Breakdwwn
-                  </h3>
-                  <p className="text-reportCardSubtitle text-[15px] font-inter font-bold">
-                    Total Income and Total Expense
-                  </p>
-                </div>
+                <div className="flex justify-center items-center m-auto">
+                  <div>
+                    <div className="mb-8">
+                      <h3 className="text-reportCardTitle text-[17px] font-inter font-bold">
+                        Monthly Expense Breakdwwn
+                      </h3>
+                      <p className="text-reportCardSubtitle text-[15px] font-inter font-bold">
+                        Total Income and Total Expense
+                      </p>
+                    </div>
 
-                <div className="flex flex-col md:flex-row items-center gap-8">
-                  <div className="flex flex-col">
-                    <span className="text-reportCardSubtitle text-[14px] font-inter font-bold">
-                      Total Income
-                    </span>
-                    <span className="text-reportIncomeText text-[25px] font-inter font-bold">
-                      {reportData.monthlyBreakdown.totalIncome}
-                    </span>
-                  </div>
-                  <div className="relative w-[200px] h-[200px]">
-                    <ResponsiveContainer width="100%" height="100%">
-                      <PieChart>
-                        <Pie
-                          data={reportData.monthlyBreakdown.data}
-                          cx="50%"
-                          cy="50%"
-                          innerRadius={65}
-                          outerRadius={85}
-                          paddingAngle={0}
-                          dataKey="value"
-                        >
+                    <div className="flex flex-col md:flex-row items-center gap-8 md:gap-4">
+                      <div className="flex flex-col">
+                        <span className="text-reportCardSubtitle text-[14px] font-inter font-bold">
+                          Total Income
+                        </span>
+                        <span className="text-reportIncomeText text-[25px] font-inter font-bold">
+                          {reportData.monthlyBreakdown.totalIncome}
+                        </span>
+                      </div>
+                      <div className="relative w-[200px] h-[200px]">
+                        <ResponsiveContainer width="100%" height="100%">
+                          <PieChart>
+                            <Pie
+                              data={reportData.monthlyBreakdown.data}
+                              cx="50%"
+                              cy="50%"
+                              innerRadius={65}
+                              outerRadius={85}
+                              paddingAngle={0}
+                              dataKey="value"
+                            >
+                              {reportData.monthlyBreakdown.data.map(
+                                (entry, index) => (
+                                  <Cell
+                                    key={`cell-${index}`}
+                                    fill={entry.color}
+                                  />
+                                ),
+                              )}
+                            </Pie>
+                          </PieChart>
+                        </ResponsiveContainer>
+                      </div>
+
+                      <div className="flex flex-col gap-6 ">
+                        <div className="grid grid-cols-1 gap-2">
+                          <div className="flex items-center justify-between">
+                            <div className="flex flex-col">
+                              <span className="text-reportCardSubtitle text-[14px] font-inter font-bold flex items-center gap-2">
+                                <div className="w-2 h-2 rounded-sm bg-clarioGreen"></div>
+                                Total Expengss
+                              </span>
+                              <span className="text-reportExpenseText text-[25px] font-inter font-bold">
+                                {reportData.monthlyBreakdown.totalExpense}
+                              </span>
+                            </div>
+                          </div>
                           {reportData.monthlyBreakdown.data.map(
                             (entry, index) => (
-                              <Cell key={`cell-${index}`} fill={entry.color} />
+                              <div
+                                key={index}
+                                className="flex items-center gap-2"
+                              >
+                                <div
+                                  className="w-2 h-2 rounded-sm"
+                                  style={{ backgroundColor: entry.color }}
+                                ></div>
+                                <span className="text-reportCardSubtitle text-[14px] font-inter font-bold">
+                                  {entry.category}
+                                </span>
+                              </div>
                             ),
                           )}
-                        </Pie>
-                      </PieChart>
-                    </ResponsiveContainer>
-                  </div>
-
-                  <div className="flex flex-col gap-6 flex-1">
-                    <div className="grid grid-cols-1 gap-2">
-                      <div className="flex items-center justify-between">
-                        <div className="flex flex-col">
-                          <span className="text-reportCardSubtitle text-[14px] font-inter font-bold flex items-center gap-2">
-                            <div className="w-2 h-2 rounded-sm bg-clarioGreen"></div>
-                            Total Expengss
-                          </span>
-                          <span className="text-reportExpenseText text-[25px] font-inter font-bold">
-                            {reportData.monthlyBreakdown.totalExpense}
-                          </span>
                         </div>
                       </div>
-                      {reportData.monthlyBreakdown.data.map((entry, index) => (
-                        <div key={index} className="flex items-center gap-2">
-                          <div
-                            className="w-2 h-2 rounded-sm"
-                            style={{ backgroundColor: entry.color }}
-                          ></div>
-                          <span className="text-reportCardSubtitle text-[14px] font-inter font-bold">
-                            {entry.category}
-                          </span>
-                        </div>
-                      ))}
                     </div>
                   </div>
                 </div>

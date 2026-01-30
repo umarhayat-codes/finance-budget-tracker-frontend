@@ -16,7 +16,7 @@ export const useProfileHook = () => {
     setError(null);
     try {
       const response = await axios.post(
-        "http://localhost:3000/api/profile/save",
+        "http://localhost:5000/api/profile/save",
         {
           userId,
           ...data,
@@ -41,7 +41,7 @@ export const useProfileHook = () => {
     setError(null);
     try {
       const response = await axios.get(
-        `http://localhost:3000/api/profile/get/${userId}`,
+        `http://localhost:5000/api/profile/get/${userId}`,
       );
       return response.data.data;
     } catch (err) {

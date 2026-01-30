@@ -1,12 +1,3 @@
-// import { Routes, Route } from "react-router-dom";
-// import HomePage from "./pages/home";
-// import ContactPage from "./pages/contact";
-// import WishListPage from "./pages/wishlist";
-// import TransactionsPage from "./pages/dashboard/transaction";
-// import CategoriesPage from "./pages/dashboard/category";
-// import Profile from "./pages/dashboard/profile/Profile";
-// import Auth from "./pages/auth";
-
 import Index from "./pages/Routes";
 import { Provider } from "react-redux";
 import store from "./redux/store";
@@ -30,16 +21,6 @@ const AppContent: React.FC = () => {
 };
 
 const App: React.FC = () => (
-  // <Routes>
-  //   <Route path="/home" element={<HomePage />} />
-  //   {/* <Route path="/" element={<TransactionsPage />} /> */}
-  //   <Route path="/*" element={<Auth />} />
-  //   <Route path="/categories" element={<CategoriesPage />} />
-  //   <Route path="/profile" element={<Profile />} />
-  //   <Route path="/contact" element={<ContactPage />} />
-  //   <Route path="/wishlist" element={<WishListPage />} />
-  // </Routes>
-
   <>
     <Provider store={store}>
       <AppContent />

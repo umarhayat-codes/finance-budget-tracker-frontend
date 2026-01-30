@@ -29,12 +29,12 @@ const ClarioWorkSection: React.FC = () => {
   ];
 
   return (
-    <section className="w-full py-20 px-6 md:px-12 flex flex-col items-center font-manrope bg-black">
-      <div className="max-w-[1240px] w-full">
-        <div className="pt-[90px] mb-4 flex justify-center md:justify-start">
+    <section className="w-full py-10 px-6 md:px-12 flex flex-col items-center font-manrope bg-black">
+      <div className="max-w-[1040px] w-full">
+        <div className="pt-[90px] mb-4 flex justify-start ">
           <a
             href="#watch-video"
-            className="text-[16px] font-medium font-manrope text-primary flex items-center gap-2 transition-opacity hover:opacity-80"
+            className="text-[16px] font-medium font-manrope text-primary flex  gap-2 transition-opacity hover:opacity-80"
           >
             Watch video
             <svg
@@ -49,15 +49,14 @@ const ClarioWorkSection: React.FC = () => {
           </a>
         </div>
 
-        <h2 className="font-manrope font-medium text-textWhite text-[32px] md:text-[48px] text-center md:text-left leading-tight mb-12">
+        <h2 className="font-manrope font-medium text-textWhite text-[32px] md:text-[48px]   leading-tight mb-12">
           How Clario works
         </h2>
-
-        <div className="flex flex-wrap md:flex-nowrap gap-[20px] pt-[40px] justify-center md:justify-start">
+        <div className="flex flex-wrap gap-[20px] pt-[40px] justify-center mx-auto">
           {cards.map((card, index) => (
             <div
               key={index}
-              className="group bg-cardBg flex flex-col p-[10px] rounded-[30px] transition-transform hover:scale-[1.02] w-full max-w-[320px] h-[513.19px]"
+              className="group bg-cardBg flex flex-col p-[10px] rounded-[30px] transition-transform hover:scale-[1.02] w-full max-w-[320px] "
             >
               <div className="relative w-full aspect-[300/250] overflow-hidden rounded-[20px] bg-black flex items-center justify-center p-4">
                 <img

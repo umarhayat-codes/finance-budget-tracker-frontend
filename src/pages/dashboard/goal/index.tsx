@@ -13,11 +13,13 @@ const GoalPage: React.FC = () => {
         index
         element={
           <Layout>
+          <>
             <DashboardHeader />
 
             <AddGoal />
 
             <BreakDownGoal />
+          </>
           </Layout>
         }
       />

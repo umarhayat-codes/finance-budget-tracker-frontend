@@ -10,8 +10,8 @@ const ExpenseDistribute: React.FC = () => {
   const { expenseDistribution, renderCustomizedLabel } = useFinanceHook();
 
   return (
-    <div className="bg-white border-[0.95px] border-budgetGoalBorder rounded-[13px] p-6 font-poppins shadow-sm h-full flex flex-col justify-between">
-      <div className="flex items-start justify-between mb-4">
+    <div className="bg-white border-[0.95px] border-budgetGoalBorder rounded-[13px] font-poppins shadow-sm h-full flex flex-col justify-between overflow-hidden">
+      <div className="flex items-start justify-between p-6 pb-0">
         <div>
           <h2 className="text-[17px] font-bold text-budgetGoalTextMain leading-tight">
             Expense Distribution
@@ -24,9 +24,8 @@ const ExpenseDistribute: React.FC = () => {
       </div>
 
       <>
-        <div className="relative flex justify-center items-center py-2 flex-grow">
-          {/* <div className="w-full h-[320px] xlg:h-[350px]"> */}
-          <div className="w-full h-[320px]">
+        <div className="relative flex justify-center items-center  px-6">
+          <div className="w-full h-[280px] xlg:h-[300px]">
             <ResponsiveContainer width="100%" height="100%">
               <PieChart>
                 <Pie
@@ -34,7 +33,7 @@ const ExpenseDistribute: React.FC = () => {
                   cx="50%"
                   cy="50%"
                   innerRadius={0}
-                  outerRadius={140}
+                  outerRadius="100%"
                   paddingAngle={0}
                   dataKey="percentage"
                   labelLine={false}
@@ -56,7 +55,7 @@ const ExpenseDistribute: React.FC = () => {
           </div>
         </div>
 
-        <div className="grid grid-cols-2 gap-y-4 gap-x-2 mt-4 border-t-[0.95px] border-budgetGoalBorder pt-4">
+        <div className="grid grid-cols-2 gap-y-4 gap-x-2 border-t-[0.95px] border-budgetGoalBorder mx-6 pt-3">
           {expenseDistribution.map((item: ExpenseDistributionItem) => (
             <div key={item.id} className="flex flex-col">
               <div className="flex items-center gap-2 mb-1">
@@ -81,7 +80,7 @@ const ExpenseDistribute: React.FC = () => {
         </div>
       </>
 
-      <p className="text-[9px] font-normal text-budgetGoalTextSub leading-relaxed mt-4">
+      <p className="text-[9px] font-normal text-budgetGoalTextSub leading-relaxed px-6 pb-6 mt-3">
         Shows the breakdown of your expenses across different categories.
       </p>
     </div>

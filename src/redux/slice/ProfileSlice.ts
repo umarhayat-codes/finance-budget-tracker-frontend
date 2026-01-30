@@ -14,7 +14,7 @@ export const fetchUserProfile = createAsyncThunk(
   async (_, { dispatch, rejectWithValue }) => {
     try {
       const response = await axios.get<{ user: User }>(
-        "http://localhost:3000/api/auth/me",
+        "http://localhost:5000/api/auth/me",
         {
           withCredentials: true,
         },

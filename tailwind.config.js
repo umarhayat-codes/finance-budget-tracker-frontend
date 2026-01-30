@@ -286,7 +286,7 @@ module.exports = {
         summaryValueLight: "#FFFFFF",
       },
       screens: {
-        desktop: "1235px",
+        desktop: "1280px",
         xlg: "1440px",
         sidebar: "1239px",
       },

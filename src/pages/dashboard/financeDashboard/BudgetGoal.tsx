@@ -16,6 +16,7 @@ const BudgetGoal: React.FC = () => {
     onManageBudgets,
     onEditGoal,
     onDeleteGoal,
+    loading,
   } = useFinanceHook();
 
   return (
@@ -32,36 +33,48 @@ const BudgetGoal: React.FC = () => {
         <FiMoreVertical className="text-budgetGoalTextSub cursor-pointer text-xl" />
       </div>
 
-      <div className="flex flex-wrap items-center gap-3 mb-10">
+      {/* <div className="flex flex-wrap items-center gap-3 mb-10"> */}
+      <div className="flex flex-wrap whitespace-nowrap xl:flex-nowrap items-center gap-1 mb-8">
         <button
           onClick={onAddNewGoal}
-          className="flex items-center gap-2 px-6 py-3 border-[0.95px] border-budgetGoalBtnBorder text-budgetGoalBtnBorder rounded-full hover:bg-budgetGoalBtnBorder/5 transition-all"
+          className="flex items-center gap-1 px-2 py-2 border-[0.95px] border-budgetGoalBtnBorder text-budgetGoalBtnBorder rounded-full hover:bg-budgetGoalBtnBorder/5 transition-all"
         >
           <FiPlus className="text-lg" />
-          <span className="text-[17px] font-bold">Add New</span>
+          <span className="text-[17px] xlg:text-sm  font-bold">Add New</span>
         </button>
 
         <button
           onClick={onManageBudgets}
-          className="flex items-center gap-2 px-8 py-3 bg-gradient-to-r from-budgetGoalManageStart to-budgetGoalManageEnd text-white rounded-[450px] hover:opacity-90 transition-opacity"
+          className="flex items-center whitespace-nowrap gap-1 px-2 py-2 bg-gradient-to-r from-budgetGoalManageStart to-budgetGoalManageEnd text-white rounded-[450px] hover:opacity-90 transition-opacity"
         >
           <HiFolder className="text-xl" />
-          <span className="text-[17px] font-bold">Manage Budgets</span>
+          <span className="text-[17px] xlg:text-sm font-bold">
+            Manage Budgets
+          </span>
         </button>
       </div>
 
       <div className="space-y-12">
-        {budgetGoals.length > 0 ? (
+        {loading ? (
+          <div className="py-20 flex items-center justify-center">
+            <div className="flex items-center justify-center gap-2">
+              <div className="w-5 h-5 border-2 border-recentGreen border-t-transparent rounded-full animate-spin" />
+              <span className="text-[11px] text-recentTextSub">
+                Loading budget goals...
+              </span>
+            </div>
+          </div>
+        ) : budgetGoals.length > 0 ? (
           budgetGoals.map((goal, index) => (
             <div key={goal.id} className="relative">
-              <div className="flex flex-col md:flex-row md:items-center justify-between flex-wrap gap-y-2 mb-4">
-                <h3 className="text-[25px] font-semibold text-budgetGoalTextMain">
+              <div className="flex flex-col md:flex-row md:items-center justify-between gap-y-2 mb-4">
+                <h3 className="text-[25px] xlg:text-[17px] font-semibold text-budgetGoalTextMain">
                   {goal.name}
                 </h3>
-                <div className="flex items-center gap-2 mt-3 md:mt-0">
+                <div className="flex items-center flex-nowrap gap-2 mt-3 md:mt-0">
                   <button
                     onClick={() => onEditGoal(goal.id)}
-                    className="flex items-center gap-1.5 px-5 py-2 border-[0.95px] border-budgetGoalBtnBorder text-budgetGoalBtnBorder rounded-[450px] text-[11px] font-semibold hover:bg-budgetGoalBtnBorder/5 transition-all"
+                    className="flex items-center gap- px-3 py-2 border-[0.95px] border-budgetGoalBtnBorder text-budgetGoalBtnBorder rounded-[450px] text-[11px] font-semibold hover:bg-budgetGoalBtnBorder/5 transition-all"
                   >
                     <FiEdit3 className="text-base" />
                     <span>Edit</span>
@@ -75,15 +88,15 @@ const BudgetGoal: React.FC = () => {
                 </div>
               </div>
 
-              <div className="flex items-center gap-3 mb-5">
-                <div className="flex items-center gap-2 px-4 py-2 bg-budgetGoalIconBg2/40 rounded-full">
+              <div className="flex items-center gap-3 mb-3">
+                <div className="flex items-center gap-1 px-2 py-2 bg-budgetGoalIconBg2/40 rounded-full">
                   <div className="w-2.5 h-2.5 bg-recentSortBg rounded-full" />
                   <span className="text-[13px] font-semibold text-budgetGoalTextMain">
                     {goal.status}
                   </span>
                 </div>
                 <div className="flex items-center gap-2">
-                  <div className="w-10 h-10 flex items-center justify-center bg-budgetGoalIconBg2 rounded-full">
+                  <div className="w-7 h-7 flex items-center justify-center bg-budgetGoalIconBg2 rounded-full">
                     <FiCalendar className="text-recentGreen" />
                   </div>
                   <div className="flex flex-col">
@@ -102,11 +115,14 @@ const BudgetGoal: React.FC = () => {
                   {goal.completedPercentage}% Completed
                 </span>
                 <div className="text-[11px] font-normal text-budgetGoalTextMain">
-                  <span className="text-budgetGoalTextSub">Complete: </span>
-                  <span className="font-bold">
-                    IDR {goal.currentAmount}
-                  </span>{" "}
-                  <span className="text-budgetGoalTextSub ml-2">Remain: </span>
+                  <span className="xlg:hidden text-budgetGoalTextSub">
+                    Complete:{" "}
+                  </span>
+                  <span className="font-bold">IDR {goal.currentAmount}</span>
+                  {" / "}
+                  <span className="xlg:hidden text-budgetGoalTextSub">
+                    Remain:{" "}
+                  </span>
                   <span className="font-bold text-budgetGoalTextSub">
                     IDR {goal.remainingAmount}
                   </span>
@@ -121,14 +137,14 @@ const BudgetGoal: React.FC = () => {
               </div>
 
               {index < budgetGoals.length - 1 && (
-                <div className="mt-12 border-b-[0.95px] border-budgetGoalBorder opacity-50" />
+                <div className=" border-b-[0.95px] border-budgetGoalBorder opacity-50" />
               )}
             </div>
           ))
         ) : (
           <div className="py-20 flex items-center justify-center">
             <p className="text-[17px] font-bold text-budgetGoalTextSub uppercase">
-              No Budget Goal Found
+              No Found Budget Goal
             </p>
           </div>
         )}

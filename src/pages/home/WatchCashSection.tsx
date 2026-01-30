@@ -11,7 +11,7 @@ import man3 from "../../assets/man_3.png";
 const WatchCashSection: React.FC = () => {
   return (
     <section className="font-manrope pt-[60px] px-[20px] bg-black  w-full py-20 flex flex-col items-center">
-      <div className="w-full max-w-[1440px] md:px-[100px]">
+      <div className="w-full max-w-[1240px] md:px-[100px]">
         <div className="mb-16">
           <h2 className="text-textWhite font-medium text-[32px] md:text-[48px] leading-tight mb-4">
             See your money in real time, clearly
@@ -136,10 +136,10 @@ const WatchCashSection: React.FC = () => {
             </div>
 
             <div className="bg-cardBg rounded-[30px] p-[20px] flex flex-col justify-center flex-1 min-h-[180px]">
-              <h3 className="text-textWhite font-medium text-[40px] md:text-[48px] mb-2">
+              <h3 className="text-textWhite font-medium text-[30px]  mb-2">
                 $1.2M+ Saved
               </h3>
-              <p className="text-textWhite font-regular text-[16px] opacity-70 mb-4">
+              <p className="text-textWhite font-regular text-[16px] opacity-70 mb-2">
                 Clario helps users save more — and spend smarter.
               </p>
               <div className="text-primary font-medium cursor-pointer hover:underline">

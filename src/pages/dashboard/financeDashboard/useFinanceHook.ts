@@ -18,7 +18,7 @@ import {
 import { toast } from "react-toastify";
 import { useAppSelector } from "src/redux/useReduxHook";
 
-const API_URL = "http://localhost:3000/api";
+const API_URL = "http://localhost:5000/api";
 
 const api = axios.create({
   baseURL: API_URL,
@@ -342,7 +342,7 @@ export const useFinanceHook = (): UseFinanceHookResult => {
     } = props;
 
     const data = payload as ExpenseDistributionItem | undefined;
-    if (!data || !data.textColor) return null;
+    if (!data || !data.textColor || data.percentage === 0) return null;
 
     const radius =
       (innerRadius as number) +

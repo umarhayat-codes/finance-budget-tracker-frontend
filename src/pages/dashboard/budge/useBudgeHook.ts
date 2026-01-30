@@ -47,7 +47,7 @@ const shortMonthNames = [
   "Dec",
 ];
 
-const API_URL = "http://localhost:3000/api";
+const API_URL = "http://localhost:5000/api";
 
 const api = axios.create({
   baseURL: API_URL,
@@ -96,9 +96,26 @@ export const useBudgeHook = () => {
   const fetchRadarAnalysis = useCallback(async () => {
     try {
       const response = await api.get<RadarDataPoint[]>("/budgets/analysis");
-      setRadarAnalysisData(response.data);
+      const data = response.data;
+      setRadarAnalysisData(data);
+
+      if (data.length > 0) {
+        const firstHalf = data.slice(0, 6);
+        const secondHalf = data.slice(6, 12);
+
+        const hasFirstHalfData = firstHalf.some((d) => d.totalSpent > 0);
+        const hasSecondHalfData = secondHalf.some((d) => d.totalSpent > 0);
+
+        if (hasFirstHalfData) {
+          setIsFirstHalf(true);
+        } else if (hasSecondHalfData) {
+          setIsFirstHalf(false);
+        } else {
+          setIsFirstHalf(true);
+        }
+      }
     } catch (err) {
-      console.error("Error fetching radar analysis:", err);
+      toast.error("Error fetching radar analysis");
     }
   }, []);
 
@@ -166,8 +183,8 @@ export const useBudgeHook = () => {
 
   const currentYear = new Date().getFullYear().toString();
 
-  const graphData: GraphDataPoint[] = shortMonthNames.map(
-    (shortName, index) => {
+  const graphData: GraphDataPoint[] = useMemo(() => {
+    return shortMonthNames.map((shortName, index) => {
       const fullName = monthNames[index];
 
       const monthlyBudget = budgets
@@ -195,8 +212,8 @@ export const useBudgeHook = () => {
         budget: monthlyBudget,
         spent: monthlySpent,
       };
-    },
-  );
+    });
+  }, [budgets, transactions, currentYear]);
 
   const filteredBudgets = budgets.filter((b) => {
     if (selectedMonth === "All") return true;

@@ -11,6 +11,7 @@ import {
   FiUser,
   FiSettings,
   FiLogOut,
+  FiChevronLeft,
   FiMenu,
   FiX,
 } from "react-icons/fi";
@@ -25,6 +26,7 @@ const NavItem: React.FC<NavItemProps> = ({
   icon: Icon,
   label,
   isDashboard,
+  isOpen,
   onClick,
 }) => {
   const location = useLocation();
@@ -39,8 +41,11 @@ const NavItem: React.FC<NavItemProps> = ({
       <NavLink
         to={to}
         onClick={onClick}
+        title={!isOpen ? label : ""}
         className={() =>
-          `${baseClasses} px-6 py-4 rounded-[200px] font-inter font-bold text-[15px] ${
+          `${baseClasses} ${
+            isOpen ? "px-6 py-4 rounded-[200px]" : "px-0 py-4 justify-center"
+          } font-inter font-bold text-[15px] ${
             isActive
               ? "bg-clarioGreen text-clarioBlack shadow-lg"
               : "text-clarioWhite hover:bg-white/10"
@@ -56,7 +61,13 @@ const NavItem: React.FC<NavItemProps> = ({
         >
           <Icon size={18} />
         </div>
-        <span>{label}</span>
+        <span
+          className={`transition-all duration-300 ${
+            isOpen ? "opacity-100 w-auto" : "opacity-0 w-0 overflow-hidden"
+          }`}
+        >
+          {label}
+        </span>
       </NavLink>
     );
   }
@@ -65,8 +76,11 @@ const NavItem: React.FC<NavItemProps> = ({
     <NavLink
       to={to}
       onClick={onClick}
+      title={!isOpen ? label : ""}
       className={() =>
-        `${baseClasses} pl-6 py-3 rounded-l-[99px] font-inter font-bold text-[14px] ${
+        `${baseClasses} ${
+          isOpen ? "pl-6 py-3 rounded-l-[99px]" : "pl-0 py-3 justify-center"
+        } font-inter font-bold text-[14px] ${
           isActive
             ? "bg-clarioGreen text-clarioBlack w-full"
             : "text-clarioWhite hover:bg-white/5"
@@ -82,16 +96,40 @@ const NavItem: React.FC<NavItemProps> = ({
       >
         <Icon size={16} />
       </div>
-      <span>{label}</span>
+      <span
+        className={`transition-all duration-300 ${
+          isOpen ? "opacity-100 w-auto" : "opacity-0 w-0 overflow-hidden"
+        }`}
+      >
+        {label}
+      </span>
     </NavLink>
   );
 };
 
 const Layout: React.FC<LayoutProps> = ({ children }) => {
   useLoadTransactions();
-  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(window.innerWidth >= 1239);
   const navigate = useNavigate();
+  const location = useLocation();
   const dispatch = useAppDispatch();
+
+  React.useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth < 1239) {
+        setIsSidebarOpen(false);
+      } else {
+        setIsSidebarOpen(true);
+      }
+    };
+
+    window.addEventListener("resize", handleResize);
+    // Call once to set initial state correctly
+    handleResize();
+
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
   const navItems: NavItemProps[] = [
     {
       to: "/dashboard/finance",
@@ -136,10 +174,23 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
     },
   ];
 
+  const activeItem =
+    navItems.find(
+      (item) =>
+        location.pathname === item.to ||
+        (item.to === "/" && location.pathname === "/dashboard"),
+    ) || navItems[0];
+
   const toggleSidebar = () => setIsSidebarOpen(!isSidebarOpen);
 
+  const handleNavItemClick = () => {
+    if (window.innerWidth < 1239) {
+      setIsSidebarOpen(false);
+    }
+  };
+
   return (
-    <div className="flex h-screen bg-clarioBlack text-clarioWhite">
+    <div className="flex h-screen bg-clarioBlack text-clarioWhite relative">
       <div className="sidebar:hidden flex items-center justify-between p-4 w-full fixed top-0 bg-clarioBlack z-40 border-b border-cardBorder">
         <div className="flex items-center gap-2">
           <img src={mainIcon} alt="Clario" className="w-8 h-8 object-contain" />
@@ -160,45 +211,112 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
       <aside
         className={`
         fixed sidebar:static inset-y-0 left-0 z-50
-        w-[240px] h-screen bg-clarioBlack flex flex-col pt-8 pb-10
-        transition-transform duration-300 ease-in-out
+        bg-clarioBlack flex flex-col pt-8 pb-10
+        transition-all duration-300 ease-in-out
         ${
           isSidebarOpen
-            ? "translate-x-0"
-            : "-translate-x-full sidebar:translate-x-0"
+            ? "w-[240px] translate-x-0"
+            : "w-[80px] -translate-x-full sidebar:translate-x-0"
         }
       `}
       >
-        <div className="px-8 mb-10 flex items-center gap-3">
-          <img
-            src={mainIcon}
-            alt="Clario"
-            className="w-10 h-10 object-contain"
-          />
-          <span className="font-manrope font-semibold text-[20px] text-clarioWhite">
-            Clario
-          </span>
+        {/* <div
+          className={`px-6 mb-10 flex items-center transition-all duration-300 ${
+            isSidebarOpen ? "justify-between" : "justify-center"
+          }`}
+        >
+          <div className="flex items-center gap-3">
+            <img
+              src={mainIcon}
+              alt="Clario"
+              className="w-10 h-10 object-contain"
+            />
+            {isSidebarOpen && (
+              <span className="font-manrope font-semibold text-[20px] text-clarioWhite">
+                Clario
+              </span>
+            )}
+          </div>
+          {isSidebarOpen && (
+            <button
+              onClick={toggleSidebar}
+              className="hidden sidebar:flex text-clarioWhite p-2 hover:bg-white/10 rounded-full transition-all duration-300"
+              title="Close Sidebar"
+            >
+              <FiChevronLeft size={20} />
+            </button>
+          )}
+        </div> */}
+
+        <div
+          className={`mb-10 flex items-center transition-all duration-300 ${
+            isSidebarOpen ? "px-6 justify-between" : "px-2 justify-center gap-1"
+          }`}
+        >
+          <div className="flex items-center gap-3">
+            <img
+              src={mainIcon}
+              alt="Clario"
+              className="w-10 h-10 object-contain"
+            />
+            {isSidebarOpen && (
+              <span className="font-manrope font-semibold text-[20px] text-clarioWhite whitespace-nowrap">
+                Clario
+              </span>
+            )}
+          </div>
+          <button
+            onClick={toggleSidebar}
+            className={`hidden sidebar:flex text-clarioWhite p-1.5 hover:bg-white/10 rounded-full transition-all duration-300 ${
+              !isSidebarOpen ? "rotate-180" : ""
+            }`}
+            title={isSidebarOpen ? "Close Sidebar" : "Open Sidebar"}
+          >
+            <FiChevronLeft size={20} />
+          </button>
         </div>
 
-        <nav className="flex-1 flex flex-col gap-1 pr-6">
+        <nav
+          className={`flex-1 flex flex-col gap-1 transition-all duration-300 ${
+            isSidebarOpen ? "pr-6" : "pr-0"
+          }`}
+        >
           {navItems.map((item) => (
             <NavItem
               key={item.to}
               {...item}
-              onClick={() => setIsSidebarOpen(false)}
+              isOpen={isSidebarOpen}
+              onClick={() => {
+                if (item.onClick) item.onClick();
+                handleNavItemClick();
+              }}
             />
           ))}
+          {/* {!isSidebarOpen && (
+            <button
+              onClick={toggleSidebar}
+              className="hidden sidebar:flex text-clarioWhite p-2 hover:bg-white/10 rounded-full transition-all duration-300 mt-4 mx-auto"
+              title="Open Sidebar"
+            >
+              <FiChevronLeft size={20} className="rotate-180" />
+            </button>
+          )} */}
         </nav>
 
-        <div className="px-8 mt-auto flex flex-col gap-6 pt-8 border-t border-cardBorder/30">
+        <div
+          className={`mt-auto flex flex-col gap-6 pt-8 border-t border-cardBorder/30 transition-all duration-300 ${
+            isSidebarOpen ? "px-8" : "px-0 items-center"
+          }`}
+        >
           {footerItems.map((item) => (
             <NavLink
               key={item.to}
               to={item.to}
               onClick={() => {
-                setIsSidebarOpen(false);
                 if (item.onClick) item.onClick();
+                handleNavItemClick();
               }}
+              title={!isSidebarOpen ? item.label : ""}
               className={({ isActive }) =>
                 `flex items-center gap-3 transition-all duration-300 font-inter ${
                   item.fontSize
@@ -212,13 +330,13 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
               <div className="p-1.5 rounded-full bg-clarioWhite text-clarioBlack">
                 <item.icon size={16} />
               </div>
-              <span>{item.label}</span>
+              {isSidebarOpen && <span>{item.label}</span>}
             </NavLink>
           ))}
         </div>
       </aside>
 
-      <main className="flex-1 sidebar:p-4 overflow-auto pt-20 sidebar:pt-4 bg-[#F5F5F5]">
+      <main className="flex-1 sidebar:p-4 overflow-auto pt-20 sidebar:pt-4 bg-[#F5F5F5] transition-all duration-300 relative">
         <div className="min-h-full bg-white rounded-[24px] border border-transactionBorder p-6 shadow-sm overflow-hidden text-black">
           {children}
         </div>

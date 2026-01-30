@@ -53,7 +53,9 @@ const SignIn: React.FC = () => {
   return (
     <div className="signup-container flex min-h-screen items-center justify-center p-4">
       <div className="signup-form-wrapper w-[600px] h-[580.58px] rounded-[20px] p-[25px] flex flex-col justify-center shadow-2xl">
-        <h2 className="mb-8 text-3xl font-bold text-white">Login</h2>
+        <h2 className="mb-8 text-3xl text-center font-bold text-white">
+          Login
+        </h2>
 
         <form onSubmit={handleSubmit} className="flex flex-col gap-6">
           <div className="flex flex-col">
@@ -91,6 +93,18 @@ const SignIn: React.FC = () => {
             {loading ? "Logging in..." : "Login"}
           </button>
         </form>
+
+        <div className="mt-6 text-center">
+          <p className="text-zinc-400 font-manrope text-[14px]">
+            Don't have an account?{" "}
+            <span
+              onClick={() => navigate("/auth/signup")}
+              className="text-primary cursor-pointer font-semibold hover:underline"
+            >
+              Register
+            </span>
+          </p>
+        </div>
       </div>
     </div>
   );

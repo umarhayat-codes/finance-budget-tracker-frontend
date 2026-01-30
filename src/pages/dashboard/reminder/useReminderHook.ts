@@ -5,9 +5,16 @@ import {
   ReminderItem,
   ReminderPreference,
   UseReminderHookResult,
+  ReminderCardStyle,
 } from "../../../../types";
 import { toast } from "react-toastify";
 import { useAuth } from "../../../redux/useReduxHook";
+import { FaCreditCard, FaBolt, FaCar } from "react-icons/fa";
+import { IoMdTrain } from "react-icons/io";
+import { GiReceiveMoney } from "react-icons/gi";
+import { RiBillLine } from "react-icons/ri";
+import { PiStudent } from "react-icons/pi";
+import React from "react";
 
 export const useReminderHook = (): UseReminderHookResult => {
   const { user } = useAuth();
@@ -43,6 +50,18 @@ export const useReminderHook = (): UseReminderHookResult => {
   const [remindersRow2, setRemindersRow2] = useState<ReminderItem[]>([]);
   const [remindersRow3, setRemindersRow3] = useState<ReminderItem[]>([]);
 
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [formData, setFormData] = useState<ReminderFormData>({
+    title: "",
+    amount: "",
+    dateStr: "",
+  });
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
+  };
+
   const handlePreferenceToggle = (id: string) => {
     setPreferences((prev) =>
       prev.map((pref) =>
@@ -56,7 +75,7 @@ export const useReminderHook = (): UseReminderHookResult => {
     setLoading(true);
     try {
       const response = await axios.get(
-        `http://localhost:3000/api/reminder/get/${user.id}`,
+        `http://localhost:5000/api/reminder/get/${user.id}`,
       );
       const data: ReminderItem[] = response.data.data;
 
@@ -111,7 +130,7 @@ export const useReminderHook = (): UseReminderHookResult => {
     }
 
     try {
-      await axios.post("http://localhost:3000/api/reminder/create", {
+      await axios.post("http://localhost:5000/api/reminder/create", {
         userId: user.id,
         title: data.title,
         amount: data.amount,
@@ -125,6 +144,134 @@ export const useReminderHook = (): UseReminderHookResult => {
     }
   };
 
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (formData.title && formData.amount && formData.dateStr) {
+      await addReminder(formData);
+      setIsModalOpen(false);
+      setFormData({ title: "", amount: "", dateStr: "" });
+    }
+  };
+
+  const renderBars = (color: string) => {
+    const bars = [
+      { h: "25%", opacity: "opacity-40" },
+      { h: "65%", opacity: "opacity-60" },
+      { h: "85%", opacity: "opacity-80" },
+      { h: "45%", opacity: "opacity-50" },
+      { h: "35%", opacity: "opacity-45" },
+      { h: "75%", opacity: "opacity-75" },
+      { h: "80%", opacity: "opacity-85" },
+      { h: "100%", opacity: "opacity-100" },
+    ];
+
+    return React.createElement(
+      "div",
+      { className: "flex items-end gap-[3px] h-[30px]" },
+      bars.map((bar, i) =>
+        React.createElement("div", {
+          key: i,
+          className: `w-[8px] ${color} ${bar.opacity} rounded-[2px]`,
+          style: { height: bar.h },
+        }),
+      ),
+    );
+  };
+
+  const getCardStyleAndIcon = (title: string): ReminderCardStyle => {
+    const t = title.toLowerCase();
+
+    let style: ReminderCardStyle = {
+      cardBg: "bg-reminderCardDark",
+      radius: "rounded-[4px]",
+      border: "border-transparent",
+      titleColor: "text-reminderTextGray",
+      amountColor: "text-reminderTextMuted",
+      subColor: "text-reminderSubtext",
+      iconBg: "bg-white/10 text-reminderTextGray",
+      barColor: "bg-reminderCardGreen",
+      icon: React.createElement(RiBillLine, { className: "text-lg" }),
+      checkMark: false,
+    };
+
+    if (t.includes("travel") || t.includes("salary")) {
+      style = {
+        ...style,
+        cardBg: "bg-profileSubTierBg",
+        border: "border border-reminderBorderRow3",
+        titleColor: "text-black",
+        amountColor: "text-gray-500",
+        subColor: "text-gray-400",
+        iconBg: "bg-gray-100 text-settingSearchText",
+        barColor: "bg-settingSearchText",
+        icon: t.includes("travel")
+          ? React.createElement(IoMdTrain, { className: "text-lg" })
+          : React.createElement(GiReceiveMoney, { className: "text-lg" }),
+        checkMark: true,
+      };
+    } else if (
+      t.includes("rent") ||
+      t.includes("student") ||
+      t.includes("studnet")
+    ) {
+      style = {
+        ...style,
+        cardBg: "bg-reminderCardGray",
+        border: "border border-reminderBorderRow2",
+        titleColor: "text-black",
+        amountColor: "text-gray-600",
+        subColor: "text-gray-500",
+        iconBg: "bg-white/40 text-black",
+        barColor: "bg-black",
+        icon: t.includes("rent")
+          ? React.createElement(RiBillLine, { className: "text-lg" })
+          : React.createElement(PiStudent, { className: "text-lg" }),
+        checkMark: false,
+      };
+    } else if (t.includes("electricity") || t.includes("elecrity")) {
+      style = {
+        ...style,
+        cardBg: "bg-reminderCardDark",
+        border: "border-none",
+        titleColor: "text-white",
+        amountColor: "text-gray-300",
+        subColor: "text-gray-400",
+        iconBg: "bg-white/10 text-white",
+        barColor: "bg-primary",
+        icon: React.createElement(FaBolt, { className: "text-lg" }),
+        checkMark: false,
+      };
+    } else if (t.includes("car insurance")) {
+      style = {
+        ...style,
+        cardBg: "bg-buttonBg",
+        border: "border-none",
+        titleColor: "text-white",
+        amountColor: "text-gray-300",
+        subColor: "text-gray-400",
+        iconBg: "bg-white/10 text-white",
+        barColor: "bg-primary",
+        icon: React.createElement(FaCar, { className: "text-lg" }),
+        checkMark: false,
+      };
+    } else if (t.includes("credit card")) {
+      style = {
+        ...style,
+        cardBg: "bg-primary",
+        border: "border-none",
+        titleColor: "text-black",
+        amountColor: "text-black/70",
+        subColor: "text-black/60",
+        iconBg: "bg-black/10 text-black",
+        barColor: "bg-black",
+        icon: React.createElement(FaCreditCard, { className: "text-lg" }),
+        checkMark: true,
+      };
+    }
+
+    return style;
+  };
+
   return {
     remindersRow1,
     remindersRow2,
@@ -134,5 +281,12 @@ export const useReminderHook = (): UseReminderHookResult => {
     loading,
     handlePreferenceToggle,
     addReminder,
+    isModalOpen,
+    setIsModalOpen,
+    formData,
+    handleInputChange,
+    handleSubmit,
+    getCardStyleAndIcon,
+    renderBars,
   };
 };

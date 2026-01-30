@@ -43,7 +43,9 @@ const SignUp: React.FC = () => {
   return (
     <div className="signup-container flex min-h-screen items-center justify-center p-4">
       <div className="signup-form-wrapper w-[600px] h-[580.58px] rounded-[20px] p-[25px] flex flex-col justify-center shadow-2xl">
-        <h2 className="mb-8 text-3xl font-bold text-white">Register</h2>
+        <h2 className="mb-8 text-3xl font-bold text-center text-white">
+          Register
+        </h2>
 
         <form onSubmit={handleSubmit} className="flex flex-col gap-6">
           <div className="flex flex-col">
@@ -95,6 +97,18 @@ const SignUp: React.FC = () => {
             Register
           </button>
         </form>
+
+        <div className="mt-6 text-center">
+          <p className="text-zinc-400 font-manrope text-[14px]">
+            Already have an account?{" "}
+            <span
+              onClick={() => navigate("/auth/signin")}
+              className="text-primary cursor-pointer font-semibold hover:underline"
+            >
+              Login
+            </span>
+          </p>
+        </div>
       </div>
     </div>
   );

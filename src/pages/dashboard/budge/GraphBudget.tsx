@@ -145,6 +145,7 @@ const GraphBudget = () => {
               dataKey="budget"
               radius={[4, 4, 4, 4]}
               barSize={25}
+              isAnimationActive={false}
               onMouseEnter={(data: unknown) =>
                 setActiveMonth(
                   (data as BarChartItem).month ||
@@ -168,6 +169,7 @@ const GraphBudget = () => {
               dataKey="spent"
               radius={[4, 4, 4, 4]}
               barSize={25}
+              isAnimationActive={false}
               onMouseEnter={(data: unknown) =>
                 setActiveMonth(
                   (data as BarChartItem).month ||

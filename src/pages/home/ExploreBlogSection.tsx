@@ -7,7 +7,7 @@ import explore_blog_man_4 from "../../assets/explore_blog_man_4.png";
 const ExploreBlogSection: React.FC = () => {
   return (
     <section className="bg-black py-20 px-4 md:px-10 lg:px-20">
-      <div className="w-full mx-auto xlg:px-[200px] xlg:max-w-[1400px]">
+      <div className="w-full mx-auto xlg:px-[200px] xlg:max-w-[1300px]">
         <div className="flex justify-between items-center mb-10">
           <h2 className="text-white font-manrope font-medium text-[32px] md:text-[40px] lg:text-[48px] leading-tight">
             Explore the blog
@@ -29,7 +29,7 @@ const ExploreBlogSection: React.FC = () => {
             <span className="text-textGray text-xs md:text-sm font-manrope tracking-widest uppercase mb-4">
               Basics
             </span>
-            <h3 className="text-white font-manrope font-medium text-[24px] md:text-[30px] lg:text-[34px] leading-tight mb-4">
+            <h3 className="text-white font-manrope font-medium text-[24px] md:text-[30px]  leading-tight mb-4">
               How to Launch Your SaaS
               <br className="hidden md:block" /> Product With Confidence
             </h3>
@@ -47,75 +47,75 @@ const ExploreBlogSection: React.FC = () => {
           </div>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          <div className="bg-[#0D0D0D] rounded-[40px] p-[10px] border border-cardBorder flex flex-col h-full lg:w-[320px] lg:h-[482.59px] mx-auto">
-            <div className="w-full h-[250px] lg:h-[290px] mb-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 xlg:grid-cols-3 gap-3">
+          <div className="bg-[#0D0D0D] pb-3 rounded-[40px] p-[5px] border border-cardBorder flex flex-col h-full w-full max-w-[320px] lg:h-[450px]">
+            <div className="w-full h-[250px] lg:h-[290px] mb-3">
               <img
                 src={explore_blog_man_2}
                 alt="Designing a Landing Page"
                 className="w-full h-full object-cover rounded-[30px]"
               />
             </div>
-            <div className="px-4 pb-4 flex flex-col justify-between flex-grow">
+            <div className="px-4 flex flex-col flex-grow">
               <div>
                 <span className="text-textGray text-xs font-manrope tracking-widest uppercase mb-3 block">
                   Pro Tips
                 </span>
-                <h4 className="text-white font-manrope font-medium text-[20px] md:text-[22px] lg:text-[24px] leading-snug mb-4">
+                <h4 className="text-white font-manrope font-medium text-[20px] md:text-[22px] lg:text-[20px] leading-snug ">
                   Designing a Landing Page
                   <br /> That Converts
                 </h4>
               </div>
               <a
                 href="#"
-                className="text-primary font-manrope font-medium text-sm hover:underline w-fit mt-auto"
+                className="text-primary font-manrope font-medium text-sm hover:underline w-fit mt-3"
               >
                 Read more
               </a>
             </div>
           </div>
 
-          <div className="bg-cardBg rounded-[40px] p-[10px] border border-cardBorder flex flex-col h-full lg:w-[320px] lg:h-[482.59px] mx-auto">
-            <div className="w-full h-[250px] lg:h-[290px] mb-6">
+          <div className="bg-[#0D0D0D] rounded-[40px] p-[5px] border border-cardBorder flex flex-col h-full w-full max-w-[320px] lg:h-[450px]">
+            <div className="w-full h-[250px] lg:h-[290px] mb-3">
               <img
                 src={explore_blog_man_3}
                 alt="Collecting Feedback"
                 className="w-full h-full object-cover rounded-[30px]"
               />
             </div>
-            <div className="px-4 pb-4 flex flex-col justify-between flex-grow">
+            <div className="px-4 flex flex-col flex-grow">
               <div>
                 <span className="text-textGray text-xs font-manrope tracking-widest uppercase mb-3 block">
                   Updates
                 </span>
-                <h4 className="text-white font-manrope font-medium text-[20px] md:text-[22px] lg:text-[24px] leading-snug mb-4">
+                <h4 className="text-white font-manrope font-medium text-[20px] md:text-[22px] lg:text-[20px] leading-snug  ">
                   Collecting Feedback From
                   <br /> Your First Users
                 </h4>
               </div>
               <a
                 href="#"
-                className="text-primary font-manrope font-medium text-sm hover:underline w-fit mt-auto"
+                className="text-primary font-manrope font-medium text-sm hover:underline w-fit mt-3"
               >
                 Read more
               </a>
             </div>
           </div>
 
-          <div className="bg-[#0D0D0D] rounded-[40px] p-[10px] border border-[#1F1F1F] flex flex-col h-full lg:w-[320px] lg:h-[482.59px] mx-auto">
-            <div className="w-full h-[250px] lg:h-[290px] mb-6">
+          <div className="bg-[#0D0D0D] rounded-[40px] p-[5px] border border-cardBorder flex flex-col h-full w-full max-w-[320px] lg:h-[450px]">
+            <div className="w-full h-[250px] lg:h-[290px] mb-3">
               <img
                 src={explore_blog_man_4}
                 alt="Building Trust"
                 className="w-full h-full object-cover rounded-[30px]"
               />
             </div>
-            <div className="px-4 pb-4 flex flex-col justify-between flex-grow">
+            <div className="px-4  flex flex-col flex-grow">
               <div>
                 <span className="text-textGray text-xs font-manrope tracking-widest uppercase mb-3 block">
                   CMS
                 </span>
-                <h4 className="text-white font-manrope font-medium text-[20px] md:text-[22px] lg:text-[24px] leading-snug mb-4">
+                <h4 className="text-white font-manrope font-medium text-[20px] md:text-[22px] lg:text-[20px] leading-snug ">
                   Building Trust as an Early-
                   <br />
                   Stage SaaS Brand
@@ -123,7 +123,7 @@ const ExploreBlogSection: React.FC = () => {
               </div>
               <a
                 href="#"
-                className="text-primary font-manrope font-medium text-sm hover:underline w-fit mt-auto"
+                className="text-primary font-manrope font-medium text-sm hover:underline w-fit mt-3"
               >
                 Read more
               </a>

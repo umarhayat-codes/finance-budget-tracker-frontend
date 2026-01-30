@@ -90,7 +90,7 @@ const LastSixMonthSpent: React.FC = () => {
         ) : (
           <div className="flex flex-col items-center justify-center text-center">
             <p className="font-satoshi font-bold text-[14px] text-budgeText">
-              budget spend is not found
+              No Found
             </p>
           </div>
         )}

@@ -91,7 +91,7 @@ const Header: React.FC = () => {
       </div>
 
       {isMenuOpen && (
-        <div className="lg:hidden bg-black border-t border-zinc-800 px-6 py-8 flex flex-col gap-6 animate-in slide-in-from-top duration-300">
+        <div className="lg:hidden bg-white border-t border-zinc-800 px-6 py-8 flex flex-col gap-6 animate-in slide-in-from-top duration-300">
           <nav className="flex flex-col gap-6">
             {["How it works", "Features", "Pricing", "Blog"].map((item) => (
               <a

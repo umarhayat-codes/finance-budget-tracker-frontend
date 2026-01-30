@@ -4,7 +4,7 @@ import SignIn from "./SignIn";
 
 const Auth: React.FC = () => (
   <Routes>
-    <Route path="/" element={<SignUp />} />
+    <Route path="signup" element={<SignUp />} />
     <Route path="signin" element={<SignIn />} />
   </Routes>
 );

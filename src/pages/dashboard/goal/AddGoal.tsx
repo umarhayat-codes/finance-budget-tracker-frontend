@@ -121,11 +121,7 @@ const AddGoal = () => {
               : "Current Goals"}
         </h2>
 
-        {loading ? (
-          <div className="flex justify-center items-center py-20">
-            <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary"></div>
-          </div>
-        ) : goals.length === 0 ? (
+        {goals.length === 0 ? (
           <div className="flex justify-center items-center py-20">
             <h3 className="text-[18px] font-bold text-goalSubtitle">
               No Found Goal

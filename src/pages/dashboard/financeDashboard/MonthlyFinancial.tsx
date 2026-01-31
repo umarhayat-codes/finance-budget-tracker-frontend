@@ -7,19 +7,6 @@ const MonthlyFinancial: React.FC = () => {
   const { data, onDownload, onShare, startMonth, endMonth, loading } =
     useFinanceHook();
 
-  if (loading) {
-    return (
-      <div className="bg-white rounded-[13px] border-[0.95px] border-monthlyCardBorder p-6 h-full flex items-center justify-center font-poppins">
-        <div className="flex flex-col items-center gap-2">
-          <div className="w-8 h-8 border-4 border-recentSortBg border-t-transparent rounded-full animate-spin"></div>
-          <p className="text-[11px] font-medium text-recentTextSub font-poppins">
-            Loading financial trend...
-          </p>
-        </div>
-      </div>
-    );
-  }
-
   if (data.length === 0) {
     return (
       <div className="bg-textWhite rounded-[13px] border-[0.95px] border-monthlyCardBorder p-6 h-full flex flex-col font-poppins">

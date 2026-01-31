@@ -55,16 +55,7 @@ const BudgetGoal: React.FC = () => {
       </div>
 
       <div className="space-y-12">
-        {loading ? (
-          <div className="py-20 flex items-center justify-center">
-            <div className="flex items-center justify-center gap-2">
-              <div className="w-5 h-5 border-2 border-recentGreen border-t-transparent rounded-full animate-spin" />
-              <span className="text-[11px] text-recentTextSub">
-                Loading budget goals...
-              </span>
-            </div>
-          </div>
-        ) : budgetGoals.length > 0 ? (
+        {budgetGoals.length > 0 ? (
           budgetGoals.map((goal, index) => (
             <div key={goal.id} className="relative">
               <div className="flex flex-col md:flex-row md:items-center justify-between gap-y-2 mb-4">

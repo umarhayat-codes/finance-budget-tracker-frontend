@@ -1,5 +1,4 @@
 import React from "react";
-import Layout from "../../../components/Layout";
 import DashboardHeader from "../../../components/DashboardHeader";
 import { useReminderHook } from "./useReminderHook";
 import {
@@ -38,26 +37,6 @@ const UpComingReminder = () => {
     getCardStyleAndIcon,
     renderBars,
   } = useReminderHook();
-
-  if (loading) {
-    return (
-      <Layout>
-        <div className="bg-bgColor min-h-screen">
-          <div className="p-6">
-            <DashboardHeader />
-            <div className="flex flex-col items-center justify-center min-h-[60vh]">
-              <div className="flex flex-col items-center gap-4">
-                <div className="w-12 h-12 border-4 border-buttonBg border-t-transparent rounded-full animate-spin"></div>
-                <p className="text-[14px] font-bold text-reminderTitle font-inter">
-                  Loading reminders...
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </Layout>
-    );
-  }
 
   const CardRow1 = ({ item }: { item: ReminderItem }) => {
     const style = getCardStyleAndIcon(item.title);
@@ -137,8 +116,8 @@ const UpComingReminder = () => {
   };
 
   return (
-    <Layout>
-      <div className="bg-bgColor min-h-screen">
+    <>
+      <div className="min-h-screen">
         <div className="p-6">
           <div className="flex justify-between items-center mb-6">
             <DashboardHeader />
@@ -343,7 +322,7 @@ const UpComingReminder = () => {
           </div>
         )}
       </div>
-    </Layout>
+    </>
   );
 };
 

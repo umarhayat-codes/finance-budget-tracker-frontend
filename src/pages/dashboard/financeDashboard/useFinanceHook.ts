@@ -62,115 +62,123 @@ export const useFinanceHook = (): UseFinanceHookResult => {
     return amount.toString();
   };
 
-  useEffect(() => {
-    const fetchFinanceData = async () => {
-      setLoading(true);
-      try {
-        const [
-          trendResponse,
-          summaryResponse,
-          distributionResponse,
-          budgetResponse,
-        ] = await Promise.all([
-          api.get<MonthlyFinancialApiResponse>("/finance/summary"),
-          api.get<FinancialSummary>("/transactions/financial-summary"),
-          api.get<ExpenseBreakdownApiResponse>("/finance/distribution"),
-          api.get<LatestBudgetApiResponse[]>("/budgets/latest"),
-        ]);
+  const fetchFinanceData = React.useCallback(async () => {
+    setLoading(true);
+    try {
+      const [
+        trendResponse,
+        summaryResponse,
+        distributionResponse,
+        budgetResponse,
+      ] = await Promise.all([
+        api.get<MonthlyFinancialApiResponse>("/finance/summary"),
+        api.get<FinancialSummary>("/transactions/financial-summary"),
+        api.get<ExpenseBreakdownApiResponse>("/finance/distribution"),
+        api.get<LatestBudgetApiResponse[]>("/budgets/latest"),
+      ]);
 
-        const summaryData = trendResponse.data;
-        const financialSummaryData = summaryResponse.data;
-        const distributionData = distributionResponse.data;
-        const latestBudgets = budgetResponse.data;
+      const summaryData = trendResponse.data;
+      const financialSummaryData = summaryResponse.data;
+      const distributionData = distributionResponse.data;
+      const latestBudgets = budgetResponse.data;
 
-        setFinancialSummary(financialSummaryData);
-        setBreakdownData(distributionData);
+      setFinancialSummary(financialSummaryData);
+      setBreakdownData(distributionData);
 
-        const formattedBudgets: BudgetGoalData[] = latestBudgets.map(
-          (b: LatestBudgetApiResponse) => {
-            const percentage =
-              b.amount > 0 ? Math.round((b.spent / b.amount) * 100) : 0;
-            const monthNames = [
-              "January",
-              "February",
-              "March",
-              "April",
-              "May",
-              "June",
-              "July",
-              "August",
-              "September",
-              "October",
-              "November",
-              "December",
-            ];
-            let monthName = b.month;
-            const monthIndex = parseInt(b.month) - 1;
-            if (!isNaN(monthIndex) && monthNames[monthIndex]) {
-              monthName = monthNames[monthIndex];
-            }
-            const dueDate = `${monthName} ${b.year}`;
-            return {
-              id: b.id,
-              name: b.category,
-              dueDate: dueDate,
-              completedPercentage: percentage,
-              currentAmount: formatAmount(b.spent),
-              targetAmount: formatAmount(b.amount),
-              remainingAmount: formatAmount(Math.max(0, b.amount - b.spent)),
-              status: "On Track",
-            };
-          },
+      const formattedBudgets: BudgetGoalData[] = latestBudgets.map(
+        (b: LatestBudgetApiResponse) => {
+          const percentage =
+            b.amount > 0 ? Math.round((b.spent / b.amount) * 100) : 0;
+          const monthNames = [
+            "January",
+            "February",
+            "March",
+            "April",
+            "May",
+            "June",
+            "July",
+            "August",
+            "September",
+            "October",
+            "November",
+            "December",
+          ];
+          let monthName = b.month;
+          const monthIndex = parseInt(b.month) - 1;
+          if (!isNaN(monthIndex) && monthNames[monthIndex]) {
+            monthName = monthNames[monthIndex];
+          }
+          const dueDate = `${monthName} ${b.year}`;
+          return {
+            id: b.id,
+            name: b.category,
+            dueDate: dueDate,
+            completedPercentage: percentage,
+            currentAmount: formatAmount(b.spent),
+            targetAmount: formatAmount(b.amount),
+            remainingAmount: formatAmount(Math.max(0, b.amount - b.spent)),
+            status: "On Track",
+          };
+        },
+      );
+      setBudgetGoals(formattedBudgets);
+
+      if (
+        summaryData.trend &&
+        summaryData.trend.labels &&
+        summaryData.trend.labels.length > 0
+      ) {
+        const trendData = summaryData.trend;
+        const formattedData: MonthlyFinancialData[] = trendData.labels.map(
+          (label: string, index: number) => ({
+            month: label,
+            income: trendData.incomeData[index] || 0,
+            expense: trendData.expenseData[index] || 0,
+            savings: trendData.savingsData[index] || 0,
+          }),
         );
-        setBudgetGoals(formattedBudgets);
-
-        if (
-          summaryData.trend &&
-          summaryData.trend.labels &&
-          summaryData.trend.labels.length > 0
-        ) {
-          const trendData = summaryData.trend;
-          const formattedData: MonthlyFinancialData[] = trendData.labels.map(
-            (label: string, index: number) => ({
-              month: label,
-              income: trendData.incomeData[index] || 0,
-              expense: trendData.expenseData[index] || 0,
-              savings: trendData.savingsData[index] || 0,
-            }),
-          );
-          setData(formattedData);
-        } else {
-          setData([]);
-        }
-
-        if (summaryData.startDate) setStartMonth(summaryData.startDate);
-        if (summaryData.endDate) setEndMonth(summaryData.endDate);
-      } catch (error: unknown) {
-        if (axios.isAxiosError(error)) {
-          toast.error(
-            "Error fetching finance data: " +
-              (error.response?.data?.message || error.message),
-          );
-        } else {
-          toast.error(
-            "An unexpected error occurred while fetching finance data",
-          );
-        }
+        setData(formattedData);
+      } else {
         setData([]);
-        const now = new Date();
-        const currentMonth = now.toLocaleString("en-US", {
-          month: "short",
-          year: "numeric",
-        });
-        setStartMonth(currentMonth);
-        setEndMonth(currentMonth);
-      } finally {
-        setLoading(false);
       }
-    };
 
-    fetchFinanceData();
+      if (summaryData.startDate) setStartMonth(summaryData.startDate);
+      if (summaryData.endDate) setEndMonth(summaryData.endDate);
+    } catch (error: unknown) {
+      if (axios.isAxiosError(error)) {
+        toast.error(
+          "Error fetching finance data: " +
+            (error.response?.data?.message || error.message),
+        );
+      } else {
+        toast.error("An unexpected error occurred while fetching finance data");
+      }
+      setData([]);
+      const now = new Date();
+      const currentMonth = now.toLocaleString("en-US", {
+        month: "short",
+        year: "numeric",
+      });
+      setStartMonth(currentMonth);
+      setEndMonth(currentMonth);
+    } finally {
+      setLoading(false);
+    }
   }, []);
+
+  useEffect(() => {
+    fetchFinanceData();
+  }, [fetchFinanceData, reduxTransactions]);
+
+  useEffect(() => {
+    const handleRefresh = () => {
+      fetchFinanceData();
+    };
+    window.addEventListener("goals-updated", handleRefresh);
+    return () => {
+      window.removeEventListener("goals-updated", handleRefresh);
+    };
+  }, [fetchFinanceData]);
 
   const summaryCards: SummaryCardData[] = [
     {
@@ -295,7 +303,7 @@ export const useFinanceHook = (): UseFinanceHookResult => {
 
   useEffect(() => {
     fetchTransactions();
-  }, [currentPage, selectedMonth]);
+  }, [currentPage, selectedMonth, reduxTransactions]);
 
   const handleMonthChange = (month: string) => {
     setSelectedMonth(month);

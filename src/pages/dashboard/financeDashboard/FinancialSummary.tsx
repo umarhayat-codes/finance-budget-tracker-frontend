@@ -8,19 +8,6 @@ import { IoWalletOutline } from "react-icons/io5";
 const FinancialSummary: React.FC = () => {
   const { summaryCards, loading } = useFinanceHook();
 
-  if (loading) {
-    return (
-      <div className="bg-white rounded-[13px] border-[0.95px] border-monthlyCardBorder p-6 h-auto xlg:h-1/2 flex items-center justify-center font-poppins">
-        <div className="flex flex-col items-center gap-2">
-          <div className="w-8 h-8 border-4 border-recentSortBg border-t-transparent rounded-full animate-spin"></div>
-          <p className="text-[11px] font-medium text-summarySubtitle font-poppins">
-            Loading summary...
-          </p>
-        </div>
-      </div>
-    );
-  }
-
   const getIcon = (type: string) => {
     switch (type) {
       case "income":

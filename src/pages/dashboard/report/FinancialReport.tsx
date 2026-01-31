@@ -22,19 +22,14 @@ const FinancialReport: React.FC = () => {
   const { reportData, loading, error } = useReportHook();
 
   return (
-    <Layout>
-      {loading ? (
-        <div className="flex justify-center items-center py-20 min-h-[400px]">
-          <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary"></div>
-        </div>
-      ) : error ? (
+    <>
+      {error ? (
         <div className="flex justify-center items-center py-20 text-red-500 font-bold">
           Error: {error}
         </div>
       ) : (
-        <div className="flex flex-col gap-8  min-h-full">
+        <div className="flex flex-col gap-8 min-h-full">
           <DashboardHeader />
-
           <div className="flex flex-col gap-6">
             <div className="flex flex-col gap-1">
               <h1 className="text-reportTitle text-[20px] font-inter font-bold">
@@ -268,7 +263,7 @@ const FinancialReport: React.FC = () => {
           </div>
         </div>
       )}
-    </Layout>
+    </>
   );
 };
 

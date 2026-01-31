@@ -64,7 +64,6 @@ export const useCategoryHook = () => {
   const [isSavingModalOpen, setIsSavingModalOpen] = useState(false);
   const [formData, setFormData] = useState<CategoryFormData>({
     categoryName: "",
-    amount: "",
     type: "expense",
   });
   const [savingFormData, setSavingFormData] = useState<SavingFormData>({
@@ -157,7 +156,7 @@ export const useCategoryHook = () => {
   const handleOpenModal = () => setIsModalOpen(true);
   const handleCloseModal = () => {
     setIsModalOpen(false);
-    setFormData({ categoryName: "", amount: "", type: "expense" });
+    setFormData({ categoryName: "", type: "expense" });
   };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -199,7 +198,6 @@ export const useCategoryHook = () => {
     try {
       const response = await api.post("/categories", {
         name: formData.categoryName,
-        amount: parseFloat(formData.amount.replace(/[^0-9.]/g, "")),
         type: formData.type,
       });
 

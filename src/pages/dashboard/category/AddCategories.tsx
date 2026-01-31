@@ -26,14 +26,6 @@ const AddCategories: React.FC = () => {
     SavingIcon,
   } = useCategoryHook();
 
-  if (loading) {
-    return (
-      <div className="flex h-64 items-center justify-center">
-        <div className="h-8 w-8 animate-spin rounded-full border-4 border-primary border-t-transparent"></div>
-      </div>
-    );
-  }
-
   if (error) {
     return (
       <div className="flex h-64 flex-col items-center justify-center gap-4">
@@ -314,25 +306,6 @@ const AddCategories: React.FC = () => {
                   value={formData.categoryName}
                   onChange={handleInputChange}
                   placeholder="e.g. Food & Dining"
-                  required
-                  className="rounded-[10px] border border-gray-200 bg-gray-50 px-4 py-3 text-sm outline-none focus:border-primary focus:ring-1 focus:ring-primary font-inter"
-                />
-              </div>
-
-              <div className="flex flex-col gap-2">
-                <label
-                  htmlFor="amount"
-                  className="text-sm font-medium font-inter text-categoryTextSecondary"
-                >
-                  Amount
-                </label>
-                <input
-                  type="text"
-                  id="amount"
-                  name="amount"
-                  value={formData.amount}
-                  onChange={handleInputChange}
-                  placeholder="e.g. $500"
                   required
                   className="rounded-[10px] border border-gray-200 bg-gray-50 px-4 py-3 text-sm outline-none focus:border-primary focus:ring-1 focus:ring-primary font-inter"
                 />

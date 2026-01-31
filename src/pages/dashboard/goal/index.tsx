@@ -6,20 +6,27 @@ import CreateGoal from "./CreateGoal";
 import Layout from "src/components/Layout";
 import { Routes, Route } from "react-router-dom";
 
+import { useGoalHook } from "./useGoalHook";
+import GoalSkeleton from "./GoalSkeleton";
+
 const GoalPage: React.FC = () => {
+  const { loading } = useGoalHook();
+
   return (
     <Routes>
       <Route
         index
         element={
           <Layout>
-          <>
-            <DashboardHeader />
-
-            <AddGoal />
-
-            <BreakDownGoal />
-          </>
+            {loading ? (
+              <GoalSkeleton />
+            ) : (
+              <>
+                <DashboardHeader />
+                <AddGoal />
+                <BreakDownGoal />
+              </>
+            )}
           </Layout>
         }
       />

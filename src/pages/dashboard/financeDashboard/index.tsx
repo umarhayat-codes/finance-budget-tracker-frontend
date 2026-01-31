@@ -7,36 +7,44 @@ import FinancialSummary from "./FinancialSummary";
 import BudgetGoal from "./BudgetGoal";
 import ExpenseDistribute from "./ExpenseDistribute";
 import RecentTransaction from "./RecentTransaction";
+import { useFinanceHook } from "./useFinanceHook";
+import SkeletonComponent from "../../../components/SkeletonComponent";
 
 const FinanceDashboardPage: React.FC = () => {
+  const { loading } = useFinanceHook();
+
   return (
     <Layout>
       <div className="flex flex-col gap-6 ">
         <DashboardHeader />
 
-        <div className="flex flex-col desktop:flex-row gap-6">
-          <div className="contents desktop:flex desktop:flex-col desktop:w-[55%] gap-6">
-            <div className="order-1">
-              <MonthlyFinancial />
-            </div>
-            <div className="contents desktop:grid desktop:grid-cols-2 gap-6 order-3">
-              <div className="order-3">
-                <BudgetGoal />
+        {loading ? (
+          <SkeletonComponent />
+        ) : (
+          <div className="flex flex-col desktop:flex-row gap-6">
+            <div className="contents desktop:flex desktop:flex-col desktop:w-[55%] gap-6">
+              <div className="order-1">
+                <MonthlyFinancial />
               </div>
-              <div className="order-4">
-                <ExpenseDistribute />
+              <div className="contents desktop:grid desktop:grid-cols-2 gap-6 order-3">
+                <div className="order-3">
+                  <BudgetGoal />
+                </div>
+                <div className="order-4">
+                  <ExpenseDistribute />
+                </div>
+              </div>
+            </div>
+            <div className="contents desktop:flex desktop:flex-col desktop:w-[45%] gap-6">
+              <div className="order-2">
+                <FinancialSummary />
+              </div>
+              <div className="order-5">
+                <RecentTransaction />
               </div>
             </div>
           </div>
-          <div className="contents desktop:flex desktop:flex-col desktop:w-[45%] gap-6">
-            <div className="order-2">
-              <FinancialSummary />
-            </div>
-            <div className="order-5">
-              <RecentTransaction />
-            </div>
-          </div>
-        </div>
+        )}
       </div>
     </Layout>
   );

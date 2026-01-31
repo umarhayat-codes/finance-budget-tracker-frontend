@@ -72,37 +72,50 @@ export const useGoalHook = (): UseGoalHookResult => {
     });
   }, []);
 
-  const fetchGoals = useCallback(async () => {
-    setLoading(true);
-    try {
-      const response = await axios.get(BASE_URL, { withCredentials: true });
-      const fetchedGoals = response.data.map((goal: GoalItem) => ({
-        ...goal,
-        icon: getIconForGoal(goal.goalName),
-      }));
-      setGoals(fetchedGoals);
-      setHistory(
-        fetchedGoals.map((goal: GoalItem) => ({
-          id: goal.id,
-          date: goal.targetDate, // Or goal.createdAt? Requirement says "date in date col"
-          goalName: goal.goalName,
-          trackStatus: "On Track" as GoalStatus,
-          processStatus: goal.goalStatus,
-          amountStatus: `IDR ${goal.targetAmount.toLocaleString()}`,
-        })),
-      );
-      calculateStats(fetchedGoals);
-    } catch (err) {
-      const axiosError = err as AxiosError<ApiErrorResponse>;
-      toast.error("Failed to fetch goals");
-      setError(axiosError.response?.data?.message || "Failed to fetch goals");
-    } finally {
-      setLoading(false);
-    }
-  }, [calculateStats]);
+  const fetchGoals = useCallback(
+    async (silent = false) => {
+      if (!silent) setLoading(true);
+      try {
+        const response = await axios.get(BASE_URL, { withCredentials: true });
+        const fetchedGoals = response.data.map((goal: GoalItem) => ({
+          ...goal,
+          icon: getIconForGoal(goal.goalName),
+        }));
+        setGoals(fetchedGoals);
+        setHistory(
+          fetchedGoals.map((goal: GoalItem) => ({
+            id: goal.id,
+            date: goal.targetDate, // Or goal.createdAt? Requirement says "date in date col"
+            goalName: goal.goalName,
+            trackStatus: "On Track" as GoalStatus,
+            processStatus: goal.goalStatus,
+            amountStatus: `IDR ${goal.targetAmount.toLocaleString()}`,
+          })),
+        );
+        calculateStats(fetchedGoals);
+      } catch (err) {
+        const axiosError = err as AxiosError<ApiErrorResponse>;
+        toast.error("Failed to fetch goals");
+        setError(axiosError.response?.data?.message || "Failed to fetch goals");
+      } finally {
+        setLoading(false);
+      }
+    },
+    [calculateStats],
+  );
 
   useEffect(() => {
     fetchGoals();
+  }, [fetchGoals]);
+
+  useEffect(() => {
+    const handleRefresh = () => {
+      fetchGoals(true);
+    };
+    window.addEventListener("goals-updated", handleRefresh);
+    return () => {
+      window.removeEventListener("goals-updated", handleRefresh);
+    };
   }, [fetchGoals]);
 
   const handleGoalChange = (field: keyof CreateGoalFormData, value: string) => {
@@ -114,6 +127,7 @@ export const useGoalHook = (): UseGoalHookResult => {
     setError(null);
     try {
       await axios.post(BASE_URL, goalForm, { withCredentials: true });
+      window.dispatchEvent(new CustomEvent("goals-updated"));
       toast.success("Goal created successfully");
       navigate("/dashboard/goals");
     } catch (err) {
@@ -145,6 +159,7 @@ export const useGoalHook = (): UseGoalHookResult => {
           g.id === id ? { ...g, goalStatus: newStatus } : g,
         );
         calculateStats(updated);
+        window.dispatchEvent(new CustomEvent("goals-updated"));
         return updated;
       });
     } catch (err) {
